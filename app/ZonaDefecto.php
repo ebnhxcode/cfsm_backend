@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ZonaDefecto extends Model
 {
-    protected $table      = 'lote';
-    protected $primaryKey = 'lote_id';
+    protected $table      = 'zona_defecto';
+    protected $primaryKey = 'zona_id';
     protected $fillable = [
-        'lote_codigo',
-        'lote_cajas',
+        'zona_nombre',
+        'zona_descripcion',
 
         'nota_id',
     ];
