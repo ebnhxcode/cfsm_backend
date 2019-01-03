@@ -18,7 +18,9 @@ class Concepto extends Model
 
 
     #hasMany's
-
+    public function defectos () {
+        return $this->hasMany(Defecto::class, 'concepto_id');
+    }
 
 
     #belongsTo's

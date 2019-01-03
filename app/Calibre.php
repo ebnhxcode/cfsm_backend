@@ -17,11 +17,14 @@ class Calibre extends Model
     public $timestamps = false;
 
     #hasMany's
+    public function muestras () {
+        return $this->hasMany(Muestra::class, 'calibre_id');
+    }
 
 
 
     #belongsTo's
     public function especie () {
-        return $this->belongsTo(Especie::class, 'id_especie');
+        return $this->belongsTo(Especie::class, 'especie_id');
     }
 }

@@ -17,7 +17,19 @@ class Nota extends Model
 
     #hasMany's
 
+    public function lotes () {
+        return $this->hasMany(Lote::class, 'nota_id');
+    }
 
+    public function muestras () {
+        return $this->hasMany(Muestra::class, 'nota_id');
+    }
+    public function muestras_defectos () {
+        return $this->hasMany(MuestraDefecto::class, 'nota_id');
+    }
+    public function tolerancias () {
+        return $this->hasMany(Tolerancia::class, 'nota_id');
+    }
 
     #belongsTo's
 

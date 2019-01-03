@@ -19,15 +19,20 @@ class Defecto extends Model
 
 
     #hasMany's
-
+    public function muestras_defectos () {
+        return $this->hasMany(MuestraDefecto::class, 'defecto_id');
+    }
+    public function tolerancias () {
+        return $this->hasMany(Tolerancia::class, 'defecto_id');
+    }
 
 
     #belongsTo's
-    public zona () {
-        return $this->belongsTo(ZonaDefecto::class, 'id_zona');
+    public concepto () {
+        return $this->belongsTo(Concepto::class, 'concepto_id');
     }
 
-    public concepto () {
-        return $this->belongsTo(Concepto::class, 'id_concepto');
+    public zona_defecto () {
+        return $this->belongsTo(ZonaDefecto::class, 'zona_id');
     }
 }

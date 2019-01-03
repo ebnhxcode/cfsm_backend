@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class ComunasController extends Controller
+class ComunaController extends Controller
 {
     /**
      * Display a listing of the resource.

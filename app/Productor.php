@@ -14,6 +14,15 @@ class Productor extends Model
     ];]
     public $timestamps = false;
 
+
+    #hasMany's
+    public function muestras () {
+        return $this->hasMany(Muestra::class, 'productor_id');
+    }
+
+
+    #belongsTo's
+
     /*Un productor tiene una region*/
     public function region()
     {

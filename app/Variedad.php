@@ -15,8 +15,14 @@ class Variedad extends Model
     ];
     public $timestamps = false;
 
+    #hasMany's
+    public function muestras () {
+        return $this->hasMany(Muestra::class, 'variedad_id');
+    }
 
+    #belongsTo's
     public function especie () {
         return $this->belongsTo(Especie::class, 'especie_id');
     } 
+
 }

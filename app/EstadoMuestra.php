@@ -15,7 +15,9 @@ class EstadoMuestra extends Model
     public $timestamps = false;
 
     #hasMany's
-
+    public function muestras () {
+        return $this->hasMany(Muestra::class, 'estado_muestra_id');
+    }
 
 
     #belongsTo's

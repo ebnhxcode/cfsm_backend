@@ -14,7 +14,9 @@ class Etiqueta extends Model
     public $timestamps = false;
 
     #hasMany's
-
+    public function muestras () {
+        return $this->hasMany(Muestra::class, 'etiqueta_id');
+    }
 
 
     #belongsTo's

@@ -15,7 +15,9 @@ class Categoria extends Model
 
 
     #hasMany's
-
+    public function tolerancias () {
+        return $this->hasMany(Tolerancia::class, 'categoria_id');
+    }
 
 
     #belongsTo's

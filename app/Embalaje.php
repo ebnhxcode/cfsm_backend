@@ -16,7 +16,9 @@ class Embalaje extends Model
 
 
     #hasMany's
-
+    public function muestras () {
+        return $this->hasMany(Muestra::class, 'embalaje_id');
+    }
 
 
     #belongsTo's

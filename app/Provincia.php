@@ -16,7 +16,9 @@ class Provincia extends Model
     public $timestamps = false;
 
     #hasMany's
-
+    public function comunas () {
+        return $this->hasMany(Comuna::class, 'id_provincia');
+    }
 
 
     #belongsTo's

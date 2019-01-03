@@ -11,13 +11,13 @@ class ZonaDefecto extends Model
     protected $fillable = [
         'zona_nombre',
         'zona_descripcion',
-
-        'nota_id',
     ];
     public $timestamps = false;
 
     #hasMany's
-
+    public function defectos () {
+        return $this->hasMany(Defecto::class, 'id_zona'):
+    }
 
 
     #belongsTo's
