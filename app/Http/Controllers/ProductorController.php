@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Productor;
 
 class ProductorController extends Controller
 {
@@ -14,7 +15,7 @@ class ProductorController extends Controller
      */
     public function index()
     {
-        //
+        return view("admin.productores.index");
     }
 
     /**
@@ -82,4 +83,10 @@ class ProductorController extends Controller
     {
         //
     }
+
+    public function productoresDatetables(){
+        return datatables()->eloquent(Productor::select('productor_id','productor_nombre','region_id')->with(['region']))->toJson();
+    }
+    
+
 }

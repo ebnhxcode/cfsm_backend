@@ -12,9 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.web');
 });
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+/*rutas a mantenedores */
+Route::get('productoresDatetables','ProductorController@productoresDatetables');
+Route::resource('productores', 'ProductorController');
