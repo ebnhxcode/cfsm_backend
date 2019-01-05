@@ -16,9 +16,6 @@ class Provincia extends Model
     public $timestamps = false;
 
     #hasMany's
-
-
-
     #belongsTo's
     public function region () {
         return $this->belongsTo(Region::class, 'id_region');
