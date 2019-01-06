@@ -11,7 +11,7 @@ class Productor extends Model
     protected $fillable = [
         'productor_nombre',
         'region_id',
-    ];]
+    ];
     public $timestamps = false;
 
 

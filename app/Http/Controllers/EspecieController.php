@@ -4,17 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Especie;
 
 class EspecieController extends Controller
 {
+    private $especies;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->especies = Especie::all();
+        if ($request->wantsJson() || $request->ajax() || $request->isXmlHttpRequest()) {
+            return response()->json($this->especies);
+        }
+        return $this->especies = count($this->especies) > 0 ? $this->especies : 'Sin resultados';
     }
 
     /**

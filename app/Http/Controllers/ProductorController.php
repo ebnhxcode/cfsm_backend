@@ -4,17 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Productor;
 
 class ProductorController extends Controller
 {
+    private $productores;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->productores = Productor::all();
+        if ($request->wantsJson() || $request->ajax() || $request->isXmlHttpRequest()) {
+            return response()->json($this->productores);
+        }
+        return $this->productores = count($this->productores) > 0 ? $this->productores : 'Sin resultados';
     }
 
     /**
