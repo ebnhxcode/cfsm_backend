@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Productor;
+use App\Region;
 use yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class ProductorController extends Controller
 {
@@ -60,6 +63,9 @@ class ProductorController extends Controller
     public function edit($id)
     {
         //
+        $productor = Productor::find($id);
+        $regiones = Region::orderBy('region_nombre')->pluck('region_nombre','region_id');
+        return view('admin.productores.editar', compact('productor','regiones'));
     }
 
     /**
@@ -71,6 +77,12 @@ class ProductorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $productor = Productor::find($id);
+        $productor->productor_nombre = $request->productor_nombre;
+        $productor->region_id  = $request->region_id;
+        $productor->save();
+        Session::flash('message','Resultado actualizado');
+        return redirect::to('productores');
         //
     }
 

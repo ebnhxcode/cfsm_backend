@@ -56,7 +56,7 @@
                         { data: 'productor_id', name: 'productor_id' },
                         { data: 'productor_nombre', name: 'productor_nombre' },
                         { data: 'region.region_nombre', name: 'region.region_nombre' },
-                        { data: 'action':nofilter}
+                        { data: 'action',searchable:false}
                         /*,
                         {render: function () {
                             return '<button type="button" id="ButtonEditar" class="editar edit-modal btn btn-warning botonEditar"><span class="fa fa-edit"></span><span class="hidden-xs"> Editar</span></button>';
