@@ -15,6 +15,7 @@
                 <th>id</th>
                 <th>Productor</th>
                 <th>Region</th>
+                <th>-</th>
             </tr>
         </thead>
         
@@ -54,9 +55,13 @@
             columns: [
                         { data: 'productor_id', name: 'productor_id' },
                         { data: 'productor_nombre', name: 'productor_nombre' },
-                        { data: 'region.region_nombre', name: 'region.region_nombre' }
-                        
-                     ]
+                        { data: 'region.region_nombre', name: 'region.region_nombre' },
+                        { data: 'action':nofilter}
+                        /*,
+                        {render: function () {
+                            return '<button type="button" id="ButtonEditar" class="editar edit-modal btn btn-warning botonEditar"><span class="fa fa-edit"></span><span class="hidden-xs"> Editar</span></button>';
+                        }},*/
+                     ],
         });
     });
 </script>

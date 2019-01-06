@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Productor;
+use yajra\Datatables\Datatables;
 
 class ProductorController extends Controller
 {
@@ -85,8 +86,20 @@ class ProductorController extends Controller
     }
 
     public function productoresDatetables(){
-        return datatables()->eloquent(Productor::select('productor_id','productor_nombre','region_id')->with(['region']))->toJson();
-    }
-    
+        /*return datatables()
+        ->eloquent(Productor::select('productor_id','productor_nombre','region_id')
+        ->with(['region']))
+        ->toJson();*/
 
+        ///$orders = Orders::with('customer','carrier','orderState','orderDetails','orderDetails.product.supplier')->get();
+        $productores = Productor::select('productor_id','productor_nombre','region_id')->with('region')->get();
+
+
+        return Datatables::of($productores)
+            ->addColumn('action', function ($productores) {
+                return '<a href="'.route('productores.show',$productores->productor_id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Ver</a>
+                    <a href="'.route('productores.edit',$productores->productor_id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Editar</a>';
+            })
+            ->make(true);
+    }
 }
