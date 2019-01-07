@@ -38,3 +38,5 @@ Route::get('getCategorias', 'ApiController@getCategorias');
 Route::get('getEmbalajes', 'ApiController@getEmbalajes');
 Route::get('getEstadosMuestra', 'ApiController@getEstadosMuestra');
 Route::get('getNotas', 'ApiController@getNotas');
+Route::get('loginUsuario', 'ApiController@loginUsuario');
+

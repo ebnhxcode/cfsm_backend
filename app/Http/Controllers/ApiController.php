@@ -175,8 +175,17 @@ class ApiController extends Controller
         return response()->json($array);
     }
 
+    public function loginUsuario(){
+        
 
-    
+
+        $array = ['status' => 200,
+            'msg'=> 'OK',
+            ];
+        return response()->json($array);
+
+    }
+
 
 
 
