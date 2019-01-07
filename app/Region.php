@@ -16,10 +16,8 @@ class Region extends Model
 
     public function productores()
     {
-        return $this->hasMany(Productor::class, 'region_id');
+        return $this->hasMany('App\Productor', 'region_id');
     }
 
-    public function ToListaCarta(){
-        return $this->hasMany('App\Lista', 'CRT_ID');
-    }
+    
 }
