@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Productor;
+use App\Region;
+use yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+
 
 class ProductorController extends Controller
 {
@@ -14,7 +20,7 @@ class ProductorController extends Controller
      */
     public function index()
     {
-        //
+        return view("admin.productores.index");
     }
 
     /**
@@ -25,6 +31,8 @@ class ProductorController extends Controller
     public function create()
     {
         //
+        $regiones = Region::orderBy('region_nombre')->pluck('region_nombre','region_id');
+        return view('admin.productores.agregar', compact('regiones'));
     }
 
     /**
@@ -35,7 +43,11 @@ class ProductorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $productor = new Productor();
+        $productor->productor_nombre = $request->productor_nombre;
+        $productor->region_id = $request->region_id;
+        $productor->save();
+        return view("admin.productores.index");
     }
 
     /**
@@ -58,6 +70,9 @@ class ProductorController extends Controller
     public function edit($id)
     {
         //
+        $productor = Productor::find($id);
+        $regiones = Region::orderBy('region_nombre')->pluck('region_nombre','region_id');
+        return view('admin.productores.editar', compact('productor','regiones'));
     }
 
     /**
@@ -69,6 +84,12 @@ class ProductorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $productor = Productor::find($id);
+        $productor->productor_nombre = $request->productor_nombre;
+        $productor->region_id  = $request->region_id;
+        $productor->save();
+        Session::flash('message','Resultado actualizado');
+        return redirect::to('productores');
         //
     }
 
@@ -80,6 +101,31 @@ class ProductorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return "aaaa";
+    }
+
+    public function productoresDatetables(){
+        /*return datatables()
+        ->eloquent(Productor::select('productor_id','productor_nombre','region_id')
+        ->with(['region']))
+        ->toJson();*/
+
+        ///$orders = Orders::with('customer','carrier','orderState','orderDetails','orderDetails.product.supplier')->get();
+        $productores = Productor::select('productor_id','productor_nombre','region_id')->with('region')->get();
+        //filtrar resultados
+        return Datatables::of($productores)
+            ->addColumn('action', function ($productores) {
+                return '
+                    <a href="'.route('productores.edit',$productores->productor_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                    <a href="'.url('productoresDelete/'.$productores->productor_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+                    ';
+            })
+            ->make(true);
+    }
+
+    public function productoresDelete($id){
+        Productor::destroy($id);
+        //cambiar estado
+        return  view("admin.productores.index");
     }
 }

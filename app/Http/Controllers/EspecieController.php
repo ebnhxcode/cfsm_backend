@@ -82,4 +82,8 @@ class EspecieController extends Controller
     {
         //
     }
+
+    public function especiesDatetables(){
+        return "aaa";
+    }
 }

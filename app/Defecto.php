@@ -10,13 +10,10 @@ class Defecto extends Model
     protected $primaryKey = 'defecto_id';
     protected $fillable = [
         'defecto_nombre',
-
         'zona_id',
         'concepto_id',
     ];
     public $timestamps = false;
-
-
 
     #hasMany's
     public function muestras_defectos () {
@@ -28,11 +25,11 @@ class Defecto extends Model
 
 
     #belongsTo's
-    public concepto () {
+    public function concepto () {
         return $this->belongsTo(Concepto::class, 'concepto_id');
     }
 
-    public zona_defecto () {
+    public function zona_defecto () {
         return $this->belongsTo(ZonaDefecto::class, 'zona_id');
     }
 }

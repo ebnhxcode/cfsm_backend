@@ -14,8 +14,6 @@ class Muestra extends Model
         'muestra_imagen',
         'muestra_cajas',
         'lote_codigo',
-
-
         'productor_id',
         'especie_id',
         'variedad_id',

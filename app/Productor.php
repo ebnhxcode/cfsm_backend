@@ -11,7 +11,7 @@ class Productor extends Model
     protected $fillable = [
         'productor_nombre',
         'region_id',
-    ];]
+    ];
     public $timestamps = false;
 
 
@@ -26,6 +26,6 @@ class Productor extends Model
     /*Un productor tiene una region*/
     public function region()
     {
-        return $this->belongsTo(Region::class, 'region_id' );
+        return $this->belongsTo('App\Region', 'region_id' );
     }
 }

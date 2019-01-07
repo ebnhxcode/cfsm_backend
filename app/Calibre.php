@@ -21,8 +21,6 @@ class Calibre extends Model
         return $this->hasMany(Muestra::class, 'calibre_id');
     }
 
-
-
     #belongsTo's
     public function especie () {
         return $this->belongsTo(Especie::class, 'especie_id');
