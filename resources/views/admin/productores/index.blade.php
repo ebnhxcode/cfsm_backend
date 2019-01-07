@@ -9,6 +9,8 @@
         <li class="breadcrumb-item active">Productores</li>
     </ol>
 
+    {{link_to_route('productores.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success'])}}
+
     <table class="table" id="pd">
         <thead>
             <tr >

@@ -30,6 +30,8 @@ class ProductorController extends Controller
     public function create()
     {
         //
+        $regiones = Region::orderBy('region_nombre')->pluck('region_nombre','region_id');
+        return view('admin.productores.agregar', compact('regiones'));
     }
 
     /**
@@ -40,7 +42,11 @@ class ProductorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $productor = new Productor();
+        $productor->productor_nombre = $request->productor_nombre;
+        $productor->region_id = $request->region_id;
+        $productor->save();
+        return view("admin.productores.index");
     }
 
     /**
@@ -94,7 +100,7 @@ class ProductorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return "aaaa";
     }
 
     public function productoresDatetables(){
@@ -106,12 +112,18 @@ class ProductorController extends Controller
         ///$orders = Orders::with('customer','carrier','orderState','orderDetails','orderDetails.product.supplier')->get();
         $productores = Productor::select('productor_id','productor_nombre','region_id')->with('region')->get();
 
-
         return Datatables::of($productores)
             ->addColumn('action', function ($productores) {
-                return '<a href="'.route('productores.show',$productores->productor_id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Ver</a>
-                    <a href="'.route('productores.edit',$productores->productor_id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Editar</a>';
+                return '
+                    <a href="'.route('productores.edit',$productores->productor_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                    <a href="'.url('productoresDelete/'.$productores->productor_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+                    ';
             })
             ->make(true);
+    }
+
+    public function productoresDelete($id){
+        Productor::destroy($id);
+        return  view("admin.productores.index");
     }
 }

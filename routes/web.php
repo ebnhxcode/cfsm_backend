@@ -23,4 +23,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 /*rutas a mantenedores */
 Route::get('productoresDatetables','ProductorController@productoresDatetables');
+Route::get('productoresDelete/{id}','ProductorController@productoresDelete');
 Route::resource('productores', 'ProductorController');
