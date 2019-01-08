@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+use App\Variedad;
+use App\Especie;
 
 class VariedadController extends Controller
 {
@@ -14,7 +19,7 @@ class VariedadController extends Controller
      */
     public function index()
     {
-        //
+        return view("admin.variedades.index");
     }
 
     /**
@@ -24,7 +29,8 @@ class VariedadController extends Controller
      */
     public function create()
     {
-        //
+        $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
+        return view('admin.variedades.agregar', compact('especies'));
     }
 
     /**
@@ -57,7 +63,9 @@ class VariedadController extends Controller
      */
     public function edit($id)
     {
-        //
+        $variedad = Variedad::find($id);
+        $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
+        return view('admin.variedades.editar', compact('variedad','especies'));
     }
 
     /**
@@ -81,5 +89,24 @@ class VariedadController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function variedadesDatetables(){
+        $variedades = Variedad::select('variedad_id','variedad_nombre','especie_id')->with('especie')->get();
+        return Datatables::of($variedades)
+            ->addColumn('action', function ($variedades) {
+                return '
+                    <a href="'.route('variedades.edit',$variedades->variedad_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                    <a href="'.url('variedadesDelete/'.$variedades->variedad_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+                    ';
+            })
+            ->make(true);
+    }
+
+    public function variedadesDelete($id){
+        dd("BORRAR");
+        //Variedad::destroy($id);
+        //cambiar estado
+        return  view("admin.variedades.index");
     }
 }

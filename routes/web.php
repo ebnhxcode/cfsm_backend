@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('layouts.web');
 });
 
-
+Route::resource('productores', 'ProductorController');
 Route::resource('calibres', 'CalibreController');
 Route::resource('categorias', 'CategoriaController');
 Route::resource('comunas', 'ComunaController');
@@ -28,7 +28,6 @@ Route::resource('lotes', 'LoteController');
 Route::resource('muestras', 'MuestraController');
 Route::resource('muestras_defectos', 'MuestraDefectoController');
 Route::resource('notas', 'NotaController');
-Route::resource('producotres', 'ProductorController');
 Route::resource('provincias', 'ProvinciaController');
 Route::resource('regiones', 'RegionController');
 Route::resource('tolerancias', 'ToleranciaController');
@@ -43,10 +42,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-/*rutas a mantenedores */
+/*rutas especieales  mantenedores */
 Route::get('productoresDatetables','ProductorController@productoresDatetables');
 Route::get('productoresDelete/{id}','ProductorController@productoresDelete');
-Route::resource('productores', 'ProductorController');
+Route::get('variedadesDatetables','VariedadController@variedadesDatetables');
+Route::get('variedadesDelete/{id}','VariedadController@variedadesDelete');
+
+/* Especiales */
 
 
 /*rutas de api que usan middleware*/

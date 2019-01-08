@@ -16,7 +16,7 @@ class ZonaDefecto extends Model
 
     #hasMany's
     public function defectos () {
-        return $this->hasMany(Defecto::class, 'id_zona'):
+        return $this->hasMany('App\Defecto', 'defecto_id');
     }
 
 

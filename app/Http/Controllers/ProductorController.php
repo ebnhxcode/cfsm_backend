@@ -105,14 +105,7 @@ class ProductorController extends Controller
     }
 
     public function productoresDatetables(){
-        /*return datatables()
-        ->eloquent(Productor::select('productor_id','productor_nombre','region_id')
-        ->with(['region']))
-        ->toJson();*/
-
-        ///$orders = Orders::with('customer','carrier','orderState','orderDetails','orderDetails.product.supplier')->get();
         $productores = Productor::select('productor_id','productor_nombre','region_id')->with('region')->get();
-        //filtrar resultados
         return Datatables::of($productores)
             ->addColumn('action', function ($productores) {
                 return '

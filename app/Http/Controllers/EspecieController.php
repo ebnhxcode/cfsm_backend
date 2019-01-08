@@ -14,7 +14,7 @@ class EspecieController extends Controller
      */
     public function index()
     {
-        //
+        return view("admin.productores.index");
     }
 
     /**
@@ -28,7 +28,7 @@ class EspecieController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in stor age.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
