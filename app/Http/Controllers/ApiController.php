@@ -17,10 +17,11 @@ use App\Nota;
 class ApiController extends Controller
 {
 
-
+    /*
     public function __construct(){
         $this->middleware('auth.basic');
     }
+    */
 
     public function getProductores(){
         //$regiones = Region::lists('region_nombre', 'region_id');
@@ -101,7 +102,7 @@ class ApiController extends Controller
     }
 
     public function getCalibres(){
-        $result = Categoria::all();
+        $result = Calibre::all();
         if(!empty($result)){
             $array = ['status' => 200,
             'msg'=> 'Ok',
