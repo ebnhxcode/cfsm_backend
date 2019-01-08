@@ -18,9 +18,8 @@ class Especie extends Model
     public function variedades () {
         return $this->hasMany('App\Productor', 'region_id');
     }
-
     public function calibres () {
-        return $this->hasMany(Calibre::class, 'especie_id');
+        return $this->hasMany('App\Calibre', 'especie_id');
     }
     public function muestras () {
         return $this->hasMany(Muestra::class, 'especie_id');

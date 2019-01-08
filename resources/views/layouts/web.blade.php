@@ -107,9 +107,8 @@
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <h6 class="dropdown-header">Administración:</h6>
             <a class="dropdown-item" href="{!!URL::to('/productores')!!}">Productor</a>
-            <a class="dropdown-item" href="#">Especie</a>
             <a class="dropdown-item" href="{!!URL::to('/variedades')!!}">Variedades</a>
-            <a class="dropdown-item" href="#">Calibre</a>
+            <a class="dropdown-item" href="{!!URL::to('/calibres')!!}">Calibre</a>
             <a class="dropdown-item" href="#">Etiqueta</a>
             <a class="dropdown-item" href="#">Embalaje</a>
             <div class="dropdown-divider"></div>

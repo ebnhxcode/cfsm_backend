@@ -42,6 +42,13 @@ class VariedadController extends Controller
     public function store(Request $request)
     {
         //
+        $variedad = new Variedad();
+        $variedad->variedad_nombre = $request->variedad_nombre;
+        $variedad->especie_id = $request->especie_id;
+        $variedad->save();
+        Session::flash('message','registro agregado correctamente:'.$request->variedad_nombre);
+        return redirect::to('variedades');
+
     }
 
     /**
@@ -78,6 +85,12 @@ class VariedadController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $variedad = Variedad::find($id);
+        $variedad->variedad_nombre = $request->variedad_nombre;
+        $variedad->especie_id = $request->especie_id;
+        $variedad->save();
+        Session::flash('message','registro actualizado correctamente:'.$request->variedad_nombre);
+        return redirect::to('variedades');
     }
 
     /**
@@ -104,8 +117,7 @@ class VariedadController extends Controller
     }
 
     public function variedadesDelete($id){
-        dd("BORRAR");
-        //Variedad::destroy($id);
+        Variedad::destroy($id);
         //cambiar estado
         return  view("admin.variedades.index");
     }

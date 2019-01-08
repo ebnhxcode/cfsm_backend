@@ -10,7 +10,6 @@ class Calibre extends Model
     protected $primaryKey = 'calibre_id';
     protected $fillable = [
         'calibre_nombre',
-
         'especie_id'
     ];
 
@@ -23,6 +22,6 @@ class Calibre extends Model
 
     #belongsTo's
     public function especie () {
-        return $this->belongsTo(Especie::class, 'especie_id');
+        return $this->belongsTo('App\Especie', 'especie_id');
     }
 }

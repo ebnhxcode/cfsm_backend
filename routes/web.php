@@ -35,8 +35,6 @@ Route::resource('users', 'UsersController');
 Route::resource('variedades', 'VariedadController');
 Route::resource('zonas_defectos', 'ZonaDefectoController');
 
-
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -47,6 +45,8 @@ Route::get('productoresDatetables','ProductorController@productoresDatetables');
 Route::get('productoresDelete/{id}','ProductorController@productoresDelete');
 Route::get('variedadesDatetables','VariedadController@variedadesDatetables');
 Route::get('variedadesDelete/{id}','VariedadController@variedadesDelete');
+Route::get('calibresDatetables','CalibreController@calibresDatetables');
+Route::get('calibresDelete/{id}','CalibreController@calibresDelete');
 
 /* Especiales */
 

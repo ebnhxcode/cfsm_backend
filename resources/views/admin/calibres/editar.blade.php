@@ -1,12 +1,12 @@
 @extends('layouts.web')
-@section('title', 'Variedad')
+@section('title', 'Calibre')
 @section('content')
 
 @include('layouts.error')
 
-{!! Form::model($variedad, array('route' => array('variedades.update', $variedad->variedad_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}
-    <h2 class="" id="">Editar productor</h2>
-    @include('admin.variedades.form.variedad')
+{!! Form::model($calibre, array('route' => array('calibres.update', $variedad->variedad_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}
+    <h2 class="" id="">Calibre</h2>
+    @include('admin.calibres.form.calibre')
     <button type="submit" class="btn btn-primary btn_ok">Actualizar</button>
 {!! Form::close() !!}
 

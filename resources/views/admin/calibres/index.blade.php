@@ -1,21 +1,21 @@
 @extends('layouts.web')
-@section('title', 'Variedad')
+@section('title', 'Calibres')
 @section('content')
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="#">Home</a>
         </li>
-        <li class="breadcrumb-item active">Variedades</li>
+        <li class="breadcrumb-item active">Calibres</li>
     </ol>
 
-    {{link_to_route('variedades.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success'])}}
+    {{link_to_route('calibres.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success'])}}
 
     <table class="table" id="pd">
         <thead>
             <tr >
                 <th>id</th>
-                <th>Variedad</th>
+                <th>Calibre</th>
                 <th>Especie</th>
                 <th>-</th>
             </tr>
@@ -53,10 +53,10 @@
             },
             processing: true,
             serverSide: true,
-            ajax: '{{ url('variedadesDatetables')}}',
+            ajax: '{{ url('calibresDatetables')}}',
             columns: [
-                        { data: 'variedad_id', name: 'variedad_id' },
-                        { data: 'variedad_nombre', name: 'variedad_nombre' },
+                        { data: 'calibre_id', name: 'calibre_id' },
+                        { data: 'calibre_nombre', name: 'calibre_nombre' },
                         { data: 'especie.especie_nombre', name: 'especie.especie_nombre' },
                         { data: 'action',searchable:false}
                         /*,

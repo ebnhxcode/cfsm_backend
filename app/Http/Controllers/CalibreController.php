@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+use App\Calibre;
+use App\Especie;
 
 class CalibreController extends Controller
 {
@@ -15,6 +20,7 @@ class CalibreController extends Controller
     public function index()
     {
         //
+        return view("admin.calibres.index");
     }
 
     /**
@@ -25,6 +31,8 @@ class CalibreController extends Controller
     public function create()
     {
         //
+        $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
+        return view('admin.calibres.agregar', compact('especies'));
     }
 
     /**
@@ -81,5 +89,16 @@ class CalibreController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function calibresDatetables(){
+        $calibres = Calibre::select('calibre_id','calibre_nombre','especie_id')->with('especie')->get();
+        return Datatables::of($calibres)
+            ->addColumn('action', function ($calibres) {
+                return '
+                    <a href="'.route('calibres.edit',$calibres->calibre_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                    <a href="'.url('calibres/'.$calibres->calibre_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+                    ';
+            })
+            ->make(true);
     }
 }
