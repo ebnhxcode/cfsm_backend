@@ -177,9 +177,6 @@ class ApiController extends Controller
     }
 
     public function loginUsuario(){
-        
-
-
         $array = ['status' => 200,
             'msg'=> 'OK',
             ];
