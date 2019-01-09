@@ -29,7 +29,7 @@ class ReporteDataTable extends DataTable
     public function query(Muestra $model)
     {
         //return $model->newQuery()->select('id', 'add-your-columns-here', 'created_at', 'updated_at');
-        return $muestra->newQuery()->select('id');
+        return $model->newQuery()->select('muestra_id');
     }
 
     /**

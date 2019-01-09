@@ -201,6 +201,7 @@
     {!! Html::script('sb/js/demo/datatables-demo.js') !!}
     {!! Html::script('sb/js/demo/chart-area-demo.js') !!}
 
+    @stack('custom_js')
   </body>
 
 </html>
