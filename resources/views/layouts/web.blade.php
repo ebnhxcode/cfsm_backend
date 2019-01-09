@@ -128,6 +128,11 @@
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url('reportes') }}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Reportes</span></a>
+        </li>
       </ul>
 
       <div id="content-wrapper">
