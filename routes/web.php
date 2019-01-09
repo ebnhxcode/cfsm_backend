@@ -34,6 +34,7 @@ Route::resource('tolerancias', 'ToleranciaController');
 Route::resource('users', 'UsersController');
 Route::resource('variedades', 'VariedadController');
 Route::resource('zonas_defectos', 'ZonaDefectoController');
+Route::get('reportes','ReporteController@index');
 
 Auth::routes();
 
