@@ -115,7 +115,7 @@
             <h6 class="dropdown-header">Calidad:</h6>
             <a class="dropdown-item" href="#">Nota</a>
             <a class="dropdown-item" href="#">Defecto</a>
-            <a class="dropdown-item" href="#">Tolerancia</a>
+            <a class="dropdown-item" href="{!!URL::to('/tolerancias')!!}">Tolerancia</a>
           </div>
         </li>
         <li class="nav-item">

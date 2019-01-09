@@ -28,10 +28,10 @@ class Nota extends Model
         return $this->hasMany(MuestraDefecto::class, 'nota_id');
     }
     public function tolerancias () {
-        return $this->hasMany(Tolerancia::class, 'nota_id');
+        return $this->hasMany('App\Tolerancia', 'nota_id');
     }
 
     #belongsTo's
 
-    
+
 }

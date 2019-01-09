@@ -20,9 +20,8 @@ class Defecto extends Model
         return $this->hasMany(MuestraDefecto::class, 'defecto_id');
     }
     public function tolerancias () {
-        return $this->hasMany(Tolerancia::class, 'defecto_id');
+        return $this->hasMany('App\Tolerancia', 'defecto_id');
     }
-
 
     #belongsTo's
     public function concepto () {

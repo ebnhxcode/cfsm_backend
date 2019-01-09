@@ -52,7 +52,8 @@ Route::get('etiquetasDatetables','EtiquetaController@etiquetasDatetables');
 Route::get('etiquetasDelete/{id}','EtiquetaController@etiquetasDelete');
 Route::get('embalajesDatetables','EmbalajeController@embalajesDatetables');
 Route::get('embalajesDelete/{id}','EmbalajeController@embalajesDelete');
-
+Route::get('toleranciasDatetables','ToleranciaController@toleranciasDatetables');
+Route::get('toleranciasDelete/{id}','ToleranciaController@toleranciasDelete');
 
 
 
