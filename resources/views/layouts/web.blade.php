@@ -111,10 +111,6 @@
             <a class="dropdown-item" href="{!!URL::to('/calibres')!!}">Calibre</a>
             <a class="dropdown-item" href="{!!URL::to('/etiquetas')!!}">Etiqueta</a>
             <a class="dropdown-item" href="{!!URL::to('/embalajes')!!}">Embalaje</a>
-            <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">Calidad:</h6>
-            <a class="dropdown-item" href="#">Nota</a>
-            <a class="dropdown-item" href="#">Defecto</a>
             <a class="dropdown-item" href="{!!URL::to('/tolerancias')!!}">Tolerancia</a>
           </div>
         </li>
