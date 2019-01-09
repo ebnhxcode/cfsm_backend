@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 class Tolerancia extends Model
 {
     protected $table      = 'tolerancia';
@@ -11,7 +10,6 @@ class Tolerancia extends Model
     protected $fillable = [
         'tolerancia_desde',
         'tolerancia_hasta',
-
         'defecto_id',
         'categoria_id',
         'nota_id',
@@ -24,12 +22,12 @@ class Tolerancia extends Model
 
     #belongsTo's
     public function defecto () {
-        return $this->belogsTo(Defecto::class, 'id_defecto');
+        return $this->belongsTo('App\Defecto', 'defecto_id');
     }
     public function categoria () {
-        return $this->belogsTo(Categoria::class, 'id_categoria');
+        return $this->belongsTo('App\Categoria', 'categoria_id');
     }
     public function nota () {
-        return $this->belogsTo(Nota::class, 'id_nota');
+        return $this->belongsTo('App\Nota', 'nota_id');
     }
 }

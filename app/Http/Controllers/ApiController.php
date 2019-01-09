@@ -13,10 +13,12 @@ use App\Categoria;
 use App\Embalaje;
 use App\EstadoMuestra;
 use App\Nota;
+use App\Defecto;
+use App\Tolerancia;
+use App\ZonaDefecto;
 
 class ApiController extends Controller
 {
-
     /*
     public function __construct(){
         $this->middleware('auth.basic');
@@ -184,7 +186,51 @@ class ApiController extends Controller
 
     }
 
-    
+    public function getDefectos(){
+        $result = Defecto::all();
+        if(!empty($result)){
+            $array = ['status' => 200,
+            'msg'=> 'Ok',
+            ' defecto' => $result,
+            ];
+        }else{
+            $array = ['status' => 150,
+            'msg'=> 'Error',
+            ];
+        }
+        return response()->json($array);
+    }
+
+
+    public function getTolerancias(){
+        $result = Tolerancia::all();
+        if(!empty($result)){
+            $array = ['status' => 200,
+            'msg'=> 'Ok',
+            ' defecto' => $result,
+            ];
+        }else{
+            $array = ['status' => 150,
+            'msg'=> 'Error',
+            ];
+        }
+        return response()->json($array);
+    }
+
+    public function getZonaDefecto(){
+        $result = ZonaDefecto::all();
+        if(!empty($result)){
+            $array = ['status' => 200,
+            'msg'=> 'Ok',
+            ' defecto' => $result,
+            ];
+        }else{
+            $array = ['status' => 150,
+            'msg'=> 'Error',
+            ];
+        }
+        return response()->json($array);
+    }
 
 
 

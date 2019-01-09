@@ -52,6 +52,8 @@ Route::get('etiquetasDatetables','EtiquetaController@etiquetasDatetables');
 Route::get('etiquetasDelete/{id}','EtiquetaController@etiquetasDelete');
 Route::get('embalajesDatetables','EmbalajeController@embalajesDatetables');
 Route::get('embalajesDelete/{id}','EmbalajeController@embalajesDelete');
+Route::get('toleranciasDatetables','ToleranciaController@toleranciasDatetables');
+Route::get('toleranciasDelete/{id}','ToleranciaController@toleranciasDelete');
 
 
 
@@ -69,5 +71,10 @@ Route::get('getCategorias', 'ApiController@getCategorias');
 Route::get('getEmbalajes', 'ApiController@getEmbalajes');
 Route::get('getEstadosMuestra', 'ApiController@getEstadosMuestra');
 Route::get('getNotas', 'ApiController@getNotas');
+Route::get('getDefectos', 'ApiController@getDefectos');
+Route::get('getTolerancias', 'ApiController@getTolerancias');
+Route::get('getZonaDefecto', 'ApiController@getZonaDefecto');
+
+
 Route::get('loginUsuario', 'ApiController@loginUsuario');
 
