@@ -43,7 +43,11 @@ class CalibreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $calibre = new Calibre();
+        $calibre->calibre_nombre = $request->calibre_nombre;
+        $calibre->especie_id = $request->especie_id;
+        $calibre->save();
+        return view("admin.calibres.index");
     }
 
     /**
@@ -65,7 +69,10 @@ class CalibreController extends Controller
      */
     public function edit($id)
     {
-        //
+        $calibre = Calibre::find($id);
+        $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
+        return view('admin.calibres.editar', compact('calibre','especies'));
+
     }
 
     /**
@@ -77,7 +84,12 @@ class CalibreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $calibre = Calibre::find($id);
+        $calibre->calibre_nombre = $request->calibre_nombre;
+        $calibre->especie_id = $request->especie_id;
+        $calibre->save();
+        return view('admin.calibres.index');
+
     }
 
     /**
@@ -96,9 +108,15 @@ class CalibreController extends Controller
             ->addColumn('action', function ($calibres) {
                 return '
                     <a href="'.route('calibres.edit',$calibres->calibre_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
-                    <a href="'.url('calibres/'.$calibres->calibre_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+                    <a href="'.url('calibresDelete/'.$calibres->calibre_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
                     ';
             })
             ->make(true);
+    }
+
+    public function calibresDelete($id){
+        Calibre::destroy($id);
+        //cambiar estado
+        return  view("admin.calibres.index");
     }
 }

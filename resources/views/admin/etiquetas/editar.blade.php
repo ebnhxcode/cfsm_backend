@@ -4,15 +4,15 @@
 
 @include('layouts.error')
 
-{!! Form::model($calibre, array('route' => array('calibres.update', $calibre->calibre_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}
-    <h2 class="" id="">Calibre</h2>
-    @include('admin.calibres.form.calibre')
+{!! Form::model($etiqueta, array('route' => array('etiquetas.update', $etiqueta->etiqueta_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}
+    <h2 class="" id="">Etiqueta</h2>
+    @include('admin.etiquetas.form.etiqueta')
     <button type="submit" class="btn btn-primary btn_ok">Actualizar</button>
 {!! Form::close() !!}
 
 @endsection
 @section('js')
-<script type="text/javascript">Q
+<script type="text/javascript">
     $(document).ready(function () {
 
     });

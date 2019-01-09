@@ -26,7 +26,7 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+      <a class="navbar-brand mr-1" href="index.html">CFSM</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -109,8 +109,8 @@
             <a class="dropdown-item" href="{!!URL::to('/productores')!!}">Productor</a>
             <a class="dropdown-item" href="{!!URL::to('/variedades')!!}">Variedades</a>
             <a class="dropdown-item" href="{!!URL::to('/calibres')!!}">Calibre</a>
-            <a class="dropdown-item" href="#">Etiqueta</a>
-            <a class="dropdown-item" href="#">Embalaje</a>
+            <a class="dropdown-item" href="{!!URL::to('/etiquetas')!!}">Etiqueta</a>
+            <a class="dropdown-item" href="{!!URL::to('/embalajes')!!}">Embalaje</a>
             <div class="dropdown-divider"></div>
             <h6 class="dropdown-header">Calidad:</h6>
             <a class="dropdown-item" href="#">Nota</a>

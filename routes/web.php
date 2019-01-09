@@ -47,6 +47,9 @@ Route::get('variedadesDatetables','VariedadController@variedadesDatetables');
 Route::get('variedadesDelete/{id}','VariedadController@variedadesDelete');
 Route::get('calibresDatetables','CalibreController@calibresDatetables');
 Route::get('calibresDelete/{id}','CalibreController@calibresDelete');
+Route::get('etiquetasDatetables','EtiquetaController@etiquetasDatetables');
+Route::get('etiquetasDelete/{id}','EtiquetaController@etiquetasDelete');
+
 
 /* Especiales */
 
