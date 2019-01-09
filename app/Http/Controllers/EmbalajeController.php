@@ -117,4 +117,6 @@ class EmbalajeController extends Controller
         //cambiar estado
         return  view("admin.embalajes.index");
     }
+
+
 }

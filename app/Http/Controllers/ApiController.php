@@ -15,6 +15,7 @@ use App\EstadoMuestra;
 use App\Nota;
 use App\Defecto;
 use App\Tolerancia;
+use App\ZonaDefecto;
 
 class ApiController extends Controller
 {
@@ -216,6 +217,20 @@ class ApiController extends Controller
         return response()->json($array);
     }
 
+    public function getZonaDefecto(){
+        $result = ZonaDefecto::all();
+        if(!empty($result)){
+            $array = ['status' => 200,
+            'msg'=> 'Ok',
+            ' defecto' => $result,
+            ];
+        }else{
+            $array = ['status' => 150,
+            'msg'=> 'Error',
+            ];
+        }
+        return response()->json($array);
+    }
 
 
 

@@ -72,6 +72,7 @@ Route::get('getEstadosMuestra', 'ApiController@getEstadosMuestra');
 Route::get('getNotas', 'ApiController@getNotas');
 Route::get('getDefectos', 'ApiController@getDefectos');
 Route::get('getTolerancias', 'ApiController@getTolerancias');
+Route::get('getZonaDefecto', 'ApiController@getZonaDefecto');
 
 
 Route::get('loginUsuario', 'ApiController@loginUsuario');
