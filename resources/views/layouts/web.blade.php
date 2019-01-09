@@ -78,7 +78,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="{!!URL::to('/')!!}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Tiempo real</span>
           </a>
@@ -128,7 +128,7 @@
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright © Your Website 2018</span>
+              <span>Copyright © CPR</span>
             </div>
           </div>
         </footer>
