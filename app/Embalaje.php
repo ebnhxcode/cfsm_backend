@@ -22,4 +22,9 @@ class Embalaje extends Model
 
 
     #belongsTo's
+
+    public function categoria(){
+        return $this->belongsTo('App\Categoria', 'categoria_id');
+    }
+
 }

@@ -50,6 +50,9 @@ Route::get('calibresDatetables','CalibreController@calibresDatetables');
 Route::get('calibresDelete/{id}','CalibreController@calibresDelete');
 Route::get('etiquetasDatetables','EtiquetaController@etiquetasDatetables');
 Route::get('etiquetasDelete/{id}','EtiquetaController@etiquetasDelete');
+Route::get('embalajesDatetables','EmbalajeController@embalajesDatetables');
+Route::get('embalajesDelete/{id}','EmbalajeController@embalajesDelete');
+
 
 
 /* Especiales */

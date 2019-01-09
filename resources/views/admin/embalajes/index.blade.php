@@ -6,10 +6,10 @@
         <li class="breadcrumb-item">
             <a href="#">Home</a>
         </li>
-        <li class="breadcrumb-item active">Calibres</li>
+        <li class="breadcrumb-item active">Embalajes</li>
     </ol>
 
-    {{link_to_route('calibres.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success'])}}
+    {{link_to_route('embalajes.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success'])}}
 
     <table class="table" id="pd">
         <thead>
@@ -53,11 +53,11 @@
             },
             processing: true,
             serverSide: true,
-            ajax: '{{ url('calibresDatetables')}}',
+            ajax: '{{ url('embalajesDatetables')}}',
             columns: [
                         { data: 'embalaje_id', name: 'embalaje_id' },
                         { data: 'embalaje_nombre', name: 'embalaje_nombre' },
-                        { data: 'categoria.categoria_id', name: 'categoria.categoria_id' },
+                        { data: 'categoria.categoria_nombre', name: 'categoria.categoria_nombre' },
                         { data: 'action',searchable:false}
                         /*,
                         {render: function () {

@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Embalaje;
+use App\Categoria;
+use yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class EmbalajeController extends Controller
 {
@@ -15,6 +20,7 @@ class EmbalajeController extends Controller
     public function index()
     {
         //
+        return view('admin.embalajes.index');
     }
 
     /**
@@ -24,7 +30,8 @@ class EmbalajeController extends Controller
      */
     public function create()
     {
-        //
+        $categorias = Categoria::orderBy('categoria_nombre')->pluck('categoria_nombre','categoria_id');
+        return view('admin.embalajes.agregar', compact('categorias'));
     }
 
     /**
@@ -35,7 +42,11 @@ class EmbalajeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $embalaje = new Embalaje();
+        $embalaje->embalaje_nombre = $request->embalaje_nombre;
+        $embalaje->categoria_id = $request->categoria_id;
+        $embalaje->save();
+        return view("admin.embalajes.index");
     }
 
     /**
@@ -81,5 +92,23 @@ class EmbalajeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function embalajesDatetables(){
+        $embalajes = Embalaje::select('embalaje_id','embalaje_nombre','categoria_id')->with('categoria')->get();
+        return Datatables::of($embalajes)
+            ->addColumn('action', function ($embalajes) {
+                return '
+                    <a href="'.route('embalajes.edit',$embalajes->embalaje_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                    <a href="'.url('embalajesDelete/'.$embalajes->embalaje_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+                    ';
+            })
+            ->make(true);
+    }
+
+    public function embalajesDelete($id){
+        Embalaje::destroy($id);
+        //cambiar estado
+        return  view("admin.embalajes.index");
     }
 }

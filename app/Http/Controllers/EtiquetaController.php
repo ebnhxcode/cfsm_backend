@@ -98,7 +98,7 @@ class EtiquetaController extends Controller
 
 
     public function etiquetasDatetables(){
-        $etiquetas = Etiqueta::select('etiqueta_id','etiqueta_nombre')->get();
+        //$etiquetas = Etiqueta::select('etiqueta_id','etiqueta_nombre')->get();
             return datatables()->eloquent(Etiqueta::query())
             ->addColumn('action', function ($etiquetas) {
                 return '

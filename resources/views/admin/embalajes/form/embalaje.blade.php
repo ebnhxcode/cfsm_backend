@@ -1,12 +1,12 @@
 
-    {!! Form::hidden('variedad_id',isset($variedad->variedad_id) ? $variedad->variedad_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
+    {!! Form::hidden('embalaje_id',isset($embalaje->embalaje_id) ? $embalaje->embalaje_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
     <div class="form-group">
-            {!! Form::label('calibre_nombre', 'Calibre', array('class' => '')) !!}
-            {!! Form::text('calibre_nombre',isset($calibre->calibre_nombre) ? $calibre->calibre_nombre : '', ['class' => 'form-control']) !!}
+            {!! Form::label('embalaje_nombre', 'Embalaje', array('class' => '')) !!}
+            {!! Form::text('embalaje_nombre',isset($embalaje->embalaje_nombre) ? $embalaje->embalaje_nombre : '', ['class' => 'form-control']) !!}
     </div>
     <div class="form-group">
-         {!! Form::label('especie_id', 'Especie', array('class' => '')) !!}
-         {!! Form::select('especie_id', $especies, isset($especie->especie_id) ? $especie->especie_id : '' , array('class' => 'form-control' , 'id'=>'especie_id')) !!}
+         {!! Form::label('categoria_id', 'Categoria', array('class' => '')) !!}
+         {!! Form::select('categoria_id', $categorias, isset($embalaje->categria_id) ? $embalaje->categria_id : '' , array('class' => 'form-control' , 'id'=>'especie_id')) !!}
     </div>
 
 

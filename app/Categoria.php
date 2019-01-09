@@ -19,7 +19,12 @@ class Categoria extends Model
         return $this->hasMany(Tolerancia::class, 'categoria_id');
     }
 
+    #hasMany's
+    public function embalajes () {
+        return $this->hasMany('App\Embalaje', 'categoria_id');
+    }
+
 
     #belongsTo's
-    
+
 }
