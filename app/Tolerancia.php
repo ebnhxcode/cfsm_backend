@@ -24,12 +24,12 @@ class Tolerancia extends Model
 
     #belongsTo's
     public function defecto () {
-        return $this->belogsTo(Defecto::class, 'id_defecto');
+        return $this->belogsTo('App\Defecto', 'id_defecto');
     }
     public function categoria () {
-        return $this->belogsTo(Categoria::class, 'id_categoria');
+        return $this->belogsTo('App\Categoria', 'id_categoria');
     }
     public function nota () {
-        return $this->belogsTo(Nota::class, 'id_nota');
+        return $this->belogsTo('App\Nota', 'id_nota');
     }
 }

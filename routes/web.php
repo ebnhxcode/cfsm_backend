@@ -55,6 +55,7 @@ Route::get('embalajesDelete/{id}','EmbalajeController@embalajesDelete');
 
 
 
+
 /* Especiales */
 
 
@@ -69,5 +70,9 @@ Route::get('getCategorias', 'ApiController@getCategorias');
 Route::get('getEmbalajes', 'ApiController@getEmbalajes');
 Route::get('getEstadosMuestra', 'ApiController@getEstadosMuestra');
 Route::get('getNotas', 'ApiController@getNotas');
+Route::get('getDefectos', 'ApiController@getDefectos');
+Route::get('getTolerancias', 'ApiController@getTolerancias');
+
+
 Route::get('loginUsuario', 'ApiController@loginUsuario');
 

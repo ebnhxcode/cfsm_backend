@@ -68,7 +68,9 @@ class EmbalajeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $embalaje = Embalaje::find($id);
+        $categorias = Categoria::orderBy('categoria_nombre')->pluck('categoria_nombre','categoria_id');
+        return view('admin.embalajes.editar', compact('categorias','embalaje'));
     }
 
     /**
@@ -80,7 +82,11 @@ class EmbalajeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $embalaje = Embalaje::find($id);
+        $embalaje->embalaje_nombre  = $request->embalaje_nombre;
+        $embalaje->categoria_id = $request->categoria_id;
+        $embalaje->save();
+        return view("admin.embalajes.index");
     }
 
     /**
