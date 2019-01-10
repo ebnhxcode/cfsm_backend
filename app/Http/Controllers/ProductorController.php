@@ -43,6 +43,21 @@ class ProductorController extends Controller
      */
     public function store(Request $request)
     {
+
+        $rules = [
+            'productor_nombre' => 'required|unique:productor|max:255',
+            'region_id' => 'required',
+        ];
+
+        $messages = [
+            'productor_nombre.required' => 'Debe ingresar un nombre para el proveedor.',
+            'productor_nombre.unique' => 'El nombre del productor ingresado ya se encuentra registrado.',
+            'productor_nombre.max' => 'El nombre del productor ingresado es demaciado largo.',
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+
         $productor = new Productor();
         $productor->productor_nombre = $request->productor_nombre;
         $productor->region_id = $request->region_id;
