@@ -72,4 +72,8 @@ class Muestra extends Model
         return $this->belongsTo(Lote::class, 'lote_id');
     }
 
+    public function region() {
+        return $this->belongsTo('App\Region', 'region_id');
+    }
+
 }

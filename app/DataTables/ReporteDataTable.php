@@ -17,7 +17,37 @@ class ReporteDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', 'reportedatatable.action');
+            ->addColumn('action', 'reportedatatable.action')
+            ->editColumn('region', function($query) {
+                return $query->region->region_nombre;
+            })
+            ->editColumn('productor', function($query) {
+                return $query->productor->productor_nombre;
+            })
+            ->editColumn('especie', function($query) {
+                return $query->especie->especie_nombre;
+            })
+            ->editColumn('variedad', function($query) {
+                return $query->variedad->variedad_nombre;
+            })
+            ->editColumn('calibre', function($query) {
+                return $query->calibre->calibre_nombre;
+            })
+            ->editColumn('embalaje', function($query) {
+                return $query->embalaje->embalaje_nombre;
+            })
+            ->editColumn('etiqueta', function($query) {
+                return $query->etiqueta->etiqueta_nombre;
+            })
+            ->editColumn('nota', function($query) {
+                return $query->nota->nota_nombre;
+            })
+            ->editColumn('estado', function($query) {
+                return $query->estado_muestra->estado_muestra_nombre;
+            })
+            ->editColumn('lote_codigo', function($query) {
+                return $query->lote->lote_codigo;
+            });
     }
 
     /**
@@ -29,7 +59,7 @@ class ReporteDataTable extends DataTable
     public function query(Muestra $model)
     {
         //return $model->newQuery()->select('id', 'add-your-columns-here', 'created_at', 'updated_at');
-        return $model->newQuery()->select('muestra_id');
+        return $model->with('region','productor','especie','variedad','calibre','embalaje','etiqueta','nota','estado_muestra','lote');
     }
 
     /**
@@ -54,7 +84,22 @@ class ReporteDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
+            'muestra_id'        => ['name'  => 'muestra_id', 'title' => 'ID'],
+            'muestra_fecha'     => ['name'  => 'muestra_fecha', 'title' => 'Fecha'],
+            'muestra_qr'        => ['name'  => 'muestra_qr', 'title' => 'QR'],
+            'region'            => ['name'  => 'region.region_nombre', 'title' => 'Región'],
+            'productor'         => ['name'  => 'productor.productor_nombre', 'title' => 'Productor'],
+            'especie'           => ['name'  => 'especie.especie_nombre', 'title' => 'Especie'],
+            'variedad'          => ['name'  => 'variedad.variedad_nombre', 'title' => 'Variedad'],
+            'calibre'           => ['name'  => 'calibre.calibre_nombre', 'title' => 'Calibre'],
+            'embalaje'          => ['name'  => 'embalaje.embalaje_nombre', 'title' => 'Embalaje'],
+            'etiqueta'          => ['name'  => 'etiqueta.etiqueta_nombre', 'title' => 'Etiqueta'],
+            'muestra_imagen'    => ['name'  => 'muestra_imagen', 'title' => 'Imagen'],
+            'nota'              => ['name'  => 'nota.nota_nombre', 'title' => 'Nota'],
+            'estado'            => ['name'  => 'estado_muestra.estado_muestra_nombre', 'title' => 'Estado'],
+            'muestra_cajas'     => ['name'  => 'muestra_cajas', 'title' => 'Cajas'],
+            'lote_id'           => ['name'  => 'lote_id', 'title' => 'Lote'],
+            'lote_codigo'       => ['name'  => 'lote.lote_codigo', 'title' => 'Lote Código'],
             //'add your columns',
             /*'created_at',
             'updated_at'*/
