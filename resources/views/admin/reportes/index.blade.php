@@ -15,10 +15,24 @@
 
 @endsection
 @section('js')
-    {{--<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
-    <script src="/vendor/datatables/buttons.server-side.js"></script>--}}
 @endsection
 
 @push('custom_js')
+    <link rel="stylesheet" href="{{ url('vendor/datatables/buttons.bootstrap4.min.css') }}">
+    <script src="{{ url('vendor/datatables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url('vendor/datatables/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ url('vendor/datatables/buttons.server-side.js') }}"></script>
+
+    <script type="text/javascript">
+        // Parametros por defecto de los DataTable
+        $.extend(true, $.fn.dataTable.defaults, {
+            "language": {
+                "url": "{{ url('vendor/datatables/spanish.json') }}"
+            },
+            'autoWidth': false,
+            'stateSave': true
+        });
+    </script>
+  
     {!! $dataTable->scripts() !!}
 @endpush

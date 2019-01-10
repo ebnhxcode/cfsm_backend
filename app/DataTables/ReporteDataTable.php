@@ -115,4 +115,31 @@ class ReporteDataTable extends DataTable
     {
         return 'Reporte_' . date('YmdHis');
     }
+
+    protected function getBuilderParameters()
+    {
+        return [
+            /*'dom'     => "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-4'i><'col-sm-4 text-center'B><'col-sm-4'p>>",
+            'order'   => [[0, 'asc']],
+            'buttons' => [
+                'excel',
+                //'print',
+                [
+                    'extend' => 'print',
+                    'text' => '<i class="fa fa-print"></i> Imprimir'
+                ],
+                'reset',
+            ],*/
+            'dom'     => "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-4'i><'col-sm-4 text-center'B><'col-sm-4'p>>",
+            'buttons' => [
+                'excel',
+                [
+                    'extend' => 'print',
+                    'text' => '<i class="fa fa-print"></i> Imprimir'
+                ],
+                'reset',
+            ],
+            
+        ];
+    }
 }
