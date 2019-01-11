@@ -43,6 +43,7 @@ class ProductorController extends Controller
      */
     public function store(Request $request)
     {
+        //$validator->errors()->add('field', 'Something is wrong with this field!');
 
         $rules = [
             'productor_nombre' => 'required|unique:productor|max:255',
@@ -99,6 +100,20 @@ class ProductorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $rules = [
+            'productor_nombre' => 'required|unique:productor,productor_nombre,'.$id.',productor_id|max:255',
+            'region_id' => 'required',
+        ];
+
+        $messages = [
+            'productor_nombre.required' => 'Debe ingresar un nombre para el proveedor.',
+            'productor_nombre.unique' => 'El nombre del productor ingresado ya se encuentra registrado.',
+            'productor_nombre.max' => 'El nombre del productor ingresado es demaciado largo.',
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+
         $productor = Productor::find($id);
         $productor->productor_nombre = $request->productor_nombre;
         $productor->region_id  = $request->region_id;
