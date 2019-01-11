@@ -23,7 +23,8 @@ class Muestra extends Model
         'nota_id',
         'estado_muestra_id',
         'lote_id',
-    
+        'muestra_peso',
+
     ];
     public $timestamps = false;
 
@@ -37,39 +38,39 @@ class Muestra extends Model
 
     #belongsTo's
     public function productor () {
-        return $this->belongsTo(Productor::class, 'productor_id');
+        return $this->belongsTo('App\Productor', 'productor_id');
     }
 
     public function especie () {
-        return $this->belongsTo(Especie::class, 'especie_id');
+        return $this->belongsTo('App\Especie', 'especie_id');
     }
 
     public function variedad () {
-        return $this->belongsTo(Variedad::class, 'variedad_id');
+        return $this->belongsTo('App\Variedad', 'variedad_id');
     }
 
     public function calibre () {
-        return $this->belongsTo(Calibre::class, 'calibre_id');
+        return $this->belongsTo('App\Calibre', 'calibre_id');
     }
 
     public function embalaje () {
-        return $this->belongsTo(Embalaje::class, 'embalaje_id');
+        return $this->belongsTo('App\Embalaje', 'embalaje_id');
     }
 
     public function etiqueta () {
-        return $this->belongsTo(Etiqueta::class, 'etiqueta_id');
+        return $this->belongsTo('App\Etiqueta', 'etiqueta_id');
     }
 
     public function nota () {
-        return $this->belongsTo(Nota::class, 'nota_id');
+        return $this->belongsTo('App\Nota', 'nota_id');
     }
 
     public function estado_muestra () {
-        return $this->belongsTo(EstadoMuestra::class, 'estado_muestra_id');
+        return $this->belongsTo('App\EstadoMuestra', 'estado_muestra_id');
     }
 
     public function lote () {
-        return $this->belongsTo(Lote::class, 'lote_id');
+        return $this->belongsTo('App\Lote', 'lote_id');
     }
 
     public function region() {
