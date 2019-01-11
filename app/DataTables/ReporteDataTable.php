@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\User;
 use Yajra\DataTables\Services\DataTable;
 use App\Muestra;
+use Carbon\Carbon;
 
 class ReporteDataTable extends DataTable
 {
@@ -17,7 +18,6 @@ class ReporteDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->addColumn('action', 'reportedatatable.action')
             ->editColumn('region', function($query) {
                 return $query->region->region_nombre;
             })
@@ -58,8 +58,39 @@ class ReporteDataTable extends DataTable
      */
     public function query(Muestra $model)
     {
+        $query = $model->with('region','productor','especie','variedad','calibre','embalaje','etiqueta','nota','estado_muestra','lote');
+
+        //Fecha en que fue entregado el producto
+        if ($this->request()->get('desde') && !$this->request()->get('hasta')) {
+            $date = Carbon::parse($this->request()->get('desde'))->toDateTimeString();
+            $query->where('muestra_fecha', '>=', $date);
+        } elseif (!$this->request()->get('desde') && $this->request()->get('hasta')) {
+            $date = Carbon::parse($this->request()->get('hasta'))->toDateTimeString();
+            $query->where('muestra_fecha', '<=', $date);
+        } elseif ($this->request()->get('desde') && $this->request()->get('hasta')) {
+            $dateFrom = Carbon::parse($this->request()->get('desde'))->toDateTimeString();
+            $dateTo = Carbon::parse($this->request()->get('hasta'))->toDateTimeString();
+            $query->whereBetween('muestra_fecha', [$dateFrom, $dateTo]);
+        }
+
+        if ($this->request()->productor != '') {
+            $query->where('productor_id', '=', $this->request()->productor);
+        }
+        if ($this->request()->especie != '') {
+            $query->where('especie_id', '=', $this->request()->especie);
+        }
+        if ($this->request()->variedad != '') {
+            $query->where('variedad_id', '=', $this->request()->variedad);
+        }
+        if ($this->request()->calibre != '') {
+            $query->where('calibre_id', '=', $this->request()->calibre);
+        }
+        if ($this->request()->etiqueta != '') {
+            $query->where('etiqueta_id', '=', $this->request()->etiqueta);
+        }
+
         //return $model->newQuery()->select('id', 'add-your-columns-here', 'created_at', 'updated_at');
-        return $model->with('region','productor','especie','variedad','calibre','embalaje','etiqueta','nota','estado_muestra','lote');
+        return $query;
     }
 
     /**
@@ -72,7 +103,6 @@ class ReporteDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
                     ->parameters($this->getBuilderParameters());
     }
 
