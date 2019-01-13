@@ -11,7 +11,11 @@ use App\Calibre;
 use App\Categoria;
 use App\Embalaje;
 use App\Etiqueta;
-
+use App\Productor;
+use App\Muestra;
+use yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class MuestraController extends Controller
 {
@@ -34,7 +38,7 @@ class MuestraController extends Controller
     public function create()
     {
         //
-        $regiones = Region::orderBy('region_nombre')->pluck('region_nombre','region_id');
+        $regiones = Region::orderBy('region_nombre')->get();
         $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
         $variedades = Variedad::orderBy('variedad_nombre')->pluck('variedad_nombre','variedad_id');
         $calibres = Calibre::orderBy('calibre_nombre')->pluck('calibre_nombre','calibre_id');
@@ -54,6 +58,55 @@ class MuestraController extends Controller
     public function store(Request $request)
     {
         //
+        $rules = [
+            'muestra_qr' => 'required|unique:muestra|max:255',
+            'region_id' => 'required',
+            'productor_id' => 'required',
+            'especie_id' => 'required',
+            'variedad_id' => 'required',
+            'calibre_id' => 'required',
+            'categoria_id' => 'required',
+            'embalaje_id' => 'required',
+            'etiqueta_id' => 'required',
+            'muestra_peso' => 'required|numeric'
+        ];
+
+        $messages = [
+            'muestra_qr.required' => 'El Código QR es obligatorio.',
+            'muestra_qr.unique' => 'El codigo QR ya se encuentra registrado.',
+            'muestra_qr.max' => 'El nombre del productor ingresado es demaciado largo.',
+            'region_id.required' => 'Región es obligatorio.',
+            'productor_id.required' => 'Productor es obligatorio.',
+            'especie_id.required' => 'Especie es obligatorio.',
+            'variedad_id.required' => 'Variedad es obligatorio.',
+            'calibre_id.required' => 'Calibre es obligatorio.',
+            'categoria_id.required' => 'Categoría es obligatorio.',
+            'embalaje_id.required' => 'Embalaje es obligatorio.',
+            'etiqueta_id.required' => 'Etiqueta es obligatorio.',
+            'muestra_peso.required' => 'Peso es obligatorio.',
+            'muestra_peso.numeric' => 'Peso debe ser un número.',
+            
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+        $muestra = new Muestra();
+        $muestra->muestra_qr = $request->muestra_qr;
+        $muestra->region_id = $request->region_id;
+        $muestra->productor_id = $request->productor_id;
+        $muestra->especie_id = $request->especie_id;
+        $muestra->variedad_id = $request->variedad_id;
+        $muestra->calibre_id = $request->calibre_id;
+        $muestra->categoria_id = $request->categoria_id;
+        $muestra->embalaje_id = $request->embalaje_id;
+        $muestra->etiqueta_id = $request->etiqueta_id;
+        $muestra->muestra_peso = $request->muestra_peso;
+        $muestra->nota_id = 1; //PROCESO
+
+        #dd($muestra->productor_id);
+        $muestra->save();
+        #dd($muestra);
+
     }
 
     /**
@@ -100,4 +153,69 @@ class MuestraController extends Controller
     {
         //
     }
+
+
+    public function muestrasDatetables(){
+        $muestras = Muestra::select(
+            'muestra_id'
+            ,'muestra_qr'
+            ,'region_id'
+            ,'productor_id'
+            ,'especie_id'
+            ,'variedad_id'
+            ,'calibre_id'
+            ,'categoria_id'
+            ,'embalaje_id'
+            ,'etiqueta_id'
+            , 'nota_id'
+            )
+        ->with(
+            'region'
+        ,'productor'
+        ,'especie'
+        ,'variedad'
+        ,'calibre'
+        ,'categoria'
+        ,'embalaje'
+        ,'nota'
+        )->get();
+        return Datatables::of($muestras)
+            ->addColumn('action', function ($muestras) {
+                return '
+                    <a href="'.route('productores.edit',$muestras->muestra_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                    <a href="'.url('productoresDelete/'.$muestras->muestra_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+                    ';
+            })
+            ->make(true);
+    }
+
+    public function getProductoresByRegionId(Request $request){
+        $region_id = $request->region_id;
+        $arrayProveedores = array();
+        $productores  = Productor::where('region_id', $region_id)->get();
+        //dd($productores);
+        foreach($productores as $p){
+                    array_push($arrayProveedores, array( 'id' =>$p->productor_id,
+                        'nombre' => $p->productor_nombre)
+                    );
+        }
+        return response()->json($arrayProveedores);
+
+    }
+
+    public function getVariedadesByEspecieId(Request $request){
+        $region_id = $request->region_id;
+        $arrayProveedores = array();
+        $productores  = Productor::where('region_id', $region_id)->get();
+        //dd($productores);
+        foreach($productores as $p){
+                    array_push($arrayProveedores, array( 'id' =>$p->productor_id,
+                        'nombre' => $p->productor_nombre)
+                    );
+        }
+        return response()->json($arrayProveedores);
+
+    }
+
+
 }

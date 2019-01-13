@@ -2,13 +2,27 @@
 {!! Form::hidden('etiqueta_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
 
 <div class="form-group">
+        {!! Form::label('muestra_qr', 'QR', array('class' => '')) !!}
+        {!! Form::text('muestra_qr',isset($muestra->muestra_qr) ? $muestra->muestra_qr : '', ['class' => 'form-control','id'=>'muestra_qr']) !!}
+</div>
+<div class="form-group">
+        <label class="control-label">Fecha (Desde)</label>
+        <div class="input-group date" id="dt1">
+            <input id="muestra_fecha" name="muestra_fecha" class="form-control datepicker" type="text" readonly>
+        </div>
+</div>
+<div class="form-group">
     {!! Form::label('region_id', 'Region', array('class' => '')) !!}
-    {!! Form::select('region_id', $regiones, isset($muestra->region_id) ? $muestra->region_id : '' , array('class' => 'form-control' , 'id'=>'region_id')) !!}
+    <select class='form-control' id='region_id' name='region_id'>
+        <option value=""> Seleccione una región </option>
+        @foreach ($regiones as $r)
+            <option value="{{$r->region_id}}"   > {{$r->region_nombre}}</option>
+        @endforeach
+    </select>
 </div>
 <div class="form-group">
     {!! Form::label('productor_id', 'Productor', array('class' => '')) !!}
     <select class='form-control' id='productor_id' name='productor_id'>
-        <option value=''> -- <option>
     </select>
 </div>
 <div class="form-group">
@@ -41,7 +55,7 @@
 
 <div class="form-group">
     {!! Form::label('muestra_peso', 'Peso Muestra', array('class' => '')) !!}
-    {!! Form::text('muestra_peso',isset($muestra->muestra->peso) ? $muestra->muestra->peso : '', ['class' => 'form-control','id'=>'muestra_peso']) !!}
+    {!! Form::text('muestra_peso',isset($muestra->muestra_peso) ? $muestra->muestra_peso : '', ['class' => 'form-control','id'=>'muestra_peso']) !!}
 </div>
 
 

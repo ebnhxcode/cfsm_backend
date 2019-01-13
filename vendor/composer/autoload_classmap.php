@@ -11,6 +11,7 @@ return array(
     'App\\Comuna' => $baseDir . '/app/Comuna.php',
     'App\\Concepto' => $baseDir . '/app/Concepto.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\DataTables\\ReporteDataTable' => $baseDir . '/app/DataTables/ReporteDataTable.php',
     'App\\Defecto' => $baseDir . '/app/Defecto.php',
     'App\\Embalaje' => $baseDir . '/app/Embalaje.php',
     'App\\Especie' => $baseDir . '/app/Especie.php',

@@ -77,4 +77,8 @@ class Muestra extends Model
         return $this->belongsTo('App\Region', 'region_id');
     }
 
+    public function categoria() {
+        return $this->belongsTo('App\Categoria', 'categoria_id');
+    }
+
 }

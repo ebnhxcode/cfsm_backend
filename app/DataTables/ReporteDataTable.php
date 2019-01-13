@@ -44,10 +44,10 @@ class ReporteDataTable extends DataTable
             })
             ->editColumn('estado', function($query) {
                 return $query->estado_muestra->estado_muestra_nombre;
-            })
-            ->editColumn('lote_codigo', function($query) {
-                return $query->lote->lote_codigo;
             });
+            /*->editColumn('lote_codigo', function($query) {
+                return $query->lote->lote_codigo;
+            });*/
     }
 
     /**

@@ -10,28 +10,27 @@
     </ol>
 
     {{link_to_route('muestras.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success'])}}
-
-    <table class="table" id="pd">
+    <table class="table table-striped table-hover  table-dark" id="pd">
         <thead>
             <tr >
                 <th>id</th>
-                <th>Fecha</th>
+                <th>QR</th>
+                <th>Región</td>
                 <th>Productor</td>
                 <th>Especie</td>
                 <th>Variedad</td>
-                <th>Calibre</th>
-                <th>Nota</th>
+                <th>Categoría</td>
+                <th>Nota</td>                    
                 <th>-</th>
             </tr>
         </thead>
 
     </table>
-
     @endsection
     @section('js')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#pd').DataTable({
+            var dtable = $('#pd').DataTable({
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
@@ -54,10 +53,16 @@
                 },
                 processing: true,
                 serverSide: true,
-                ajax: '{{ url('etiquetasDatetables')}}',
+                ajax: '{{ url('muestrasDatetables')}}',
                 columns: [
-                            { data: 'etiqueta_id', name: 'etiqueta_id' },
-                            { data: 'etiqueta_nombre', name: 'etiqueta_nombre' },
+                            { data: 'muestra_id', name: 'muestra_id' },
+                            { data: 'muestra_qr', name: 'muestra_id' },
+                            { data: 'region.region_nombre', name: 'region.region_nombre' },
+                            { data: 'productor.productor_nombre', name: 'productor.productor_nombre' },
+                            { data: 'especie.especie_nombre', name: 'especie.especie_nombre' },
+                            { data: 'variedad.variedad_nombre', name: 'variedad.variedad_nombre' },
+                            { data: 'categoria.categoria_nombre', name: 'categoria.categoria_nombre' },
+                            { data: 'nota.nota_nombre', name: 'nota.nota_nombre' },
                             { data: 'action',searchable:false}
                             /*,
                             {render: function () {
@@ -65,6 +70,19 @@
                             }},*/
                          ],
             });
+
+            dtable.columns().every( function () {
+                var that = this;
+                $( 'input', this.footer() ).on( 'keyup change', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+
+
         });
     </script>
     @endsection

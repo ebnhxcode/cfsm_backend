@@ -520,6 +520,7 @@ class ComposerStaticInit0e2714e4f60ae0df7b156fc8610f0520
         'App\\Comuna' => __DIR__ . '/../..' . '/app/Comuna.php',
         'App\\Concepto' => __DIR__ . '/../..' . '/app/Concepto.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\DataTables\\ReporteDataTable' => __DIR__ . '/../..' . '/app/DataTables/ReporteDataTable.php',
         'App\\Defecto' => __DIR__ . '/../..' . '/app/Defecto.php',
         'App\\Embalaje' => __DIR__ . '/../..' . '/app/Embalaje.php',
         'App\\Especie' => __DIR__ . '/../..' . '/app/Especie.php',
