@@ -44,53 +44,101 @@
                         Agregar Defecto
                 </button>
         </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <br>
+            <br>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar Defecto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <div class="modal-body">
-                            {!! Form::token() !!}
-                            <div class="form-group">
-                                    {!! Form::label('muestra_defecto_valor', 'Valor Defecto', array('class' => '')) !!}
-                                    {!! Form::text('muestra_defecto_valor','', ['class' => 'form-control','id'=>'muestra_defecto_valor']) !!}
-                            </div>
-                            <div class="form-group">
-                                    {!! Form::label('concepto_id', 'Concepto', array('class' => '')) !!}
-                                    <select  class="form-control" name="concepto_id" id="concepto_id">
-                                            <option value="" > -- </option>
-                                            @foreach ($conceptos as $c)
-                                                <option value="{{$c->concepto_id}}"   > {{$c->concepto_nombre}}</option>
-                                            @endforeach
-                                    </select>
-
-                            </div>
-                            <div class="form-group">
-                                    {!! Form::label('defecto_id', 'Defecto', array('class' => '')) !!}
-                                    <select  class="form-control" name="defecto_id" id="defecto_id">
-                                            <option value="" > -- </option>
-                                    </select>
-
-                            </div>
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Registrar</button>
-                    </div>
+            <table class="table table-striped">
+                    <thead class="">
+                        <tr>
+                            <th>Defecto </th>
+                            <th>Valor </th>
+                            <th>Nota </th>
+                            <th>-</th>
+                        </tr>
+                    </thead>
+            </table>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Defecto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 </div>
+                <div class="modal-body">
+                        <form method="POST" action="{!!URL::to('/paso3')!!}"  accept-charset="UTF-8" role="form" name="modalform" id="modalform" >
+                        {!! Form::hidden('muestra_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
+
+                        {!! Form::token() !!}
+                        <div class="form-group">
+                                {!! Form::label('muestra_defecto_valor', 'Valor Defecto', array('class' => '')) !!}
+                                {!! Form::text('muestra_defecto_valor','', ['class' => 'form-control','id'=>'muestra_defecto_valor']) !!}
+                        </div>
+                        <div class="form-group">
+                                {!! Form::label('concepto_id', 'Concepto', array('class' => '')) !!}
+                                <select  class="form-control" name="concepto_id" id="concepto_id">
+                                        <option value="" > -- </option>
+                                        @foreach ($conceptos as $c)
+                                            <option value="{{$c->concepto_id}}"   > {{$c->concepto_nombre}}</option>
+                                        @endforeach
+                                </select>
+
+                        </div>
+                        <div class="form-group">
+                                {!! Form::label('defecto_id', 'Defecto', array('class' => '')) !!}
+                                <select  class="form-control" name="defecto_id" id="defecto_id">
+                                        <option value="" > -- </option>
+                                </select>
+
+                        </div>
+                        <div class="alert alert-primary" role="alert">
+                               Nota del defecto
+                        </div>
+                        <button type="button" class="btn btn-primary" id="register">Registrar</button>
+                    </form>
                 </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <!--<button type="button" class="btn btn-primary">Registrar</button> -->
+                </div>
+            </div>
             </div>
         </div>
     @endsection
     @section('js')
     <script type="text/javascript">
         $(document).ready(function () {
+
+
+        $( "#register" ).click(function() {
+                event.preventDefault();
+                var values = $('#modalform').serialize();
+                $.ajax({
+                    url: "{!!URL::to('/paso3')!!}",
+                    type: "post",
+                    data: values ,
+                    success: function (response) {
+                    // you will get response from your php page (what you echo or print)
+                            //LLEGA AL 3 PASO DONDE SE GUARDAN LOS DEFECTOS 1 A 1 alert("ok");
+                           alert(response);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                        alert(textStatus);
+                    }
+                });
+
+
+            });
+
+
             /*alert("aca estas");*/
             $( "#concepto_id" ).change(function() {
                 var route = "{!!URL::to('/getDefectosByConcepto')!!}";

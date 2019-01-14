@@ -298,7 +298,11 @@ class MuestraController extends Controller
         return view('admin.muestras.paso3.index',compact('conceptos','muestra','nota'));
     }
 
+    public function  paso3(Request $request){
+        $error = "estoy en paso 3";
+        return response()->json($error);
 
+    }
 
     public function getDefectosByConcepto(Request $request){
         $concepto_id = $request->concepto_id;
