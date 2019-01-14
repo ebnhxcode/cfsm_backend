@@ -31,7 +31,7 @@ Route::resource('notas', 'NotaController');
 Route::resource('provincias', 'ProvinciaController');
 Route::resource('regiones', 'RegionController');
 Route::resource('tolerancias', 'ToleranciaController');
-Route::resource('users', 'UsersController');
+#Route::resource('users', 'UsersController');
 Route::resource('variedades', 'VariedadController');
 Route::resource('zonas_defectos', 'ZonaDefectoController');
 Route::get('reportes','ReporteController@index');
@@ -40,6 +40,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+/*pasos de las muestras */
+
+Route::get('muesta-2/{id}','MuestraController@muestraStep2');
+Route::post('paso2', 'MuestraController@paso2');
 
 /*rutas especieales  mantenedores */
 Route::get('productoresDatetables','ProductorController@productoresDatetables');
@@ -55,7 +59,8 @@ Route::get('embalajesDelete/{id}','EmbalajeController@embalajesDelete');
 Route::get('toleranciasDatetables','ToleranciaController@toleranciasDatetables');
 Route::get('toleranciasDelete/{id}','ToleranciaController@toleranciasDelete');
 Route::post('getProductoresByRegionId', 'MuestraController@getProductoresByRegionId');
-Route::get('muestraStep2/{id}','MuestraController@muestraStep2');
+
+
 
 /* Especiales */
 
@@ -76,3 +81,11 @@ Route::get('getTolerancias', 'ApiController@getTolerancias');
 Route::get('getZonaDefecto', 'ApiController@getZonaDefecto');
 Route::get('loginUsuario', 'ApiController@loginUsuario');
 Route::get('muestrasDatetables', 'MuestraController@muestrasDatetables');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

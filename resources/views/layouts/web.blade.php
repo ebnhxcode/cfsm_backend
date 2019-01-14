@@ -104,7 +104,7 @@
             <span>Graficos</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{!!URL::to('/muestras')!!}">
+          <a class="nav-link" href="{!!URL::to('/reportes')!!}">
             <i class="fas fa-fw fa-table"></i>
             <span>Muestras</span></a>
         </li>

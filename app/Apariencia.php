@@ -12,7 +12,8 @@ class Apariencia extends Model
     protected $primaryKey = 'apariencia_id';
     protected $fillable = [
         'apariencia_nombre',
-        'apariencia_descripcion'
+        'apariencia_descripcion',
+        'nota_id',
     ];
 
     public $timestamps = false;
