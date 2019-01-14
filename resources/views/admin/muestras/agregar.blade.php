@@ -4,7 +4,7 @@
 
 @include('layouts.error')
 {!! Form::open(['route' => 'muestras.store', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
-    <h2 class="" id="">Muestra</h2>
+    <h2 class="" id="">Muestra Paso 1</h2>
     @include('admin.muestras.form.muestra')
     <button type="submit" class="btn btn-primary btn_ok">Enviar</button>
 {!! Form::close() !!}
@@ -13,7 +13,7 @@
 @section('js')
 
 <link rel="stylesheet" href="{{ url('vendor/datatables/buttons.bootstrap4.min.css') }}">
-<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />   
+<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 <script src="{{ url('js/messages/messages.es-es.min.js') }}"></script>
 <script src="{{ url('vendor/datatables/dataTables.buttons.min.js') }}"></script>

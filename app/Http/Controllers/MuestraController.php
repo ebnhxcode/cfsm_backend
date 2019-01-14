@@ -15,7 +15,9 @@ use App\Productor;
 use App\Muestra;
 use Carbon\Carbon;
 use App\Concepto;
+use App\Nota;
 use App\Apariencia;
+use App\Defecto;
 use yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -108,7 +110,7 @@ class MuestraController extends Controller
         #dd($muestra->productor_id);
         $muestra->save();
 
-        return redirect::to('muesta-2/'.$muestra->muestra_id);
+        return redirect::to('muestra-2/'.$muestra->muestra_id);
 
     }
 
@@ -281,11 +283,34 @@ class MuestraController extends Controller
         $muestra->muestra_brix = $request->muestra_brix;
         $muestra->muestra_cajas = $request->muestra_cajas;
         $muestra->save();
+        return redirect::to('muestra-3/'.$muestra->muestra_id);
 
 
-       // return view('admin.muestras.paso2.agregar',compact('conceptos','apariencias','muestra'));
 
     }
 
+    public function muestraStep3($id){
+
+        $muestra = Muestra::find($id);
+        $conceptos = Concepto::all();
+        $nota = Nota::find($muestra->nota_id);
+        #dd($muestra);
+        return view('admin.muestras.paso3.index',compact('conceptos','muestra','nota'));
+    }
+
+
+
+    public function getDefectosByConcepto(Request $request){
+        $concepto_id = $request->concepto_id;
+        $arrayDefectos = array();
+        $defectos  = Defecto::where('concepto_id', $concepto_id)->get();
+        //dd($productores);
+        foreach($defectos as $p){
+                    array_push($arrayDefectos, array( 'id' =>$p->defecto_id,
+                        'nombre' => $p->defecto_nombre)
+                    );
+        }
+        return response()->json($arrayDefectos);
+    }
 
 }

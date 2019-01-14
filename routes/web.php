@@ -42,8 +42,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 /*pasos de las muestras */
 
-Route::get('muesta-2/{id}','MuestraController@muestraStep2');
+Route::get('muestra-2/{id}','MuestraController@muestraStep2');
 Route::post('paso2', 'MuestraController@paso2');
+Route::get('muestra-3/{id}','MuestraController@muestraStep3');
+Route::post('getDefectosByConcepto', 'MuestraController@getDefectosByConcepto');
+
+
+
+
 
 /*rutas especieales  mantenedores */
 Route::get('productoresDatetables','ProductorController@productoresDatetables');
