@@ -77,10 +77,7 @@
                         {!! Form::hidden('muestra_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
 
                         {!! Form::token() !!}
-                        <div class="form-group">
-                                {!! Form::label('muestra_defecto_valor', 'Valor Defecto', array('class' => '')) !!}
-                                {!! Form::text('muestra_defecto_valor','', ['class' => 'form-control','id'=>'muestra_defecto_valor']) !!}
-                        </div>
+
                         <div class="form-group">
                                 {!! Form::label('concepto_id', 'Concepto', array('class' => '')) !!}
                                 <select  class="form-control" name="concepto_id" id="concepto_id">
@@ -97,6 +94,10 @@
                                         <option value="" > -- </option>
                                 </select>
 
+                        </div>
+                        <div class="form-group">
+                                {!! Form::label('muestra_defecto_valor', 'Valor Defecto', array('class' => '')) !!}
+                                {!! Form::text('muestra_defecto_valor','', ['class' => 'form-control','id'=>'muestra_defecto_valor']) !!}
                         </div>
                         <div class="alert alert-primary" role="alert">
                                Nota del defecto
