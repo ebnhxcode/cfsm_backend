@@ -283,6 +283,8 @@ class MuestraController extends Controller
         $muestra->save();
 
 
+       // return view('admin.muestras.paso2.agregar',compact('conceptos','apariencias','muestra'));
+
     }
 
 
