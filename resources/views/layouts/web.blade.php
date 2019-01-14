@@ -172,6 +172,9 @@
     <!-- Page level plugin JavaScript-->
     {!! Html::script('sb/vendor/chart.js/Chart.min.js') !!}
     {!! Html::script('sb/vendor/datatables/jquery.dataTables.js') !!}
+    {!! Html::script('https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js') !!}
+    {!! Html::script('https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js') !!}
+
     {!! Html::script('sb/vendor/datatables/dataTables.bootstrap4.js') !!}
 
     <!-- Custom scripts for all pages-->

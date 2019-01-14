@@ -55,7 +55,7 @@ Route::get('embalajesDelete/{id}','EmbalajeController@embalajesDelete');
 Route::get('toleranciasDatetables','ToleranciaController@toleranciasDatetables');
 Route::get('toleranciasDelete/{id}','ToleranciaController@toleranciasDelete');
 Route::post('getProductoresByRegionId', 'MuestraController@getProductoresByRegionId');
-
+Route::get('muestraStep2/{id}','MuestraController@muestraStep2');
 
 /* Especiales */
 
@@ -76,6 +76,3 @@ Route::get('getTolerancias', 'ApiController@getTolerancias');
 Route::get('getZonaDefecto', 'ApiController@getZonaDefecto');
 Route::get('loginUsuario', 'ApiController@loginUsuario');
 Route::get('muestrasDatetables', 'MuestraController@muestrasDatetables');
-
-
-

@@ -6,6 +6,7 @@ use App\User;
 use Yajra\DataTables\Services\DataTable;
 use App\Muestra;
 use Carbon\Carbon;
+use Gate;
 
 class ReporteDataTable extends DataTable
 {
@@ -44,6 +45,12 @@ class ReporteDataTable extends DataTable
             })
             ->editColumn('estado', function($query) {
                 return $query->estado_muestra->estado_muestra_nombre;
+            })
+            ->addColumn('action', function ($query) {
+                return '
+                <i class="fas fa-caret-square-down fa-w-14 fa-3x"></i>
+                <a href="'.route('muestras.edit',$query->muestra_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                ';
             });
             /*->editColumn('lote_codigo', function($query) {
                 return $query->lote->lote_codigo;
@@ -58,7 +65,10 @@ class ReporteDataTable extends DataTable
      */
     public function query(Muestra $model)
     {
-        $query = $model->with('region','productor','especie','variedad','calibre','embalaje','etiqueta','nota','estado_muestra','lote');
+        set_time_limit(0);
+        //CONTRUCCION DE BUSQUEDA SQL SEGUN PARAMETROS ENVIADOS POR POST
+        $query = $model->with('region','productor','especie','variedad','calibre','embalaje','etiqueta','nota','estado_muestra','lote')
+        ->orderBy('muestra_id', 'DESC');;
 
         //Fecha en que fue entregado el producto
         if ($this->request()->get('desde') && !$this->request()->get('hasta')) {
@@ -88,6 +98,9 @@ class ReporteDataTable extends DataTable
         if ($this->request()->etiqueta != '') {
             $query->where('etiqueta_id', '=', $this->request()->etiqueta);
         }
+        if ($this->request()->muestra_qr != '') {
+            $query->where('muestra_qr', '=', $this->request()->muestra_qr);
+        }
 
         //return $model->newQuery()->select('id', 'add-your-columns-here', 'created_at', 'updated_at');
         return $query;
@@ -114,6 +127,7 @@ class ReporteDataTable extends DataTable
     protected function getColumns()
     {
         return [
+            'action'            => ['name'  => 'action', 'title' => 'Opciones'],
             'muestra_id'        => ['name'  => 'muestra_id', 'title' => 'ID'],
             'muestra_fecha'     => ['name'  => 'muestra_fecha', 'title' => 'Fecha'],
             'muestra_qr'        => ['name'  => 'muestra_qr', 'title' => 'QR'],
@@ -124,12 +138,12 @@ class ReporteDataTable extends DataTable
             'calibre'           => ['name'  => 'calibre.calibre_nombre', 'title' => 'Calibre'],
             'embalaje'          => ['name'  => 'embalaje.embalaje_nombre', 'title' => 'Embalaje'],
             'etiqueta'          => ['name'  => 'etiqueta.etiqueta_nombre', 'title' => 'Etiqueta'],
-            'muestra_imagen'    => ['name'  => 'muestra_imagen', 'title' => 'Imagen'],
             'nota'              => ['name'  => 'nota.nota_nombre', 'title' => 'Nota'],
             'estado'            => ['name'  => 'estado_muestra.estado_muestra_nombre', 'title' => 'Estado'],
             'muestra_cajas'     => ['name'  => 'muestra_cajas', 'title' => 'Cajas'],
             'lote_id'           => ['name'  => 'lote_id', 'title' => 'Lote'],
             'lote_codigo'       => ['name'  => 'lote.lote_codigo', 'title' => 'Lote Código'],
+            
             //'add your columns',
             /*'created_at',
             'updated_at'*/
@@ -169,7 +183,6 @@ class ReporteDataTable extends DataTable
                 ],
                 'reset',
             ],
-            
         ];
     }
 }

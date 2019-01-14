@@ -8,7 +8,7 @@
         </li>
         <li class="breadcrumb-item active">Reportes</li>
     </ol>
-
+    {{link_to_route('muestras.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success btn-lg btn-block'])}}
     {{-- link_to_route('productores.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success']) --}}
 
     <div class="row">
@@ -90,7 +90,12 @@
                 </select>
             <!--</div>-->
         </div>
-    
+        <div class="form-group col-sm-6">
+            <label class="control-label">Muestra QR</label>
+           
+            <input type="text" name="muestra_qr" id="muestra_qr" value="" class="form-control" > 
+            
+        </div>
         <div class="col-sm-12">
             <button type="button" class="btn btn-primary col-sm-2 offset-sm-5" id="btnSearch">Filtrar</button>
         </div>
@@ -122,7 +127,9 @@
                 "url": "{{ url('vendor/datatables/spanish.json') }}"
             },
             'autoWidth': false,
-            'stateSave': true
+            'stateSave': true,
+            'responsive': true,
+            
         });
     </script>
 
@@ -138,6 +145,7 @@
                 data.variedad   = $('#variedad').val()
                 data.calibre    = $('#calibre').val()
                 data.etiqueta   = $('#etiqueta').val()
+                data.muestra_qr = $('#muestra_qr').val()
             })
 
             $('#btnSearch').on('click', function(e){
@@ -182,6 +190,7 @@
                     $('#variedad').val(null)
                     $('#calibre').val(null)
                     $('#etiqueta').val(null)
+                    $('#muestra_qr').val(null)
                     $('input[type="search"]').val(null)
 
                     dt.search('').draw();

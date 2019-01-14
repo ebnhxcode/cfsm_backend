@@ -10,7 +10,7 @@
     </ol>
 
     {{link_to_route('muestras.create', 'Agregar', $parameters = null , $attributes = ['class'=>'btn btn-success'])}}
-    <table class="table table-striped table-hover  table-dark" id="pd">
+    <table class="table" id="pd">
         <thead>
             <tr >
                 <th>id</th>
@@ -53,6 +53,7 @@
                 },
                 processing: true,
                 serverSide: true,
+                responsive: true,
                 ajax: '{{ url('muestrasDatetables')}}',
                 columns: [
                             { data: 'muestra_id', name: 'muestra_id' },

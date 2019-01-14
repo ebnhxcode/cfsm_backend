@@ -13,6 +13,9 @@ use App\Embalaje;
 use App\Etiqueta;
 use App\Productor;
 use App\Muestra;
+use Carbon\Carbon;
+use App\Concepto;
+use App\Apariencia;
 use yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -68,7 +71,6 @@ class MuestraController extends Controller
             'categoria_id' => 'required',
             'embalaje_id' => 'required',
             'etiqueta_id' => 'required',
-            'muestra_peso' => 'required|numeric'
         ];
 
         $messages = [
@@ -83,9 +85,6 @@ class MuestraController extends Controller
             'categoria_id.required' => 'Categoría es obligatorio.',
             'embalaje_id.required' => 'Embalaje es obligatorio.',
             'etiqueta_id.required' => 'Etiqueta es obligatorio.',
-            'muestra_peso.required' => 'Peso es obligatorio.',
-            'muestra_peso.numeric' => 'Peso debe ser un número.',
-            
         ];
 
         $this->validate($request, $rules, $messages);
@@ -100,13 +99,17 @@ class MuestraController extends Controller
         $muestra->categoria_id = $request->categoria_id;
         $muestra->embalaje_id = $request->embalaje_id;
         $muestra->etiqueta_id = $request->etiqueta_id;
-        $muestra->muestra_peso = $request->muestra_peso;
+        #$muestra->muestra_peso = $request->muestra_peso;
+        $muestra->muestra_peso = 0;
+        $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
         $muestra->nota_id = 1; //PROCESO
+        $muestra->estado_muestra_id = 1;
 
         #dd($muestra->productor_id);
         $muestra->save();
-        #dd($muestra);
-
+        
+        return redirect::to('muestras/'.$muestra->muestra_id);
+        
     }
 
     /**
@@ -117,7 +120,14 @@ class MuestraController extends Controller
      */
     public function show($id)
     {
-        //
+        
+        $conceptos = Concepto::all();
+        $muestra = Muestra::find($id);
+
+        return view('admin.muestras.muestrashow',compact('conceptos'));
+
+        
+
     }
 
     /**
@@ -216,6 +226,22 @@ class MuestraController extends Controller
         return response()->json($arrayProveedores);
 
     }
+
+    public function muestraStep2($id)
+    {
+        
+        $conceptos = Concepto::all();
+        $apariencias = Apariencia::all();
+        $muestra = Muestra::find($id);
+
+        dd($apariencias);
+
+        return view('admin.muestras.muestra-2',compact('conceptos'));
+
+        
+
+    }
+
 
 
 }

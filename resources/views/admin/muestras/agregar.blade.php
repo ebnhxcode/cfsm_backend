@@ -3,7 +3,7 @@
 @section('content')
 
 @include('layouts.error')
-{!! Form::open(['route' => 'muestras.store', 'method' => 'POST', 'class' => 'col-lg-6','role'=>'form']) !!}
+{!! Form::open(['route' => 'muestras.store', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
     <h2 class="" id="">Muestra</h2>
     @include('admin.muestras.form.muestra')
     <button type="submit" class="btn btn-primary btn_ok">Enviar</button>
