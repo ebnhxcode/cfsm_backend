@@ -24,7 +24,7 @@
             <div class="card text-black bg-light mb-3" style="max-width: 18rem;">
                     <div class="card-header">Calidad</div>
                     <div class="card-body">
-                      <h5 class="card-title">A</h5>
+                      <h5 class="card-title">{{$nota_calidad_nombre}}</h5>
                     </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div class="card text-black bg-light mb-3" style="max-width: 18rem;">
                     <div class="card-header">Condición</div>
                     <div class="card-body">
-                      <h5 class="card-title">A</h5>
+                      <h5 class="card-title">{{ $nota_condicion_nombre }}</h5>
                     </div>
             </div>
         </div>
@@ -54,11 +54,23 @@
                     <thead class="">
                         <tr>
                             <th>Defecto </th>
+                            <th>Concepto </th>
                             <th>Valor </th>
                             <th>Nota </th>
                             <th>-</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach ($muestras_defecto as $md)
+                            <tr>
+                                <td> {{ $md->defecto->defecto_nombre }} </td>
+                                <td> {{ $md->defecto->concepto->concepto_nombre }} </td>
+                                <td> {{ $md->muestra_defecto_valor }}  </td>
+                                <td> {{ $md->nota->nota_nombre }}  </td>
+                                <td> - </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
             </table>
         </div>
     </div>
@@ -77,7 +89,9 @@
                         {!! Form::hidden('muestra_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
 
                         {!! Form::token() !!}
-
+                        <div class="alert alert-primary" role="alert" id="shownota">
+                                Nota del defecto
+                         </div>
                         <div class="form-group">
                                 {!! Form::label('concepto_id', 'Concepto', array('class' => '')) !!}
                                 <select  class="form-control" name="concepto_id" id="concepto_id">
@@ -99,9 +113,10 @@
                                 {!! Form::label('muestra_defecto_valor', 'Valor Defecto', array('class' => '')) !!}
                                 {!! Form::text('muestra_defecto_valor','', ['class' => 'form-control','id'=>'muestra_defecto_valor']) !!}
                         </div>
-                        <div class="alert alert-primary" role="alert">
-                               Nota del defecto
-                        </div>
+                        <div class="alert alert-warning" role="alert" id="showresult">
+                                &nbsp; 
+                         </div>
+                        
                         <button type="button" class="btn btn-primary" id="register">Registrar</button>
                     </form>
                 </div>
@@ -128,7 +143,30 @@
                     success: function (response) {
                     // you will get response from your php page (what you echo or print)
                             //LLEGA AL 3 PASO DONDE SE GUARDAN LOS DEFECTOS 1 A 1 alert("ok");
-                           alert(response);
+                           $("#showresult").html(response);
+                           location.reload();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                        alert(textStatus);
+                    }
+                });
+
+
+            });
+
+
+            $( "#muestra_defecto_valor" ).keyup(function() {
+                event.preventDefault();
+                var values = $('#modalform').serialize();
+                $.ajax({
+                    url: "{!!URL::to('/getDefectoNota')!!}",
+                    type: "post",
+                    data: values ,
+                    success: function (response) {
+                    // you will get response from your php page (what you echo or print)
+                            //LLEGA AL 3 PASO DONDE SE GUARDAN LOS DEFECTOS 1 A 1 alert("ok");
+                            $("#shownota").html(response);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus, errorThrown);

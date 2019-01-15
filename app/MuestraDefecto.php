@@ -22,12 +22,12 @@ class MuestraDefecto extends Model
 
     #belongsTo's
     public function muestra () {
-        return $this->belongsTo(Muestra::class, 'id_muestra');
+        return $this->belongsTo('App\Muestra', 'muestra_id');
     }
     public function defecto () {
-        return $this->belongsTo(Defecto::class, 'id_defecto');
+        return $this->belongsTo('App\Defecto', 'defecto_id');
     }
     public function nota () {
-        return $this->belongsTo(Nota::class, 'id_nota');
+        return $this->belongsTo('App\Nota', 'nota_id');
     }
 }

@@ -21,6 +21,8 @@ use App\Defecto;
 use yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Tolerancia;
+use App\MuestraDefecto;
 
 class MuestraController extends Controller
 {
@@ -290,17 +292,88 @@ class MuestraController extends Controller
     }
 
     public function muestraStep3($id){
-
         $muestra = Muestra::find($id);
         $conceptos = Concepto::all();
         $nota = Nota::find($muestra->nota_id);
+        $muestras_defecto = MuestraDefecto::where('muestra_id',$id)->get();
+        $defecto_nota_calidad = MuestraDefecto::select('nota_id')
+        ->join('defecto', 'defecto.defecto_id', '=', 'muestra_defecto.defecto_id')
+        ->join('nota', 'nota.nota_id', '=', 'muestra_defecto.nota_id')
+        ->where('muestra_defecto.muestra_id',$id)
+        ->where('defecto.concepto_id','1')
+        ->max('nota.nota_id');
+        $nota_calidad = Nota::find($defecto_nota_calidad);
+        if(isset($nota_calidad->nota_nombre)){
+            $nota_calidad_nombre = $nota_calidad->nota_nombre;
+            $nota_calidad_id = $nota_calidad->nota_id;
+        }else{
+            $nota_calidad_nombre = 'A';
+            $nota_calidad_id = 1;
+        }
+
+        $defecto_nota_condicion = MuestraDefecto::select('nota_id')
+        ->join('defecto', 'defecto.defecto_id', '=', 'muestra_defecto.defecto_id')
+        ->join('nota', 'nota.nota_id', '=', 'muestra_defecto.nota_id')
+        ->where('muestra_defecto.muestra_id',$id)
+        ->where('defecto.concepto_id','2')
+        ->max('nota.nota_id');
+
+        $nota_condicion = Nota::find($defecto_nota_condicion);
+        if(isset($nota_condicion->nota_nombre)){
+            $nota_condicion_nombre = $nota_condicion->nota_nombre;
+            $nota_condicion_id = $nota_condicion->nota_id;
+        }else{
+            $nota_condicion_nombre = 'A';
+            $nota_condicion_id = 1;
+        }
+       
+
+        $nota_general = max($nota_condicion_id,$nota_calidad_id,$nota->nota_id);
+        $nota = Nota::find($nota_general);
         #dd($muestra);
-        return view('admin.muestras.paso3.index',compact('conceptos','muestra','nota'));
+        return view('admin.muestras.paso3.index',compact('conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre'));
     }
 
     public function  paso3(Request $request){
-        $error = "estoy en paso 3";
-        return response()->json($error);
+        $muestra = Muestra::find($request->muestra_id);
+        $defecto_id = $request->defecto_id;
+        $defecto = Defecto::find($defecto_id);
+        $muestra_defecto_valor = $request->muestra_defecto_valor;
+        
+        if($defecto->zona_id == 1 ){
+            #CALCULO POR %
+            $porcentaje = round((($muestra_defecto_valor*100)/$muestra->muestra_peso),0);
+            $tolerancia  = Tolerancia::where('defecto_id',$defecto_id)
+            ->where('tolerancia_desde','<=',$porcentaje)
+            ->where('tolerancia_hasta','>=',$porcentaje)
+            ->first();
+            //NOTA $tolerancia->nota->nota_nombre
+            //NOTA $tolerancia->nota->nota_id
+            if(isset($tolerancia->nota->nota_id)){
+                $nota_id = $tolerancia->nota->nota_id;
+            }else{
+                $nota_id = 5;
+            }
+            $nota = Nota::find($nota_id);
+        }else{
+            #CALCULO POR NUMERO
+            $muestra_defecto_valor=0;
+        }
+        //return response()->json(1);
+        #print_r($tolerancia->nota->nota_nombre);
+        
+        try {
+            $muestra_defecto = New MuestraDefecto();
+            $muestra_defecto->muestra_id = $request->muestra_id;
+            $muestra_defecto->defecto_id = $request->defecto_id;
+            $muestra_defecto->muestra_defecto_valor = $request->muestra_defecto_valor;
+            $muestra_defecto->nota_id = $nota->nota_id;
+            $muestra_defecto->save();
+            echo 'registrado con exito';
+        }
+          catch (Exception $e) {
+              return $e->getMessage();
+        }
 
     }
 
@@ -315,6 +388,38 @@ class MuestraController extends Controller
                     );
         }
         return response()->json($arrayDefectos);
+    }
+
+
+    public function getDefectoNota(Request $request){
+
+        $muestra = Muestra::find($request->muestra_id);
+        $defecto_id = $request->defecto_id;
+        $defecto = Defecto::find($defecto_id);
+        $muestra_defecto_valor = $request->muestra_defecto_valor;
+        
+        if($defecto->zona_id == 1 ){
+            #CALCULO POR %
+            $porcentaje = round((($muestra_defecto_valor*100)/$muestra->muestra_peso),0);
+            $tolerancia  = Tolerancia::where('defecto_id',$defecto_id)
+            ->where('tolerancia_desde','<=',$porcentaje)
+            ->where('tolerancia_hasta','>=',$porcentaje)
+            ->first();
+            //NOTA $tolerancia->nota->nota_nombre
+            //NOTA $tolerancia->nota->nota_id
+            if(isset($tolerancia->nota->nota_id)){
+                $nota_id = $tolerancia->nota->nota_id;
+            }else{
+                $nota_id = 5;
+            }
+            $nota = Nota::find($nota_id);
+        }else{
+            #CALCULO POR NUMERO
+            $muestra_defecto_valor=0;
+        }
+        //return response()->json(1);
+        #print_r($tolerancia->nota->nota_nombre);
+        echo $nota->nota_nombre;
     }
 
 }

@@ -4,6 +4,7 @@
 {!! Form::open(['route' => 'muestras.store', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
 <div class="row">
     
+        <div class="" 
         <div class="col-lg-6" >
                 <div class="form-group">
                     {!! Form::label('muestra_defecto_valor', 'Valor', array('class' => '')) !!}

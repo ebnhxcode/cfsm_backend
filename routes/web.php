@@ -47,7 +47,7 @@ Route::post('paso2', 'MuestraController@paso2');
 Route::get('muestra-3/{id}','MuestraController@muestraStep3');
 Route::post('getDefectosByConcepto', 'MuestraController@getDefectosByConcepto');
 Route::post('paso3', 'MuestraController@paso3');
-
+Route::post('getDefectoNota','MuestraController@getDefectoNota');
 
 
 
