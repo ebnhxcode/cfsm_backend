@@ -4,6 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\MuestraDefecto;
+use App\Muestra;
+use App\Concepto;
+use App\Grupo;
+use App\Nota;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class MuestraDefectoController extends Controller
 {
@@ -81,5 +88,10 @@ class MuestraDefectoController extends Controller
     public function destroy($id)
     {
         //
+        $muestra_defecto = MuestraDefecto::find($id);
+        $muestra_id = $muestra_defecto->muestra_id;
+        MuestraDefecto::destroy($id);
+        return redirect::to('muestra-3/'.$muestra_id);
+
     }
 }

@@ -67,7 +67,14 @@
                                 <td> {{ $md->defecto->concepto->concepto_nombre }} </td>
                                 <td> {{ $md->muestra_defecto_valor }}  </td>
                                 <td> {{ $md->nota->nota_nombre }}  </td>
-                                <td> <a href="#"> Eliminar </a> </td>
+                                <td>
+                                    {!! Form::model($md, array('route' => array('muestras_defectos.destroy', $md->muestra_defecto_id), 'method'=>'DELETE', 'class' => 'form-horizontal editar', 'role'=>'form')) !!}
+                                        <button type="submit" class="btn">
+                                                <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    {!! Form::close() !!}
+
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -113,9 +120,9 @@
                                 {!! Form::text('muestra_defecto_valor','', ['class' => 'form-control','id'=>'muestra_defecto_valor']) !!}
                         </div>
                         <div class="alert alert-warning" role="alert" id="showresult">
-                                &nbsp; 
+                                &nbsp;
                          </div>
-                        
+
                         <button type="button" class="btn btn-primary" id="register">Registrar</button>
                     </form>
                 </div>
