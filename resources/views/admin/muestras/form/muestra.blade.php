@@ -56,7 +56,10 @@
                     {!! Form::label('etiqueta_id', 'Etiqueta', array('class' => '')) !!}
                     {!! Form::select('etiqueta_id', $etiquetas, isset($muestra->etiqueta_id) ? $muestra->etiqueta_id : '' , array('class' => 'form-control' , 'id'=>'etiqueta_id')) !!}
             </div>
-
+            <div class="form-group">
+                    {!! Form::label('muestra_peso', 'Peso', array('class' => '')) !!}
+                    {!! Form::text('muestra_peso',isset($muestra->muestra_peso) ? $muestra->muestra_peso : '', ['class' => 'form-control','id'=>'muestra_peso']) !!}
+            </div>
 
 
 

@@ -67,6 +67,7 @@ class MuestraController extends Controller
     {
         //
         $rules = [
+            'muestra_peso' => 'required|numeric',
             'muestra_qr' => 'required|unique:muestra|max:255',
             'region_id' => 'required',
             'productor_id' => 'required',
@@ -79,6 +80,8 @@ class MuestraController extends Controller
         ];
 
         $messages = [
+            'muestra_peso.required' => 'El Peso obligatorio.',
+            'muestra_peso.numeric' => 'Peso debe ser número.',
             'muestra_qr.required' => 'El Código QR es obligatorio.',
             'muestra_qr.unique' => 'El codigo QR ya se encuentra registrado.',
             'muestra_qr.max' => 'El nombre del productor ingresado es demaciado largo.',
@@ -105,7 +108,7 @@ class MuestraController extends Controller
         $muestra->embalaje_id = $request->embalaje_id;
         $muestra->etiqueta_id = $request->etiqueta_id;
         #$muestra->muestra_peso = $request->muestra_peso;
-        $muestra->muestra_peso = 0;
+        $muestra->muestra_peso = $request->muestra_numero;
         $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
         $muestra->nota_id = 1; //PROCESO
         $muestra->estado_muestra_id = 1;
@@ -113,7 +116,7 @@ class MuestraController extends Controller
         #dd($muestra->productor_id);
         $muestra->save();
 
-        return redirect::to('muestra-2/'.$muestra->muestra_id);
+        return redirect::to('muestra-3/'.$muestra->muestra_id);
 
     }
 
