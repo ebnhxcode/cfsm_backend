@@ -18,6 +18,7 @@ use App\Concepto;
 use App\Nota;
 use App\Apariencia;
 use App\Defecto;
+use App\Grupo;
 use yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -294,6 +295,8 @@ class MuestraController extends Controller
     public function muestraStep3($id){
         $muestra = Muestra::find($id);
         $conceptos = Concepto::all();
+        $grupos = Grupo::all();
+        
         $nota = Nota::find($muestra->nota_id);
         $muestras_defecto = MuestraDefecto::where('muestra_id',$id)->get();
         $defecto_nota_calidad = MuestraDefecto::select('nota_id')
@@ -326,12 +329,11 @@ class MuestraController extends Controller
             $nota_condicion_nombre = 'A';
             $nota_condicion_id = 1;
         }
-       
 
         $nota_general = max($nota_condicion_id,$nota_calidad_id,$nota->nota_id);
         $nota = Nota::find($nota_general);
         #dd($muestra);
-        return view('admin.muestras.paso3.index',compact('conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre'));
+        return view('admin.muestras.paso3.index',compact('grupos','conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre'));
     }
 
     public function  paso3(Request $request){
@@ -342,10 +344,10 @@ class MuestraController extends Controller
         
         if($defecto->zona_id == 1 ){
             #CALCULO POR %
-            $porcentaje = round((($muestra_defecto_valor*100)/$muestra->muestra_peso),0);
+            $calculado = round((($muestra_defecto_valor*100)/$muestra->muestra_peso),2);
             $tolerancia  = Tolerancia::where('defecto_id',$defecto_id)
-            ->where('tolerancia_desde','<=',$porcentaje)
-            ->where('tolerancia_hasta','>=',$porcentaje)
+            ->where('tolerancia_desde','<=',$calculado)
+            ->where('tolerancia_hasta','>=',$calculado)
             ->first();
             //NOTA $tolerancia->nota->nota_nombre
             //NOTA $tolerancia->nota->nota_id
@@ -357,6 +359,7 @@ class MuestraController extends Controller
             $nota = Nota::find($nota_id);
         }else{
             #CALCULO POR NUMERO
+            $calculado = $muestra_defecto_valor;
             $muestra_defecto_valor=0;
         }
         //return response()->json(1);
@@ -368,6 +371,7 @@ class MuestraController extends Controller
             $muestra_defecto->defecto_id = $request->defecto_id;
             $muestra_defecto->muestra_defecto_valor = $request->muestra_defecto_valor;
             $muestra_defecto->nota_id = $nota->nota_id;
+            $muestra_defecto->muestra_defecto_calculo = $calculado;
             $muestra_defecto->save();
             echo 'registrado con exito';
         }
@@ -377,17 +381,16 @@ class MuestraController extends Controller
 
     }
 
-    public function getDefectosByConcepto(Request $request){
-        $concepto_id = $request->concepto_id;
-        $arrayDefectos = array();
-        $defectos  = Defecto::where('concepto_id', $concepto_id)->get();
-        //dd($productores);
-        foreach($defectos as $p){
-                    array_push($arrayDefectos, array( 'id' =>$p->defecto_id,
-                        'nombre' => $p->defecto_nombre)
+    public function getDefectosByGrupo(Request $request){
+        $grupo_id = $request->grupo_id;
+        $arrayGrupos = array();
+        $defectos  = Defecto::where('grupo_id', $grupo_id)->get();
+        foreach($defectos as $g){
+                    array_push($arrayGrupos, array( 'id' =>$g->grupo_id,
+                        'nombre' => $g->defecto_nombre)
                     );
         }
-        return response()->json($arrayDefectos);
+        return response()->json($arrayGrupos);
     }
 
 

@@ -17,7 +17,7 @@ class Productor extends Model
 
     #hasMany's
     public function muestras () {
-        return $this->hasMany(Muestra::class, 'productor_id');
+        return $this->hasMany('App\Muestra', 'productor_id');
     }
 
 

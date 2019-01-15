@@ -67,7 +67,7 @@
                                 <td> {{ $md->defecto->concepto->concepto_nombre }} </td>
                                 <td> {{ $md->muestra_defecto_valor }}  </td>
                                 <td> {{ $md->nota->nota_nombre }}  </td>
-                                <td> - </td>
+                                <td> <a href="#"> Eliminar </a> </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -93,14 +93,13 @@
                                 Nota del defecto
                          </div>
                         <div class="form-group">
-                                {!! Form::label('concepto_id', 'Concepto', array('class' => '')) !!}
-                                <select  class="form-control" name="concepto_id" id="concepto_id">
+                                {!! Form::label('grupo_id', 'Grupo', array('class' => '')) !!}
+                                <select  class="form-control" name="grupo_id" id="grupo_id">
                                         <option value="" > -- </option>
-                                        @foreach ($conceptos as $c)
-                                            <option value="{{$c->concepto_id}}"   > {{$c->concepto_nombre}}</option>
+                                        @foreach ($grupos as $g)
+                                            <option value="{{$g->grupo_id}}"   > {{$g->grupo_nombre}}</option>
                                         @endforeach
                                 </select>
-
                         </div>
                         <div class="form-group">
                                 {!! Form::label('defecto_id', 'Defecto', array('class' => '')) !!}
@@ -179,13 +178,13 @@
 
 
             /*alert("aca estas");*/
-            $( "#concepto_id" ).change(function() {
-                var route = "{!!URL::to('/getDefectosByConcepto')!!}";
-                var concepto_id = $("#concepto_id" ).val();
+            $( "#grupo_id" ).change(function() {
+                var route = "{!!URL::to('/getDefectosByGrupo')!!}";
+                var grupo_id = $("#grupo_id" ).val();
                 var select = $("#defecto_id");
                 var token = $("input[name=_token]").val();
                 $("#defecto_id option").remove();
-                $.post( route, { concepto_id: concepto_id , _token : token })
+                $.post( route, { grupo_id: grupo_id , _token : token })
                 .done(function( data ) {
                     $(data).each(function( index, value ) {
                             select.append("<option value='"+value.id+"'> "+value.nombre+"</option>");

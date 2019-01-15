@@ -10,6 +10,7 @@ class MuestraDefecto extends Model
     protected $primaryKey = 'muestra_defecto_id';
     protected $fillable = [
         'muestra_defecto_valor',
+        'muestra_defecto_calculo',
         'muestra_id',
         'defecto_id',
         'nota_id',
