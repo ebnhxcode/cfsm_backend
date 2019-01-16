@@ -540,4 +540,22 @@ class MuestraController extends Controller
         return view('admin.muestras.paso4.index',compact('grupos_totales','muestra','nota','nota_calidad_nombre','nota_condicion_nombre'));
     }
 
+
+    public function fileUpload(Request $request) {
+        $this->validate($request, [
+            'input_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    
+        if ($request->hasFile('input_img')) {
+            $image = $request->file('input_img');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            $image->move($destinationPath, $name);
+            $this->save();
+    
+            return back()->with('success','Image Upload successfully');
+        }
+    }
+
+
 }

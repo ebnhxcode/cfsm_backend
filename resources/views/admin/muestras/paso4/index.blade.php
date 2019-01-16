@@ -75,7 +75,24 @@
             
             <br>
             <br>
-        </div>
+    </div>
+
+    <div>
+            <form method="POST" action="subir" enctype="multipart/form-data">
+                    {!! csrf_field() !!}
+                    <div class="form-group">
+                        <textarea class="form-control" name="descripcion" placeholder="Descripcion"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>File input</label>
+                        <input type="file" name="imagen" >
+                        <p class="help-block">Subir imagen</p>
+                    </div>
+                   
+                    <button type="submit" class="btn btn-success btn-block">Subir imagen</button>
+                </form>
+
+    </div>
 
 
 @endsection
