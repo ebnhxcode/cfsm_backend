@@ -2,6 +2,12 @@
 @section('title', 'Etiqueta')
 @section('content')
 
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Etiqueta</li>
+</ol>
 @include('layouts.error')
 {!! Form::open(['route' => 'etiquetas.store', 'method' => 'POST', 'class' => 'col-lg-6','role'=>'form']) !!}
     <h2 class="" id="">Etiqueta</h2>

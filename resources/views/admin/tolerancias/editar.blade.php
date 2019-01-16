@@ -1,7 +1,12 @@
 @extends('layouts.web')
 @section('title', 'Tolerancia')
 @section('content')
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Tolerancia</li>
+</ol>
 @include('layouts.error')
 
 {!! Form::model($tolerancia, array('route' => array('tolerancias.update', $tolerancia->tolerancia_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}

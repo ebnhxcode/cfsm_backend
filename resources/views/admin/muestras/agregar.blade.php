@@ -1,7 +1,12 @@
 @extends('layouts.web')
 @section('title', 'Muestra')
 @section('content')
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Productor</li>
+</ol>
 @include('layouts.error')
 {!! Form::open(['route' => 'muestras.store', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
 <ol class="breadcrumb">

@@ -3,7 +3,12 @@
 @section('content')
 
 @include('layouts.error')
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Etiqueta</li>
+</ol>
 {!! Form::model($etiqueta, array('route' => array('etiquetas.update', $etiqueta->etiqueta_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}
     <h2 class="" id="">Etiqueta</h2>
     @include('admin.etiquetas.form.etiqueta')

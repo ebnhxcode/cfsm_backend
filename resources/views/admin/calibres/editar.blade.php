@@ -1,7 +1,12 @@
 @extends('layouts.web')
 @section('title', 'Etiqueta')
 @section('content')
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Calibre</li>
+</ol>
 @include('layouts.error')
 
 {!! Form::model($calibre, array('route' => array('calibres.update', $calibre->calibre_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}

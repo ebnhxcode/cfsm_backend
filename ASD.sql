@@ -676,20 +676,14 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `migrations` */
 
 LOCK TABLES `migrations` WRITE;
 
-insert  into `migrations`(`id`,`migration`,`batch`) values (1,'2014_10_12_000000_create_users_table',1);
-insert  into `migrations`(`id`,`migration`,`batch`) values (2,'2014_10_12_100000_create_password_resets_table',1);
-insert  into `migrations`(`id`,`migration`,`batch`) values (3,'2016_06_01_000001_create_oauth_auth_codes_table',1);
-insert  into `migrations`(`id`,`migration`,`batch`) values (4,'2016_06_01_000002_create_oauth_access_tokens_table',1);
-insert  into `migrations`(`id`,`migration`,`batch`) values (5,'2016_06_01_000003_create_oauth_refresh_tokens_table',1);
-insert  into `migrations`(`id`,`migration`,`batch`) values (6,'2016_06_01_000004_create_oauth_clients_table',1);
-insert  into `migrations`(`id`,`migration`,`batch`) values (7,'2016_06_01_000005_create_oauth_personal_access_clients_table',1);
-insert  into `migrations`(`id`,`migration`,`batch`) values (8,'2018_12_27_141728_create_products_table',2);
+insert  into `migrations`(`id`,`migration`,`batch`) values (13,'2019_01_16_143725_create_role_user_table',1);
+insert  into `migrations`(`id`,`migration`,`batch`) values (14,'2019_01_16_144551_create_roles_table',1);
 
 UNLOCK TABLES;
 
@@ -741,7 +735,7 @@ CREATE TABLE `muestra` (
   CONSTRAINT `muestra_ibfk_7` FOREIGN KEY (`nota_id`) REFERENCES `nota` (`nota_id`),
   CONSTRAINT `muestra_ibfk_8` FOREIGN KEY (`productor_id`) REFERENCES `productor` (`productor_id`),
   CONSTRAINT `muestra_ibfk_9` FOREIGN KEY (`estado_muestra_id`) REFERENCES `estado_muestra` (`estado_muestra_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2801 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2802 DEFAULT CHARSET=latin1;
 
 /*Data for the table `muestra` */
 
@@ -749,6 +743,7 @@ LOCK TABLES `muestra` WRITE;
 
 insert  into `muestra`(`muestra_id`,`muestra_fecha`,`muestra_qr`,`region_id`,`productor_id`,`especie_id`,`variedad_id`,`calibre_id`,`categoria_id`,`embalaje_id`,`etiqueta_id`,`muestra_imagen`,`nota_id`,`muestra_cajas`,`lote_codigo`,`muestra_peso`,`estado_muestra_id`,`apariencia_id`,`muestra_bolsas`,`muestra_racimos`,`muestra_brix`,`muestra_desgrane`) values (2799,'2019-01-15 00:00:00','1',9,34,1,1,1,1,15,3,NULL,1,NULL,NULL,1000,1,NULL,NULL,NULL,NULL,NULL);
 insert  into `muestra`(`muestra_id`,`muestra_fecha`,`muestra_qr`,`region_id`,`productor_id`,`especie_id`,`variedad_id`,`calibre_id`,`categoria_id`,`embalaje_id`,`etiqueta_id`,`muestra_imagen`,`nota_id`,`muestra_cajas`,`lote_codigo`,`muestra_peso`,`estado_muestra_id`,`apariencia_id`,`muestra_bolsas`,`muestra_racimos`,`muestra_brix`,`muestra_desgrane`) values (2800,'2019-01-08 00:00:00','789789',9,34,1,1,1,1,15,3,NULL,3,NULL,NULL,4000,1,NULL,NULL,NULL,NULL,NULL);
+insert  into `muestra`(`muestra_id`,`muestra_fecha`,`muestra_qr`,`region_id`,`productor_id`,`especie_id`,`variedad_id`,`calibre_id`,`categoria_id`,`embalaje_id`,`etiqueta_id`,`muestra_imagen`,`nota_id`,`muestra_cajas`,`lote_codigo`,`muestra_peso`,`estado_muestra_id`,`apariencia_id`,`muestra_bolsas`,`muestra_racimos`,`muestra_brix`,`muestra_desgrane`) values (2801,'2019-01-16 00:00:00','5',9,34,1,1,1,1,15,3,NULL,4,NULL,200000,1000,1,NULL,NULL,NULL,NULL,NULL);
 
 UNLOCK TABLES;
 
@@ -768,7 +763,7 @@ CREATE TABLE `muestra_defecto` (
   KEY `defecto_id` (`defecto_id`),
   CONSTRAINT `muestra_defecto_ibfk_1` FOREIGN KEY (`muestra_id`) REFERENCES `muestra` (`muestra_id`),
   CONSTRAINT `muestra_defecto_ibfk_2` FOREIGN KEY (`defecto_id`) REFERENCES `defecto` (`defecto_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 /*Data for the table `muestra_defecto` */
 
@@ -777,6 +772,8 @@ LOCK TABLES `muestra_defecto` WRITE;
 insert  into `muestra_defecto`(`muestra_defecto_id`,`muestra_id`,`defecto_id`,`muestra_defecto_valor`,`nota_id`,`muestra_defecto_calculo`) values (13,2799,7,100.00,5,100.00);
 insert  into `muestra_defecto`(`muestra_defecto_id`,`muestra_id`,`defecto_id`,`muestra_defecto_valor`,`nota_id`,`muestra_defecto_calculo`) values (14,2799,14,1000.00,5,1000.00);
 insert  into `muestra_defecto`(`muestra_defecto_id`,`muestra_id`,`defecto_id`,`muestra_defecto_valor`,`nota_id`,`muestra_defecto_calculo`) values (15,2799,1,100.00,5,10.00);
+insert  into `muestra_defecto`(`muestra_defecto_id`,`muestra_id`,`defecto_id`,`muestra_defecto_valor`,`nota_id`,`muestra_defecto_calculo`) values (16,2801,2,20.00,5,2.00);
+insert  into `muestra_defecto`(`muestra_defecto_id`,`muestra_id`,`defecto_id`,`muestra_defecto_valor`,`nota_id`,`muestra_defecto_calculo`) values (17,2801,9,100.00,5,10.00);
 
 UNLOCK TABLES;
 
@@ -792,11 +789,13 @@ CREATE TABLE `muestra_imagen` (
   `muestra_imagen_texto` varchar(1000) DEFAULT NULL,
   `muestra_imagen_ruta_corta` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`muestra_imagen_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `muestra_imagen` */
 
 LOCK TABLES `muestra_imagen` WRITE;
+
+insert  into `muestra_imagen`(`muestra_imagen_id`,`muestra_imagen_ruta`,`muestra_imagen_fecha`,`muestra_id`,`muestra_imagen_texto`,`muestra_imagen_ruta_corta`) values (1,'http://localhost:9999/cfsm/public/image/WMMb8W2M2GsmM4YprXz4paoM73Mf40th5Wdz5VdZ.jpeg',NULL,2801,'PUDRICION DETECTADA','image/WMMb8W2M2GsmM4YprXz4paoM73Mf40th5Wdz5VdZ.jpeg');
 
 UNLOCK TABLES;
 
@@ -932,23 +931,6 @@ CREATE TABLE `oauth_refresh_tokens` (
 /*Data for the table `oauth_refresh_tokens` */
 
 LOCK TABLES `oauth_refresh_tokens` WRITE;
-
-UNLOCK TABLES;
-
-/*Table structure for table `password_resets` */
-
-DROP TABLE IF EXISTS `password_resets`;
-
-CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  KEY `password_resets_email_index` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-/*Data for the table `password_resets` */
-
-LOCK TABLES `password_resets` WRITE;
 
 UNLOCK TABLES;
 
@@ -1111,6 +1093,51 @@ insert  into `regiones`(`region_id`,`region_nombre`,`region_ordinal`) values (15
 
 UNLOCK TABLES;
 
+/*Table structure for table `role_user` */
+
+DROP TABLE IF EXISTS `role_user`;
+
+CREATE TABLE `role_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `role_user` */
+
+LOCK TABLES `role_user` WRITE;
+
+insert  into `role_user`(`id`,`role_id`,`user_id`,`created_at`,`updated_at`) values (1,1,1,'2019-01-16 12:03:39',NULL);
+insert  into `role_user`(`id`,`role_id`,`user_id`,`created_at`,`updated_at`) values (2,1,2,'2019-01-16 15:14:19','2019-01-16 15:14:19');
+
+UNLOCK TABLES;
+
+/*Table structure for table `roles` */
+
+DROP TABLE IF EXISTS `roles`;
+
+CREATE TABLE `roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `roles` */
+
+LOCK TABLES `roles` WRITE;
+
+insert  into `roles`(`id`,`name`,`description`,`created_at`,`updated_at`) values (1,'admin','control total','2019-01-16 11:48:34',NULL);
+insert  into `roles`(`id`,`name`,`description`,`created_at`,`updated_at`) values (2,'calidad','control de calidad','2019-01-16 11:48:53',NULL);
+insert  into `roles`(`id`,`name`,`description`,`created_at`,`updated_at`) values (3,'cliente','cliente final','2019-01-16 11:49:05',NULL);
+
+UNLOCK TABLES;
+
 /*Table structure for table `tolerancia` */
 
 DROP TABLE IF EXISTS `tolerancia`;
@@ -1219,23 +1246,22 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 
 LOCK TABLES `users` WRITE;
 
-insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`created_at`,`updated_at`) values (1,'francisco carrasco','xnofub@gmail.com',NULL,'$2y$10$6OSS1gv4bHOPCeWz3gMg5uGLI0AnJvG3WDz8Gdud7kndtBFpmVsWS','3ChVynMHh0QJ9mvTl5qGERB73e0KG1YETyhbWYCllf1l2iL1STK8LiTdg8t4','2018-12-27 15:31:38','2018-12-27 15:31:38');
-insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`created_at`,`updated_at`) values (2,'Ricardo Parra','ricardoparramolina@gmail.com',NULL,'$2y$10$Tl.eRWqWbUPWDkZ8yQ6Sg.8VdWAcY8V.K0V9BP7pYwBsEukHtd1pC','sSKuhDwee1UExMYRVpJQBXQK9X3kG8TDFYwJNzjy4XqOr7UwuN8W3gLgnQOR','2018-12-28 02:19:16','2018-12-28 02:19:16');
+insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`created_at`,`updated_at`) values (1,'Francisco','xnofub@gmail.com',NULL,'$2y$10$GXNWknx7T08iqZBN0v/GV.mNXS0t68uo77lJPoKV1dDECyURSXLdW','4mJrYLUZKcPLbiNjeLh0qgK4WqBD7U5oM8PJacTeAmP902jmAOETmDoFkUtH','2019-01-16 14:55:44','2019-01-16 14:55:44');
+insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`created_at`,`updated_at`) values (2,'tuto','fetchtutor@gmail.com',NULL,'$2y$10$ZXtqcPFPw3ZHK1msw5BB7OC71GKGYrCSVgbfGzTYKfkD8o6jg7oIq',NULL,'2019-01-16 15:14:19','2019-01-16 15:14:19');
 
 UNLOCK TABLES;
 

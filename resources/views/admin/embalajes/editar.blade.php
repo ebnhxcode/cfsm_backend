@@ -1,7 +1,12 @@
 @extends('layouts.web')
 @section('title', 'Etiqueta')
 @section('content')
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Embalaje</li>
+</ol>
 @include('layouts.error')
 
 {!! Form::model($embalaje, array('route' => array('embalajes.update', $embalaje->embalaje_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}
