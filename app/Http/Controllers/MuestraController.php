@@ -107,8 +107,7 @@ class MuestraController extends Controller
         $muestra->categoria_id = $request->categoria_id;
         $muestra->embalaje_id = $request->embalaje_id;
         $muestra->etiqueta_id = $request->etiqueta_id;
-        #$muestra->muestra_peso = $request->muestra_peso;
-        $muestra->muestra_peso = $request->muestra_numero;
+        $muestra->muestra_peso = $request->muestra_peso;
         $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
         $muestra->nota_id = 1; //PROCESO
         $muestra->estado_muestra_id = 1;
@@ -249,51 +248,6 @@ class MuestraController extends Controller
 
 
     }
-    public function  paso2(Request $request){
-        $rules = [
-            'muestra_peso' => 'required|numeric',
-            'muestra_desgrane' => 'required|numeric',
-            'apariencia_id' => 'required',
-            'muestra_bolsas' => 'required|numeric',
-            'muestra_racimos' => 'required|numeric',
-            'muestra_brix' => 'required|numeric',
-            'muestra_cajas' => 'required|numeric',
-        ];
-
-        $messages = [
-            'muestra_peso.required' => 'Peso es obligatorio.',
-            'muestra_peso.numeric' => 'Peso debe ser un número.',
-            'apariencia_id.required' => 'Apariencia es obligatorio',
-            'muestra_desgrane.required' => 'Desgrane es obligatorio.',
-            'muestra_desgrane.numeric' => 'Desgrane debe ser un número.',
-            'muestra_bolsas.required' => 'Bolsas es obligatorio.',
-            'muestra_bolsas.numeric' => 'Bolsas debe ser un número.',
-            'muestra_racimos.required' => 'Racimos es obligatorio.',
-            'muestra_racimos.numeric' => 'Racimos debe ser un número.',
-            'muestra_brix.required' => 'Brix es obligatorio.',
-            'muestra_brix.numeric' => 'Brix debe ser un número.',
-            'muestra_cajas.required' => 'Cajas es obligatorio.',
-            'muestra_cajas.numeric' => 'Cajas debe ser un número.',
-        ];
-
-        $this->validate($request, $rules, $messages);
-        $muestra = Muestra::find($request->muestra_id);
-
-        $muestra->muestra_peso = $request->muestra_peso;
-        $muestra->muestra_desgrane = $request->muestra_desgrane;
-        $muestra->apariencia_id = $request->apariencia_id;
-        $apariencianota = Apariencia::find($muestra->apariencia_id);
-        $muestra->nota_id = $apariencianota->nota_id;
-        $muestra->muestra_bolsas = $request->muestra_bolsas;
-        $muestra->muestra_racimos = $request->muestra_racimos;
-        $muestra->muestra_brix = $request->muestra_brix;
-        $muestra->muestra_cajas = $request->muestra_cajas;
-        $muestra->save();
-        return redirect::to('muestra-3/'.$muestra->muestra_id);
-
-
-
-    }
 
     public function muestraStep3($id){
         $muestra = Muestra::find($id);
@@ -389,7 +343,7 @@ class MuestraController extends Controller
         $arrayGrupos = array();
         $defectos  = Defecto::where('grupo_id', $grupo_id)->get();
         foreach($defectos as $g){
-                    array_push($arrayGrupos, array( 'id' =>$g->grupo_id,
+                    array_push($arrayGrupos, array( 'id' =>$g->defecto_id,
                         'nombre' => $g->defecto_nombre)
                     );
         }

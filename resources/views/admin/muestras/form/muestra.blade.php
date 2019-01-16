@@ -60,9 +60,6 @@
                     {!! Form::label('muestra_peso', 'Peso', array('class' => '')) !!}
                     {!! Form::text('muestra_peso',isset($muestra->muestra_peso) ? $muestra->muestra_peso : '', ['class' => 'form-control','id'=>'muestra_peso']) !!}
             </div>
-
-
-
     </div>
 </div>
 
