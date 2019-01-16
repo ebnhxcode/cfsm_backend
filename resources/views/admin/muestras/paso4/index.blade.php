@@ -115,7 +115,7 @@
                     {!! Form::label('estado_muestra_id', 'Estado Muestra (Puede anular la medicion en caso de error)', array('class' => '')) !!}
                     {!! Form::select('estado_muestra_id', $estado_muestras, isset($muestra->estado_muestra_id) ? $muestra->estado_muestra_id : '' , array('class' => 'form-control' , 'id'=>'estado_muestra_id')) !!}
                 </div>
-            <button type="submit" class="btn btn-success btn-block">Subir imagen</button>
+            <button type="submit" class="btn btn-success btn-block">Guardar cambios <i class="far fa-save"></i></button>
             {!! Form::close() !!}
     </div>
 
@@ -132,7 +132,7 @@
                         <label>File input</label>
                        {{Form::file('file')}}
                     </div>
-                    <button type="submit" class="btn btn-success btn-block">Subir imagen</button>
+                    <button type="submit" class="btn btn-success btn-block">Subir imagen <i class="far fa-save"></i></button>
 
 
             {!! Form::close() !!}
