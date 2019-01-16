@@ -19,6 +19,7 @@ use App\Nota;
 use App\Apariencia;
 use App\Defecto;
 use App\Grupo;
+use App\EstadoMuestra;
 use yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -137,13 +138,6 @@ class MuestraController extends Controller
      */
     public function show($id)
     {
-
-        $conceptos = Concepto::all();
-        $muestra = Muestra::find($id);
-
-        return view('admin.muestras.muestrashow',compact('conceptos'));
-
-
 
     }
 
@@ -300,7 +294,6 @@ class MuestraController extends Controller
         foreach($grupos_totales as $g){
             //echo $g->concepto_id ." - ".$g->grupo_id." - ".$g->total_grupo;
             //echo "<br>";
-
             /*$query = "select *
             from tolerancia_grupo
             where grupo_id = $g->grupo_id
@@ -458,6 +451,7 @@ class MuestraController extends Controller
         $apariencias = Apariencia::all();
         $grupos = Grupo::all();
         $muestra_imagenes = MuestraImagen::where('muestra_id',$id)->get();
+        $estado_muestras = EstadoMuestra::orderBy('estado_muestra_nombre')->pluck('estado_muestra_nombre','estado_muestra_id');
 
         $statement = "SELECT
         z.`zona_id`
@@ -555,15 +549,11 @@ class MuestraController extends Controller
 
         $muestra->nota_id = $nota->nota_id;
         $muestra->save();
-        return view('admin.muestras.paso4.index',compact('muestra_imagenes','grupos_totales','muestra','nota','nota_calidad_nombre','nota_condicion_nombre'));
+        return view('admin.muestras.paso4.index',compact('estado_muestras','muestra_imagenes','grupos_totales','muestra','nota','nota_calidad_nombre','nota_condicion_nombre'));
     }
 
 
     public function uploadimagen(Request $request) {
-        $this->validate($request, [
-            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'muestra_imagen_texto' => 'required',
-        ]);
 
         $rules = [
             'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -590,6 +580,31 @@ class MuestraController extends Controller
             $muestra_imagen->save();
         }
 
+        return redirect::to('muestra-4/'.$muestra->muestra_id);
+
+
+    }
+
+
+    public function setMuestraSerie(Request $request){
+        $id = $request->muestra_id;
+        $muestra = Muestra::find($id);
+        $muestra->lote_codigo = $request->lote_codigo;
+        $muestra->estado_muestra_id = $request->estado_muestra_id;
+        $muestra->save();
+
+
+
+        $rules = [
+            'lote_codigo' => 'required|numeric',
+        ];
+
+        $messages = [
+            'lote_codigo.required' => 'Lote Codigo / Serie es obligatorio.',
+            'lote_codigo.numeric' => 'Lote Codigo / Serie debe ser un número.',
+        ];
+
+        $this->validate($request, $rules, $messages);
         return redirect::to('muestra-4/'.$muestra->muestra_id);
 
 

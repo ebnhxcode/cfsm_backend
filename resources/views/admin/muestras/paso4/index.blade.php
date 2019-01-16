@@ -38,7 +38,7 @@
                     </div>
             </div>
         </div>
-        
+
     </div>
     <div class="row">
             <div class="col">
@@ -98,14 +98,32 @@
             <div class="col">
                     <a href="{!!URL::to('/reportes')!!}" class="btn btn btn-success   btn-block"> Finalizar <i class="far fa-save"></i> </a>
             </div>
-            
+
             <br>
             <br>
     </div>
-    
-    <div>
+
+    <div class="alert alert-warning border border-danger">
+            <strong>Numero de pallet / serie!</strong>
+            {!! Form::open(['route' => 'setMuestraSerie', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
+            {!! Form::hidden('muestra_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
+            <div class="form-group">
+                    {!! Form::label('lote_codigo', 'Numero de pallet / serie', array('class' => '')) !!}
+                    {!! Form::text('lote_codigo',isset($muestra->lote_codigo) ? $muestra->lote_codigo : '', ['class' => 'form-control','id'=>'lote_codigo']) !!}
+            </div>
+            <div class="form-group">
+                    {!! Form::label('estado_muestra_id', 'Estado Muestra (Puede anular la medicion en caso de error)', array('class' => '')) !!}
+                    {!! Form::select('estado_muestra_id', $estado_muestras, isset($muestra->estado_muestra_id) ? $muestra->estado_muestra_id : '' , array('class' => 'form-control' , 'id'=>'estado_muestra_id')) !!}
+                </div>
+            <button type="submit" class="btn btn-success btn-block">Subir imagen</button>
+            {!! Form::close() !!}
+    </div>
+
+    <div class="alert alert-warning border border-danger">
+            <strong>Imágenes!</strong>
+
             {!! Form::open(['route' => 'uploadimagen', 'method' => 'POST', 'class' => '','role'=>'form','files' => true]) !!}
-                    {!! csrf_field() !!}
+
                     {!! Form::hidden('muestra_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
                     <div class="form-group">
                         <textarea class="form-control" name="muestra_imagen_texto" placeholder="Ingrese sus comentarios"></textarea>
@@ -115,10 +133,10 @@
                        {{Form::file('file')}}
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Subir imagen</button>
-                </form>
+
 
             {!! Form::close() !!}
-
+    </div>
 
 @endsection
 @section('js')
@@ -136,7 +154,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
+
     });
 </script>
 @endsection
