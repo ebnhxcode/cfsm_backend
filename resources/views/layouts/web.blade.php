@@ -36,6 +36,8 @@
 
       <!-- Navbar -->
       <ul class="navbar-nav ml-auto ml-md-0">
+
+        <!--
         <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
@@ -60,15 +62,49 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
         </li>
+        -->
+
+        <li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            &nbsp;
+          </a>
+        </li>
+
+        <li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            &nbsp;
+          </a>
+        </li>
+
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                <!-- Right Side Of Navbar -->
+            
+
+            <a class="dropdown-item" href="#">{{ Auth::user()->name }}</a>
+            
+            <!--
             <a class="dropdown-item" href="#">Settings</a>
             <a class="dropdown-item" href="#">Activity Log</a>
+            -->
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+            <!--<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>-->
+            @guest
+            @else
+            <a class="dropdown-item" href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                              document.getElementById('logout-form').submit();">
+                {{ __('Logout') }}
+            </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            @endguest
+
           </div>
         </li>
       </ul>
@@ -85,8 +121,6 @@
             <span>Tiempo real</span>
           </a>
         </li>
-
-        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
@@ -102,14 +136,13 @@
             <a class="dropdown-item" href="{!!URL::to('/tolerancias')!!}">Tolerancia</a>
           </div>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link" href="charts.html">
+          <a class="nav-link" href="#">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Graficos</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{!!URL::to('/muestras')!!}">
+          <a class="nav-link" href="{!!URL::to('/muestras/create')!!}">
             <i class="fas fa-fw fa-table"></i>
             <span>Muestras</span></a>
         </li>
@@ -119,6 +152,9 @@
             <span>Reportes</span></a>
         </li>
       </ul>
+
+
+
 
       <div id="content-wrapper">
 
