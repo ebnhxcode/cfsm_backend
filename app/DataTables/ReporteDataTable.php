@@ -67,7 +67,7 @@ class ReporteDataTable extends DataTable
     {
         set_time_limit(0);
         //CONTRUCCION DE BUSQUEDA SQL SEGUN PARAMETROS ENVIADOS POR POST
-        $query = $model->with('region','productor','especie','variedad','calibre','embalaje','etiqueta','nota','estado_muestra','lote')
+        $query = $model->with('region','productor','especie','variedad','calibre','embalaje','etiqueta','nota','estado_muestra')
         ->orderBy('muestra_id', 'DESC');;
 
         //Fecha en que fue entregado el producto
@@ -141,8 +141,7 @@ class ReporteDataTable extends DataTable
             'nota'              => ['name'  => 'nota.nota_nombre', 'title' => 'Nota'],
             'estado'            => ['name'  => 'estado_muestra.estado_muestra_nombre', 'title' => 'Estado'],
             'muestra_cajas'     => ['name'  => 'muestra_cajas', 'title' => 'Cajas'],
-            'lote_id'           => ['name'  => 'lote_id', 'title' => 'Lote'],
-            'lote_codigo'       => ['name'  => 'lote.lote_codigo', 'title' => 'Lote Código'],
+            'lote_codigo'       => ['name'  => 'lote_codigo', 'title' => 'Lote Código'],
             
             //'add your columns',
             /*'created_at',

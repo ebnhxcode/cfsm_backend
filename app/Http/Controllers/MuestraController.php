@@ -252,6 +252,7 @@ class MuestraController extends Controller
     public function muestraStep3($id){
         $muestra = Muestra::find($id);
         $conceptos = Concepto::all();
+        $apariencias = Apariencia::all();
         $grupos = Grupo::all();
         
         $nota = Nota::find($muestra->nota_id);
@@ -290,7 +291,7 @@ class MuestraController extends Controller
         $nota_general = max($nota_condicion_id,$nota_calidad_id,$nota->nota_id);
         $nota = Nota::find($nota_general);
         #dd($muestra);
-        return view('admin.muestras.paso3.index',compact('grupos','conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre'));
+        return view('admin.muestras.paso3.index',compact('grupos','conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre','apariencias'));
     }
 
     public function  paso3(Request $request){
@@ -317,7 +318,9 @@ class MuestraController extends Controller
         }else{
             #CALCULO POR NUMERO
             $calculado = $muestra_defecto_valor;
-            $muestra_defecto_valor=0;
+            $nota_id = 5;
+            $nota = Nota::find($nota_id);
+            $muestra_defecto_valor=$muestra_defecto_valor;
         }
         //return response()->json(1);
         #print_r($tolerancia->nota->nota_nombre);
@@ -375,7 +378,8 @@ class MuestraController extends Controller
             $nota = Nota::find($nota_id);
         }else{
             #CALCULO POR NUMERO
-            $muestra_defecto_valor=0;
+            $nota_id = 5;
+            $nota = Nota::find($nota_id);
         }
         //return response()->json(1);
         #print_r($tolerancia->nota->nota_nombre);

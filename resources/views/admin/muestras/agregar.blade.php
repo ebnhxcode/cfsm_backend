@@ -4,7 +4,15 @@
 
 @include('layouts.error')
 {!! Form::open(['route' => 'muestras.store', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
-    <h2 class="" id="">Muestra Paso 1</h2>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item">
+            <a href="#">Muestra</a>
+    </li>
+    <li class="breadcrumb-item active">Muestra Datos Generales</li>
+</ol>
     @include('admin.muestras.form.muestra')
     <button type="submit" class="btn btn-primary btn_ok">Enviar</button>
 {!! Form::close() !!}

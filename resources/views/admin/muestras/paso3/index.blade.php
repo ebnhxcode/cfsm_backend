@@ -115,7 +115,7 @@
                                 </select>
 
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="defectos">
                                 {!! Form::label('muestra_defecto_valor', 'Valor Defecto', array('class' => '')) !!}
                                 {!! Form::text('muestra_defecto_valor','', ['class' => 'form-control','id'=>'muestra_defecto_valor']) !!}
                         </div>
