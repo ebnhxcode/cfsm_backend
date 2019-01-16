@@ -57,8 +57,9 @@ class MuestraController extends Controller
         $categorias = Categoria::orderBy('categoria_nombre')->pluck('categoria_nombre','categoria_id');
         $embalajes = Embalaje::orderBy('embalaje_nombre')->pluck('embalaje_nombre','embalaje_id');
         $etiquetas = Etiqueta::orderBy('etiqueta_nombre')->pluck('etiqueta_nombre','etiqueta_id');
+        $apariencias = Apariencia::orderBy('apariencia_nombre')->pluck('apariencia_nombre','apariencia_id');
 
-        return view('admin.muestras.agregar', compact('regiones','especies','variedades','calibres','categorias','embalajes','etiquetas'));
+        return view('admin.muestras.agregar', compact('apariencias','regiones','especies','variedades','calibres','categorias','embalajes','etiquetas'));
     }
 
     /**
@@ -81,6 +82,7 @@ class MuestraController extends Controller
             'categoria_id' => 'required',
             'embalaje_id' => 'required',
             'etiqueta_id' => 'required',
+            'apariencia_id' => 'required',
         ];
 
         $messages = [
@@ -97,10 +99,14 @@ class MuestraController extends Controller
             'categoria_id.required' => 'Categoría es obligatorio.',
             'embalaje_id.required' => 'Embalaje es obligatorio.',
             'etiqueta_id.required' => 'Etiqueta es obligatorio.',
+            'apariencia_id.required' => 'Apariencia es obligatorio.',
         ];
 
         $this->validate($request, $rules, $messages);
 
+
+        $apariencia = Apariencia::find($request->apariencia_id);
+        #dd($apariencia);
         $muestra = new Muestra();
         $muestra->muestra_qr = $request->muestra_qr;
         $muestra->region_id = $request->region_id;
@@ -113,7 +119,7 @@ class MuestraController extends Controller
         $muestra->etiqueta_id = $request->etiqueta_id;
         $muestra->muestra_peso = $request->muestra_peso;
         $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
-        $muestra->nota_id = 1; //PROCESO
+        $muestra->nota_id = $apariencia->nota_id; //PROCESO
         $muestra->estado_muestra_id = 1;
 
         #dd($muestra->productor_id);
@@ -257,7 +263,7 @@ class MuestraController extends Controller
         $apariencias = Apariencia::all();
         $grupos = Grupo::all();
 
-        $statement = "SELECT 
+        $statement = "SELECT
         z.`zona_id`
         ,z.zona_nombre
         , c.`concepto_id`
@@ -265,7 +271,7 @@ class MuestraController extends Controller
         , g.`grupo_id`
         , g.`grupo_nombre`
         ,SUM(df.`muestra_defecto_calculo`) AS total_grupo
-        FROM  muestra_defecto df 
+        FROM  muestra_defecto df
         inner join defecto d ON df.`defecto_id` = d.`defecto_id` and df.muestra_id = $id
         INNER JOIN zona_defecto z ON z.zona_id = d.`zona_id`
         INNER JOIN concepto c ON c.`concepto_id` = d.`concepto_id`
@@ -294,7 +300,7 @@ class MuestraController extends Controller
         foreach($grupos_totales as $g){
             //echo $g->concepto_id ." - ".$g->grupo_id." - ".$g->total_grupo;
             //echo "<br>";
-            
+
             /*$query = "select *
             from tolerancia_grupo
             where grupo_id = $g->grupo_id
@@ -304,7 +310,7 @@ class MuestraController extends Controller
 
             $result = DB::select(DB::raw($query));
             dd($query);*/
-            
+
 
             $result = ToleranciaGrupo::where('grupo_id',$g->grupo_id)
             ->where('categoria_id',$muestra->categoria_id)
@@ -326,7 +332,7 @@ class MuestraController extends Controller
                 array_push($arrayCalidad, 4);
             }else{
                 #CONCEPTO 2 CONDICION
-                
+
                 array_push($arrayCondicion, 4);
             }
            }
@@ -339,13 +345,16 @@ class MuestraController extends Controller
         $nota_max_condicion = max($arrayCondicion);
         $nota_condicion = Nota::find($nota_max_condicion);
         $nota_condicion_nombre = $nota_condicion->nota_nombre;
-        
+
         if($nota_max_calidad >= $nota_max_condicion){
             $nota = Nota::find($nota_max_calidad);
         }else{
             $nota = Nota::find($nota_max_condicion);
         }
 
+        if($nota->nota_id < $muestra->nota_id){
+            $nota = Nota::find($muestra->nota_id);
+        }
         $muestras_defecto = MuestraDefecto::where('muestra_id',$id)->get();
         #dd($muestra);
         return view('admin.muestras.paso3.index',compact('grupos_totales','grupos','conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre','apariencias'));
@@ -356,7 +365,7 @@ class MuestraController extends Controller
         $defecto_id = $request->defecto_id;
         $defecto = Defecto::find($defecto_id);
         $muestra_defecto_valor = $request->muestra_defecto_valor;
-        
+
         if($defecto->zona_id == 1 ){
             #CALCULO POR %
             $calculado = round((($muestra_defecto_valor*100)/$muestra->muestra_peso),2);
@@ -381,7 +390,7 @@ class MuestraController extends Controller
         }
         //return response()->json(1);
         #print_r($tolerancia->nota->nota_nombre);
-        
+
         try {
             $muestra_defecto = New MuestraDefecto();
             $muestra_defecto->muestra_id = $request->muestra_id;
@@ -417,7 +426,7 @@ class MuestraController extends Controller
         $defecto_id = $request->defecto_id;
         $defecto = Defecto::find($defecto_id);
         $muestra_defecto_valor = $request->muestra_defecto_valor;
-        
+
         if($defecto->zona_id == 1 ){
             #CALCULO POR %
             $porcentaje = round((($muestra_defecto_valor*100)/$muestra->muestra_peso),0);
@@ -450,7 +459,7 @@ class MuestraController extends Controller
         $grupos = Grupo::all();
         $muestra_imagenes = MuestraImagen::where('muestra_id',$id)->get();
 
-        $statement = "SELECT 
+        $statement = "SELECT
         z.`zona_id`
         ,z.zona_nombre
         , c.`concepto_id`
@@ -458,7 +467,7 @@ class MuestraController extends Controller
         , g.`grupo_id`
         , g.`grupo_nombre`
         ,SUM(df.`muestra_defecto_calculo`) AS total_grupo
-        FROM  muestra_defecto df 
+        FROM  muestra_defecto df
         inner join defecto d ON df.`defecto_id` = d.`defecto_id` and df.muestra_id = $id
         INNER JOIN zona_defecto z ON z.zona_id = d.`zona_id`
         INNER JOIN concepto c ON c.`concepto_id` = d.`concepto_id`
@@ -487,7 +496,7 @@ class MuestraController extends Controller
         foreach($grupos_totales as $g){
             //echo $g->concepto_id ." - ".$g->grupo_id." - ".$g->total_grupo;
             //echo "<br>";
-            
+
             /*$query = "select *
             from tolerancia_grupo
             where grupo_id = $g->grupo_id
@@ -497,7 +506,7 @@ class MuestraController extends Controller
 
             $result = DB::select(DB::raw($query));
             dd($query);*/
-            
+
 
             $result = ToleranciaGrupo::where('grupo_id',$g->grupo_id)
             ->where('categoria_id',$muestra->categoria_id)
@@ -519,7 +528,7 @@ class MuestraController extends Controller
                 array_push($arrayCalidad, 4);
             }else{
                 #CONCEPTO 2 CONDICION
-                
+
                 array_push($arrayCondicion, 4);
             }
            }
@@ -532,12 +541,18 @@ class MuestraController extends Controller
         $nota_max_condicion = max($arrayCondicion);
         $nota_condicion = Nota::find($nota_max_condicion);
         $nota_condicion_nombre = $nota_condicion->nota_nombre;
-        
+
         if($nota_max_calidad >= $nota_max_condicion){
             $nota = Nota::find($nota_max_calidad);
         }else{
             $nota = Nota::find($nota_max_condicion);
         }
+
+        if($nota->nota_id < $muestra->nota_id){
+            $nota = Nota::find($muestra->nota_id);
+        }
+
+
         $muestra->nota_id = $nota->nota_id;
         $muestra->save();
         return view('admin.muestras.paso4.index',compact('muestra_imagenes','grupos_totales','muestra','nota','nota_calidad_nombre','nota_condicion_nombre'));
