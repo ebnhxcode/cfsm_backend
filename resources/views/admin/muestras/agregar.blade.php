@@ -14,7 +14,7 @@
     <li class="breadcrumb-item active">Muestra Datos Generales</li>
 </ol>
     @include('admin.muestras.form.muestra')
-    <button type="submit" class="btn btn-primary btn_ok">Enviar</button>
+    <button type="submit" class="btn btn-primary btn_ok btn-block">Guardar y Continuar <i class="far fa-caret-square-right"></i> </button>
 {!! Form::close() !!}
 
 @endsection

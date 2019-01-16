@@ -48,6 +48,7 @@ Route::get('muestra-3/{id}','MuestraController@muestraStep3');
 Route::post('getDefectosByGrupo', 'MuestraController@getDefectosByGrupo');
 Route::post('paso3', 'MuestraController@paso3');
 Route::post('getDefectoNota','MuestraController@getDefectoNota');
+Route::get('muestra-4/{id}','MuestraController@muestraStep4');
 
 
 

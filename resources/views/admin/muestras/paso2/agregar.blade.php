@@ -5,12 +5,11 @@
 @include('layouts.error')
 
 <form method="POST" action="{!!URL::to('/paso2')!!}"  accept-charset="UTF-8" role="form" >
-
     {!! Form::token() !!}
     <h2 class="" id="">Muestra Paso 2</h2>
     @include('admin.muestras.paso2.form.muestra')
     <a href='{{ route('muestras.edit',$muestra->muestra_id) }}' class="btn btn-primary btn_ok">Datos Generales</a>
-    <button type="submit" class="btn btn-primary btn_ok">Agregar</button>
+    <button type="submit" class="btn btn-primary btn_ok">Agregar  <i class="far fa-caret-square-right"></i> </button>
 </form>
 @endsection
 @section('js')

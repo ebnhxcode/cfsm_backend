@@ -36,27 +36,58 @@
                     </div>
             </div>
         </div>
+        
+    </div>
+    <div class="row">
+            <div class="col">
+
+                    @if (count($grupos_totales) > 0)
+                    <table class="table table-striped  table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> Grupo</th>
+                                <th> Concepto</th>
+                                <th> Acumulado </th>
+                            </tr>
+                        </thead>
+                        </tbody>
+                            @foreach ($grupos_totales as $g)
+                            <tr>
+                                <td> {{$g->grupo_nombre}}</td>
+                                <td>  {{$g->concepto_nombre}}</td>
+                                <td> {{$g->total_grupo}}  @if ( $g->concepto_id == 1) % @endif  </td>
+                            </tr>
+                            @endforeach
+                        <tbody>
+                    </table>
+                    @endif
+            </div>
     </div>
 
     <div class="row">
         <div class="col">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Agregar Defecto
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+                        Agregar defecto <i class="far fa-plus-square"></i>
                 </button>
         </div>
+        <div class="col">
+            <a href="{!!URL::to('/muestra-4/'.$muestra->muestra_id.'')!!}" class="btn btn-primary  btn-success btn-block">Siguiente y Guardar <i class="far fa-caret-square-right"></i></a>
+        </div>
+        <br>
+        <br>
     </div>
     <div class="row">
         <div class="col">
-            <br>
-            <br>
 
-            <table class="table table-striped">
-                    <thead class="">
+                
+            @if (count($muestras_defecto) > 0)
+            <table class="table table-striped  table-hover">
+                    <thead class="thead-dark">
                         <tr>
                             <th>Defecto </th>
                             <th>Concepto </th>
                             <th>Valor </th>
-                            <th>Nota </th>
+                            <th>Suma </th>
                             <th>-</th>
                         </tr>
                     </thead>
@@ -66,11 +97,12 @@
                                 <td> {{ $md->defecto->defecto_nombre }} </td>
                                 <td> {{ $md->defecto->concepto->concepto_nombre }} </td>
                                 <td> {{ $md->muestra_defecto_valor }}  </td>
-                                <td> {{ $md->nota->nota_nombre }}  </td>
+                                <td> {{ $md->muestra_defecto_calculo }}  </td>
                                 <td>
                                     {!! Form::model($md, array('route' => array('muestras_defectos.destroy', $md->muestra_defecto_id), 'method'=>'DELETE', 'class' => 'form-horizontal editar', 'role'=>'form')) !!}
                                         <button type="submit" class="btn">
                                                 <i class="far fa-trash-alt"></i>
+                                                
                                         </button>
                                     {!! Form::close() !!}
 
@@ -79,6 +111,7 @@
                         @endforeach
                     </tbody>
             </table>
+            @endif
         </div>
     </div>
     <!-- Modal -->
@@ -96,9 +129,7 @@
                         {!! Form::hidden('muestra_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
 
                         {!! Form::token() !!}
-                        <div class="alert alert-primary" role="alert" id="shownota">
-                                Nota del defecto
-                         </div>
+                        
                         <div class="form-group">
                                 {!! Form::label('grupo_id', 'Grupo', array('class' => '')) !!}
                                 <select  class="form-control" name="grupo_id" id="grupo_id">
@@ -123,7 +154,7 @@
                                 &nbsp;
                          </div>
 
-                        <button type="button" class="btn btn-primary" id="register">Registrar</button>
+                        <button type="button" class="btn btn-primary btn-block" id="register"> Registrar <i class="far fa-save"></i></button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -172,7 +203,7 @@
                     success: function (response) {
                     // you will get response from your php page (what you echo or print)
                             //LLEGA AL 3 PASO DONDE SE GUARDAN LOS DEFECTOS 1 A 1 alert("ok");
-                            $("#shownota").html(response);
+                            //$("#shownota").html(response);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus, errorThrown);

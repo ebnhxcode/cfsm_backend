@@ -48,7 +48,6 @@ class ReporteDataTable extends DataTable
             })
             ->addColumn('action', function ($query) {
                 return '
-                <i class="fas fa-caret-square-down fa-w-14 fa-3x"></i>
                 <a href="'.route('muestras.edit',$query->muestra_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
                 ';
             });

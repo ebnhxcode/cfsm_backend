@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Tolerancia;
 use App\MuestraDefecto;
+use DB;
+use App\ToleranciaGrupo;
 
 class MuestraController extends Controller
 {
@@ -146,6 +148,7 @@ class MuestraController extends Controller
     public function edit($id)
     {
         //
+        return redirect::to('muestra-3/'.$id);
     }
 
     /**
@@ -224,7 +227,6 @@ class MuestraController extends Controller
         $region_id = $request->region_id;
         $arrayProveedores = array();
         $productores  = Productor::where('region_id', $region_id)->get();
-        //dd($productores);
         foreach($productores as $p){
                     array_push($arrayProveedores, array( 'id' =>$p->productor_id,
                         'nombre' => $p->productor_nombre)
@@ -241,8 +243,6 @@ class MuestraController extends Controller
         $apariencias = Apariencia::orderBy('apariencia_id')->pluck('apariencia_nombre','apariencia_id');
         $muestra = Muestra::find($id);
 
-        #dd($apariencias);
-
         return view('admin.muestras.paso2.agregar',compact('conceptos','apariencias','muestra'));
 
 
@@ -254,44 +254,99 @@ class MuestraController extends Controller
         $conceptos = Concepto::all();
         $apariencias = Apariencia::all();
         $grupos = Grupo::all();
+
+        $statement = "SELECT 
+        z.`zona_id`
+        ,z.zona_nombre
+        , c.`concepto_id`
+        , c.`concepto_nombre`
+        , g.`grupo_id`
+        , g.`grupo_nombre`
+        ,SUM(df.`muestra_defecto_calculo`) AS total_grupo
+        FROM  muestra_defecto df 
+        inner join defecto d ON df.`defecto_id` = d.`defecto_id` and df.muestra_id = $id
+        INNER JOIN zona_defecto z ON z.zona_id = d.`zona_id`
+        INNER JOIN concepto c ON c.`concepto_id` = d.`concepto_id`
+        INNER JOIN grupo g ON g.`grupo_id` = d.grupo_id
+        INNER JOIN nota n ON n.`nota_id` = df.`nota_id`
+        INNER JOIN muestra m ON m.`muestra_id` = $id
+        GROUP BY z.zona_nombre
+        , z.`zona_id`
+        , c.`concepto_id`
+        , c.`concepto_nombre`
+        , g.`grupo_id`
+        , g.`grupo_nombre`
+        ";
+        #INICIALIZA LAS NOTAS GENERALES
+        $nota_max = 1;
+        $arrayCalidad = array();
+        array_push($arrayCalidad, 1);
+        $arrayCondicion = array();
+        array_push($arrayCondicion, 1);
+
+
+        $nota_calidad = max($arrayCalidad);
+        $nota_condicion = max($arrayCondicion);
+        $grupos_totales = DB::select(DB::raw($statement));
+
+        foreach($grupos_totales as $g){
+            //echo $g->concepto_id ." - ".$g->grupo_id." - ".$g->total_grupo;
+            //echo "<br>";
+            
+            /*$query = "select *
+            from tolerancia_grupo
+            where grupo_id = $g->grupo_id
+            and categoria_id = $muestra->categoria_id
+            and tolerancia_grupo_desde <=  $g->total_grupo
+            and tolerancia_grupo_hasta >=  $g->total_grupo  ";
+
+            $result = DB::select(DB::raw($query));
+            dd($query);*/
+            
+
+            $result = ToleranciaGrupo::where('grupo_id',$g->grupo_id)
+            ->where('categoria_id',$muestra->categoria_id)
+            ->where('tolerancia_grupo_desde','<=',$g->total_grupo)
+            ->where('tolerancia_grupo_hasta','>=',$g->total_grupo)
+            ->first();
+
+           if(isset($result->nota_id)){
+                    if($g->concepto_id == 1 ){
+                        #CONCEPTO 1 CALIDAD
+                        array_push($arrayCalidad, $result->nota_id);
+                    }else{
+                        #CONCEPTO 2 CONDICION
+                        array_push($arrayCondicion, $result->nota_id);
+                    }
+           }else{
+            if($g->concepto_id == 1 ){
+                #CONCEPTO 1 CALIDAD
+                array_push($arrayCalidad, 4);
+            }else{
+                #CONCEPTO 2 CONDICION
+                
+                array_push($arrayCondicion, 4);
+            }
+           }
+
+        }
+        $nota_max_calidad = max($arrayCalidad);
+        $nota_calidad = Nota::find($nota_max_calidad);
+        $nota_calidad_nombre = $nota_calidad->nota_nombre;
+
+        $nota_max_condicion = max($arrayCondicion);
+        $nota_condicion = Nota::find($nota_max_condicion);
+        $nota_condicion_nombre = $nota_condicion->nota_nombre;
         
-        $nota = Nota::find($muestra->nota_id);
+        if($nota_max_calidad >= $nota_max_condicion){
+            $nota = Nota::find($nota_max_calidad);
+        }else{
+            $nota = Nota::find($nota_max_condicion);
+        }
+
         $muestras_defecto = MuestraDefecto::where('muestra_id',$id)->get();
-        $defecto_nota_calidad = MuestraDefecto::select('nota_id')
-        ->join('defecto', 'defecto.defecto_id', '=', 'muestra_defecto.defecto_id')
-        ->join('nota', 'nota.nota_id', '=', 'muestra_defecto.nota_id')
-        ->where('muestra_defecto.muestra_id',$id)
-        ->where('defecto.concepto_id','1')
-        ->max('nota.nota_id');
-        $nota_calidad = Nota::find($defecto_nota_calidad);
-        if(isset($nota_calidad->nota_nombre)){
-            $nota_calidad_nombre = $nota_calidad->nota_nombre;
-            $nota_calidad_id = $nota_calidad->nota_id;
-        }else{
-            $nota_calidad_nombre = 'A';
-            $nota_calidad_id = 1;
-        }
-
-        $defecto_nota_condicion = MuestraDefecto::select('nota_id')
-        ->join('defecto', 'defecto.defecto_id', '=', 'muestra_defecto.defecto_id')
-        ->join('nota', 'nota.nota_id', '=', 'muestra_defecto.nota_id')
-        ->where('muestra_defecto.muestra_id',$id)
-        ->where('defecto.concepto_id','2')
-        ->max('nota.nota_id');
-
-        $nota_condicion = Nota::find($defecto_nota_condicion);
-        if(isset($nota_condicion->nota_nombre)){
-            $nota_condicion_nombre = $nota_condicion->nota_nombre;
-            $nota_condicion_id = $nota_condicion->nota_id;
-        }else{
-            $nota_condicion_nombre = 'A';
-            $nota_condicion_id = 1;
-        }
-
-        $nota_general = max($nota_condicion_id,$nota_calidad_id,$nota->nota_id);
-        $nota = Nota::find($nota_general);
         #dd($muestra);
-        return view('admin.muestras.paso3.index',compact('grupos','conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre','apariencias'));
+        return view('admin.muestras.paso3.index',compact('grupos_totales','grupos','conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre','apariencias'));
     }
 
     public function  paso3(Request $request){
@@ -384,6 +439,105 @@ class MuestraController extends Controller
         //return response()->json(1);
         #print_r($tolerancia->nota->nota_nombre);
         echo $nota->nota_nombre;
+    }
+
+    public function muestraStep4($id){
+        $muestra = Muestra::find($id);
+        $conceptos = Concepto::all();
+        $apariencias = Apariencia::all();
+        $grupos = Grupo::all();
+
+        $statement = "SELECT 
+        z.`zona_id`
+        ,z.zona_nombre
+        , c.`concepto_id`
+        , c.`concepto_nombre`
+        , g.`grupo_id`
+        , g.`grupo_nombre`
+        ,SUM(df.`muestra_defecto_calculo`) AS total_grupo
+        FROM  muestra_defecto df 
+        inner join defecto d ON df.`defecto_id` = d.`defecto_id` and df.muestra_id = $id
+        INNER JOIN zona_defecto z ON z.zona_id = d.`zona_id`
+        INNER JOIN concepto c ON c.`concepto_id` = d.`concepto_id`
+        INNER JOIN grupo g ON g.`grupo_id` = d.grupo_id
+        INNER JOIN nota n ON n.`nota_id` = df.`nota_id`
+        INNER JOIN muestra m ON m.`muestra_id` = $id
+        GROUP BY z.zona_nombre
+        , z.`zona_id`
+        , c.`concepto_id`
+        , c.`concepto_nombre`
+        , g.`grupo_id`
+        , g.`grupo_nombre`
+        ";
+        #INICIALIZA LAS NOTAS GENERALES
+        $nota_max = 1;
+        $arrayCalidad = array();
+        array_push($arrayCalidad, 1);
+        $arrayCondicion = array();
+        array_push($arrayCondicion, 1);
+
+
+        $nota_calidad = max($arrayCalidad);
+        $nota_condicion = max($arrayCondicion);
+        $grupos_totales = DB::select(DB::raw($statement));
+
+        foreach($grupos_totales as $g){
+            //echo $g->concepto_id ." - ".$g->grupo_id." - ".$g->total_grupo;
+            //echo "<br>";
+            
+            /*$query = "select *
+            from tolerancia_grupo
+            where grupo_id = $g->grupo_id
+            and categoria_id = $muestra->categoria_id
+            and tolerancia_grupo_desde <=  $g->total_grupo
+            and tolerancia_grupo_hasta >=  $g->total_grupo  ";
+
+            $result = DB::select(DB::raw($query));
+            dd($query);*/
+            
+
+            $result = ToleranciaGrupo::where('grupo_id',$g->grupo_id)
+            ->where('categoria_id',$muestra->categoria_id)
+            ->where('tolerancia_grupo_desde','<=',$g->total_grupo)
+            ->where('tolerancia_grupo_hasta','>=',$g->total_grupo)
+            ->first();
+
+           if(isset($result->nota_id)){
+                    if($g->concepto_id == 1 ){
+                        #CONCEPTO 1 CALIDAD
+                        array_push($arrayCalidad, $result->nota_id);
+                    }else{
+                        #CONCEPTO 2 CONDICION
+                        array_push($arrayCondicion, $result->nota_id);
+                    }
+           }else{
+            if($g->concepto_id == 1 ){
+                #CONCEPTO 1 CALIDAD
+                array_push($arrayCalidad, 4);
+            }else{
+                #CONCEPTO 2 CONDICION
+                
+                array_push($arrayCondicion, 4);
+            }
+           }
+
+        }
+        $nota_max_calidad = max($arrayCalidad);
+        $nota_calidad = Nota::find($nota_max_calidad);
+        $nota_calidad_nombre = $nota_calidad->nota_nombre;
+
+        $nota_max_condicion = max($arrayCondicion);
+        $nota_condicion = Nota::find($nota_max_condicion);
+        $nota_condicion_nombre = $nota_condicion->nota_nombre;
+        
+        if($nota_max_calidad >= $nota_max_condicion){
+            $nota = Nota::find($nota_max_calidad);
+        }else{
+            $nota = Nota::find($nota_max_condicion);
+        }
+        $muestra->nota_id = $nota->nota_id;
+        $muestra->save();
+        return view('admin.muestras.paso4.index',compact('grupos_totales','muestra','nota','nota_calidad_nombre','nota_condicion_nombre'));
     }
 
 }
