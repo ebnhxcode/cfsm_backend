@@ -110,10 +110,11 @@ class VariedadController extends Controller
             ->addColumn('action', function ($variedades) {
                 return '
                     <a href="'.route('variedades.edit',$variedades->variedad_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
-                    <a href="'.url('variedadesDelete/'.$variedades->variedad_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
                     ';
             })
             ->make(true);
+            #<a href="'.url('variedadesDelete/'.$variedades->variedad_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+
     }
 
     public function variedadesDelete($id){

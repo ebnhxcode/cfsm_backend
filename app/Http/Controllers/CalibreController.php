@@ -108,10 +108,11 @@ class CalibreController extends Controller
             ->addColumn('action', function ($calibres) {
                 return '
                     <a href="'.route('calibres.edit',$calibres->calibre_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
-                    <a href="'.url('calibresDelete/'.$calibres->calibre_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+
                     ';
             })
             ->make(true);
+            # <a href="'.url('calibresDelete/'.$calibres->calibre_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
     }
 
     public function calibresDelete($id){

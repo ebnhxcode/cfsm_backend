@@ -140,10 +140,11 @@ class ProductorController extends Controller
             ->addColumn('action', function ($productores) {
                 return '
                     <a href="'.route('productores.edit',$productores->productor_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
-                    <a href="'.url('productoresDelete/'.$productores->productor_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
+
                     ';
             })
             ->make(true);
+            #<a href="'.url('productoresDelete/'.$productores->productor_id).'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-edit"></i> Eliminar </a>
     }
 
     public function productoresDelete($id){
