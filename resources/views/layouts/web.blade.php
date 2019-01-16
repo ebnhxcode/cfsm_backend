@@ -85,6 +85,8 @@
             <span>Tiempo real</span>
           </a>
         </li>
+
+        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
@@ -100,13 +102,14 @@
             <a class="dropdown-item" href="{!!URL::to('/tolerancias')!!}">Tolerancia</a>
           </div>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" href="charts.html">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Graficos</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{!!URL::to('/reportes')!!}">
+          <a class="nav-link" href="{!!URL::to('/muestras')!!}">
             <i class="fas fa-fw fa-table"></i>
             <span>Muestras</span></a>
         </li>

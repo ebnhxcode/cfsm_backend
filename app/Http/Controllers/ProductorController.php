@@ -13,10 +13,8 @@ use Illuminate\Support\Facades\Redirect;
 
 class ProductorController extends Controller
 {
-    public function __construct(){        
-        $this->middleware('guest');
-        $this->middleware('auth');
-        $this->middleware('admin');
+    public function __construct(){
+        #$this->middleware('admin');
     }
     /**
      * Display a listing of the resource.

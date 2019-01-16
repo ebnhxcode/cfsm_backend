@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class EmbalajeController extends Controller
 {
-    public function __construct(){        
-        $this->middleware('guest');
-        $this->middleware('auth');
+    public function __construct(){
         $this->middleware('admin');
     }
     /**

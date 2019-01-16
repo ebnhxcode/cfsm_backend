@@ -6,10 +6,9 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function __construct(){        
-        $this->middleware('guest');
-        $this->middleware('auth');
-        $this->middleware('admin');
+    public function __construct(){
+        #$this->middleware('admin');
+        #$this->middleware('guest');
     }
     /**
      * Create a new controller instance.

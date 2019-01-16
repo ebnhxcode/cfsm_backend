@@ -11,19 +11,33 @@
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.web');
-});
+
+
+
 Auth::routes();
 Auth::routes(['register' => false]);
 
 
-Route::post('/login', 'Auth\LoginController@login');
+#Route::post('/login', 'Auth\LoginController@login');
 
 Route::group(['middleware' => ['web']], function () { #auth
     
-    Route::get('/', function () {return view('layouts.web'); });
-    Route::get('/home', function () {return view('layouts.web'); })->name('home');
+    Route::get('/', function () {
+
+        return redirect()->to('/login');
+    });
+
+
+
+    #Route::get('/', 'HomeController@index');
+    Route::get('/home', function () {
+
+        return view('layouts.web'); 
+        return redirect()->to('/muestras');
+
+        #
+        
+    })->name('home');
 
     
 
@@ -52,7 +66,7 @@ Route::get('reportes','ReporteController@index');
 
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+#Route::get('/home', 'HomeController@index')->name('home');
 
 /*pasos de las muestras */
 

@@ -19,9 +19,8 @@ use App\ZonaDefecto;
 
 class ApiController extends Controller
 {
-    public function __construct(){        
-        $this->middleware('guest');
-        $this->middleware('auth');
+    public function __construct(){
+        #$this->middleware('auth.basic');
         $this->middleware('admin');
     }
 

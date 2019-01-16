@@ -11,10 +11,8 @@ use App\Variedad;
 use App\Especie;
 
 class VariedadController extends Controller
-{
-    public function __construct(){        
-        $this->middleware('guest');
-        $this->middleware('auth');
+{	
+    public function __construct(){
         $this->middleware('admin');
     }
     /**
