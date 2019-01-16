@@ -65,6 +65,32 @@
                     @endif
             </div>
     </div>
+
+    <div class="row">
+            <div class="col">
+
+                    @if (count($muestra_imagenes) > 0)
+                    <table class="table table-striped  table-hover ">
+                        <thead class="thead-dark" >
+                            <tr>
+                                <th> Id</th>
+                                <th> Comentario </th>
+                                <th> Ver </th>
+                            </tr>
+                        </thead>
+                        </tbody>
+                            @foreach ($muestra_imagenes as $g)
+                            <tr>
+                                <td> {{$g->muestra_imagen_id}}</td>
+                                <td>  {{$g->muestra_imagen_texto}}</td>
+                                <td> <a href="{!!URL::to("$g->muestra_imagen_ruta_corta")!!}" target="_blank" > Ver </a>  </td>
+                            </tr>
+                            @endforeach
+                        <tbody>
+                    </table>
+                    @endif
+            </div>
+    </div>
     <div class="row">
             <div class="col">
                     <a href="{!!URL::to('/muestra-3/'.$muestra->muestra_id.'')!!}" class="btn btn btn-warning   btn-block"> <i class="far fa-caret-square-left"></i> Volver</a>
@@ -76,23 +102,22 @@
             <br>
             <br>
     </div>
-
+    
     <div>
-            <form method="POST" action="subir" enctype="multipart/form-data">
+            {!! Form::open(['route' => 'uploadimagen', 'method' => 'POST', 'class' => '','role'=>'form','files' => true]) !!}
                     {!! csrf_field() !!}
+                    {!! Form::hidden('muestra_id',isset($muestra->muestra_id) ? $muestra->muestra_id : '', ['class' => 'form-control','type'=>'hidden']) !!}
                     <div class="form-group">
-                        <textarea class="form-control" name="descripcion" placeholder="Descripcion"></textarea>
+                        <textarea class="form-control" name="muestra_imagen_texto" placeholder="Ingrese sus comentarios"></textarea>
                     </div>
                     <div class="form-group">
                         <label>File input</label>
-                        <input type="file" name="imagen" >
-                        <p class="help-block">Subir imagen</p>
+                       {{Form::file('file')}}
                     </div>
-                   
                     <button type="submit" class="btn btn-success btn-block">Subir imagen</button>
                 </form>
 
-    </div>
+            {!! Form::close() !!}
 
 
 @endsection

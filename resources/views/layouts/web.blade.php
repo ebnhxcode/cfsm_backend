@@ -99,7 +99,7 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="charts.html">
+          <a class="nav-link" href="#">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Graficos</span></a>
         </li>

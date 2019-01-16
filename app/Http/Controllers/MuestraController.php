@@ -26,6 +26,8 @@ use App\Tolerancia;
 use App\MuestraDefecto;
 use DB;
 use App\ToleranciaGrupo;
+use Storage;
+use App\MuestraImagen;
 
 class MuestraController extends Controller
 {
@@ -446,6 +448,7 @@ class MuestraController extends Controller
         $conceptos = Concepto::all();
         $apariencias = Apariencia::all();
         $grupos = Grupo::all();
+        $muestra_imagenes = MuestraImagen::where('muestra_id',$id)->get();
 
         $statement = "SELECT 
         z.`zona_id`
@@ -537,24 +540,44 @@ class MuestraController extends Controller
         }
         $muestra->nota_id = $nota->nota_id;
         $muestra->save();
-        return view('admin.muestras.paso4.index',compact('grupos_totales','muestra','nota','nota_calidad_nombre','nota_condicion_nombre'));
+        return view('admin.muestras.paso4.index',compact('muestra_imagenes','grupos_totales','muestra','nota','nota_calidad_nombre','nota_condicion_nombre'));
     }
 
 
-    public function fileUpload(Request $request) {
+    public function uploadimagen(Request $request) {
         $this->validate($request, [
-            'input_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'muestra_imagen_texto' => 'required',
         ]);
-    
-        if ($request->hasFile('input_img')) {
-            $image = $request->file('input_img');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $this->save();
-    
-            return back()->with('success','Image Upload successfully');
+
+        $rules = [
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'muestra_imagen_texto' => 'required',
+            'muestra_id'  => 'required',
+        ];
+
+        $messages = [
+            'file.required' => 'Imagen es obligatorio.',
+            'muestra_imagen_texto.required' => 'Comentario es obligatorio.',
+            'muestra_id.required' => 'Muestra es obligatorio.',
+        ];
+
+        $this->validate($request, $rules, $messages);
+        $muestra = Muestra::find($request->muestra_id);
+        if($request->file('file')){
+            $path = Storage::disk('public')->put('image', $request->file('file'));
+            $muestra_imagen = new MuestraImagen();
+            $muestra_imagen->muestra_imagen_ruta  = asset($path);
+            #$muestra_imagen->muestra_imagen_fecha
+            $muestra_imagen->muestra_id = $request->muestra_id;
+            $muestra_imagen->muestra_imagen_texto = $request->muestra_imagen_texto;
+            $muestra_imagen->muestra_imagen_ruta_corta = $path;
+            $muestra_imagen->save();
         }
+
+        return redirect::to('muestra-4/'.$muestra->muestra_id);
+
+
     }
 
 

@@ -49,7 +49,7 @@ Route::post('getDefectosByGrupo', 'MuestraController@getDefectosByGrupo');
 Route::post('paso3', 'MuestraController@paso3');
 Route::post('getDefectoNota','MuestraController@getDefectoNota');
 Route::get('muestra-4/{id}','MuestraController@muestraStep4');
-
+Route::post('uploadimagen','MuestraController@uploadimagen')->name('uploadimagen');
 
 
 
