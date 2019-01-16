@@ -14,6 +14,20 @@
 Route::get('/', function () {
     return view('layouts.web');
 });
+Auth::routes();
+Auth::routes(['register' => false]);
+
+
+Route::post('/login', 'Auth\LoginController@login');
+
+Route::group(['middleware' => ['web']], function () { #auth
+    
+    Route::get('/', function () {return view('layouts.web'); });
+    Route::get('/home', function () {return view('layouts.web'); })->name('home');
+
+    
+
+    #Route::get('/', 'HomeController@index');
 
 Route::resource('productores', 'ProductorController');
 Route::resource('calibres', 'CalibreController');
@@ -36,7 +50,7 @@ Route::resource('variedades', 'VariedadController');
 Route::resource('zonas_defectos', 'ZonaDefectoController');
 Route::get('reportes','ReporteController@index');
 
-Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -92,10 +106,5 @@ Route::get('getZonaDefecto', 'ApiController@getZonaDefecto');
 Route::get('loginUsuario', 'ApiController@loginUsuario');
 Route::get('muestrasDatetables', 'MuestraController@muestrasDatetables');
 
-Auth::routes();
+});
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

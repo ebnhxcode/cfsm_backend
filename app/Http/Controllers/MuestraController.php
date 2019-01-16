@@ -32,6 +32,14 @@ use App\MuestraImagen;
 
 class MuestraController extends Controller
 {
+
+    public function __construct(){        
+        $this->middleware('guest');
+        $this->middleware('auth');
+        $this->middleware('admin');
+        $this->middleware('cliente');
+
+    }
     /**
      * Display a listing of the resource.
      *

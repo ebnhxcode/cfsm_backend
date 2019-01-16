@@ -8,6 +8,11 @@ use App\DataTables\ReporteDataTable;
 
 class ReporteController extends Controller
 {
+    public function __construct(){        
+        $this->middleware('guest');
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
     public function index(ReporteDataTable $dataTable)
     {
         return $dataTable->render('admin.reportes.index');

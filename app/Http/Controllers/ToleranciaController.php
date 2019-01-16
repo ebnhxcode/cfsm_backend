@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Redirect;
 
 class ToleranciaController extends Controller
 {
+    public function __construct(){        
+        $this->middleware('guest');
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
     /**
      * Display a listing of the resource.
      *
