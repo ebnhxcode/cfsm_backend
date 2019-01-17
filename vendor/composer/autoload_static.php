@@ -515,6 +515,7 @@ class ComposerStaticInit0e2714e4f60ae0df7b156fc8610f0520
     );
 
     public static $classMap = array (
+        'App\\Apariencia' => __DIR__ . '/../..' . '/app/Apariencia.php',
         'App\\Calibre' => __DIR__ . '/../..' . '/app/Calibre.php',
         'App\\Categoria' => __DIR__ . '/../..' . '/app/Categoria.php',
         'App\\Comuna' => __DIR__ . '/../..' . '/app/Comuna.php',
@@ -527,6 +528,7 @@ class ComposerStaticInit0e2714e4f60ae0df7b156fc8610f0520
         'App\\EstadoMuestra' => __DIR__ . '/../..' . '/app/EstadoMuestra.php',
         'App\\Etiqueta' => __DIR__ . '/../..' . '/app/Etiqueta.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Grupo' => __DIR__ . '/../..' . '/app/Grupo.php',
         'App\\Http\\Controllers\\ApiController' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -567,6 +569,7 @@ class ComposerStaticInit0e2714e4f60ae0df7b156fc8610f0520
         'App\\Lote' => __DIR__ . '/../..' . '/app/Lote.php',
         'App\\Muestra' => __DIR__ . '/../..' . '/app/Muestra.php',
         'App\\MuestraDefecto' => __DIR__ . '/../..' . '/app/MuestraDefecto.php',
+        'App\\MuestraImagen' => __DIR__ . '/../..' . '/app/MuestraImagen.php',
         'App\\Nota' => __DIR__ . '/../..' . '/app/Nota.php',
         'App\\Productor' => __DIR__ . '/../..' . '/app/Productor.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -577,6 +580,7 @@ class ComposerStaticInit0e2714e4f60ae0df7b156fc8610f0520
         'App\\Provincia' => __DIR__ . '/../..' . '/app/Provincia.php',
         'App\\Region' => __DIR__ . '/../..' . '/app/Region.php',
         'App\\Tolerancia' => __DIR__ . '/../..' . '/app/Tolerancia.php',
+        'App\\ToleranciaGrupo' => __DIR__ . '/../..' . '/app/ToleranciaGrupo.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\Variedad' => __DIR__ . '/../..' . '/app/Variedad.php',
         'App\\ZonaDefecto' => __DIR__ . '/../..' . '/app/ZonaDefecto.php',

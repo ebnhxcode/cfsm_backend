@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Apariencia' => $baseDir . '/app/Apariencia.php',
     'App\\Calibre' => $baseDir . '/app/Calibre.php',
     'App\\Categoria' => $baseDir . '/app/Categoria.php',
     'App\\Comuna' => $baseDir . '/app/Comuna.php',
@@ -18,6 +19,7 @@ return array(
     'App\\EstadoMuestra' => $baseDir . '/app/EstadoMuestra.php',
     'App\\Etiqueta' => $baseDir . '/app/Etiqueta.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Grupo' => $baseDir . '/app/Grupo.php',
     'App\\Http\\Controllers\\ApiController' => $baseDir . '/app/Http/Controllers/ApiController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -58,6 +60,7 @@ return array(
     'App\\Lote' => $baseDir . '/app/Lote.php',
     'App\\Muestra' => $baseDir . '/app/Muestra.php',
     'App\\MuestraDefecto' => $baseDir . '/app/MuestraDefecto.php',
+    'App\\MuestraImagen' => $baseDir . '/app/MuestraImagen.php',
     'App\\Nota' => $baseDir . '/app/Nota.php',
     'App\\Productor' => $baseDir . '/app/Productor.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
@@ -68,6 +71,7 @@ return array(
     'App\\Provincia' => $baseDir . '/app/Provincia.php',
     'App\\Region' => $baseDir . '/app/Region.php',
     'App\\Tolerancia' => $baseDir . '/app/Tolerancia.php',
+    'App\\ToleranciaGrupo' => $baseDir . '/app/ToleranciaGrupo.php',
     'App\\User' => $baseDir . '/app/User.php',
     'App\\Variedad' => $baseDir . '/app/Variedad.php',
     'App\\ZonaDefecto' => $baseDir . '/app/ZonaDefecto.php',

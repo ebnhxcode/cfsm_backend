@@ -110,7 +110,10 @@
 @push('custom_js')
 
     <link rel="stylesheet" href="{{ url('vendor/datatables/buttons.bootstrap4.min.css') }}">
-    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />   
+    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+
     <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 
     <script src="{{ url('js/messages/messages.es-es.min.js') }}"></script>
@@ -118,6 +121,7 @@
     <script src="{{ url('vendor/datatables/dataTables.buttons.min.js') }}"></script>
     <script src="{{ url('vendor/datatables/buttons.bootstrap4.min.js') }}"></script>
     <script src="{{ url('vendor/datatables/buttons.server-side.js') }}"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
 
 
     <script type="text/javascript">
@@ -129,6 +133,9 @@
             'autoWidth': false,
             'stateSave': true,
             'responsive': true,
+            columnDefs: [ {
+                className: 'control'
+            } ],
             
         });
     </script>

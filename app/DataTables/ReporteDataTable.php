@@ -48,8 +48,13 @@ class ReporteDataTable extends DataTable
             })
             ->addColumn('action', function ($query) {
                 return '
-                <a href="'.route('muestras.edit',$query->muestra_id).'" class="btn btn-xs btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                <a href="'.route('muestras.edit',$query->muestra_id).'" class="btn btn-sm mb-1 btn-warning"><i class="glyphicon glyphicon-edit"></i> Editar </a>
+                <br>
+                <a href="'.route('muestras.show',$query->muestra_id).'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Detalle </a>
                 ';
+            })
+            ->addColumn('responsive', function ($query) {
+                
             });
             /*->editColumn('lote_codigo', function($query) {
                 return $query->lote->lote_codigo;
@@ -126,7 +131,8 @@ class ReporteDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'action'            => ['name'  => 'action', 'title' => 'Opciones'],
+            'responsive'        => ['title' => '', 'searchable' => false, 'orderable' => false, 'exportable' => false],
+            'action'            => ['name'  => 'action', 'title' => 'Opciones', 'exportable' => false],
             'muestra_id'        => ['name'  => 'muestra_id', 'title' => 'ID'],
             'muestra_fecha'     => ['name'  => 'muestra_fecha', 'title' => 'Fecha'],
             'muestra_qr'        => ['name'  => 'muestra_qr', 'title' => 'QR'],
@@ -140,11 +146,7 @@ class ReporteDataTable extends DataTable
             'nota'              => ['name'  => 'nota.nota_nombre', 'title' => 'Nota'],
             'estado'            => ['name'  => 'estado_muestra.estado_muestra_nombre', 'title' => 'Estado'],
             'muestra_cajas'     => ['name'  => 'muestra_cajas', 'title' => 'Cajas'],
-            'lote_codigo'       => ['name'  => 'lote_codigo', 'title' => 'Lote Código'],
-            
-            //'add your columns',
-            /*'created_at',
-            'updated_at'*/
+            //'lote_codigo'       => ['name'  => 'lote_codigo', 'title' => 'Lote Código'],
         ];
     }
 
@@ -161,20 +163,11 @@ class ReporteDataTable extends DataTable
     protected function getBuilderParameters()
     {
         return [
-            /*'dom'     => "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-4'i><'col-sm-4 text-center'B><'col-sm-4'p>>",
-            'order'   => [[0, 'asc']],
-            'buttons' => [
-                'excel',
-                //'print',
-                [
-                    'extend' => 'print',
-                    'text' => '<i class="fa fa-print"></i> Imprimir'
-                ],
-                'reset',
-            ],*/
             'dom'     => "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-4'i><'col-sm-4 text-center'B><'col-sm-4'p>>",
             'buttons' => [
                 'excel',
+                'csv',
+                //'pdf',
                 [
                     'extend' => 'print',
                     'text' => '<i class="fa fa-print"></i> Imprimir'
