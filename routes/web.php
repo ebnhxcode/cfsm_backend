@@ -27,6 +27,10 @@ Route::group(['middleware' => ['web']], function () { #auth
         return redirect()->to('/login');
     });
 
+    Route::get('/test', function () {
+        dd(Auth::user()->perfil->perfil_nombre);
+    });
+
 
 
     #Route::get('/', 'HomeController@index');

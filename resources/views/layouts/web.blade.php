@@ -85,6 +85,11 @@
             
 
             <a class="dropdown-item" href="#">{{ Auth::user()->name }}</a>
+            @guest
+
+            @else
+              <a class="dropdown-item" href="#">Perfil: {{Auth::user()->perfil->perfil_nombre}}</a>
+            @endguest
             
             <!--
             <a class="dropdown-item" href="#">Settings</a>
@@ -121,6 +126,7 @@
             <span>Tiempo real</span>
           </a>
         </li>
+        @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
@@ -136,6 +142,8 @@
             <a class="dropdown-item" href="{!!URL::to('/tolerancias')!!}">Tolerancia</a>
           </div>
         </li>
+        @endif
+
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="fas fa-fw fa-chart-area"></i>
