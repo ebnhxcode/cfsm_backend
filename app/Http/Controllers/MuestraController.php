@@ -142,7 +142,111 @@ class MuestraController extends Controller
      */
     public function show($id)
     {
+        $muestra = Muestra::find($id);
+        $conceptos = Concepto::all();
+        $apariencias = Apariencia::all();
+        $grupos = Grupo::all();
+        $muestra_imagenes = MuestraImagen::where('muestra_id',$id)->get();
+        $estado_muestras = EstadoMuestra::orderBy('estado_muestra_nombre')->pluck('estado_muestra_nombre','estado_muestra_id');
+        $muestras_defecto = MuestraDefecto::where('muestra_id',$id)->get();
+        $muestra_imagenes = MuestraImagen::where('muestra_id',$id)->get();
+        $statement = "SELECT
+        z.`zona_id`
+        ,z.zona_nombre
+        , c.`concepto_id`
+        , c.`concepto_nombre`
+        , g.`grupo_id`
+        , g.`grupo_nombre`
+        ,SUM(df.`muestra_defecto_calculo`) AS total_grupo
+        FROM  muestra_defecto df
+        inner join defecto d ON df.`defecto_id` = d.`defecto_id` and df.muestra_id = $id
+        INNER JOIN zona_defecto z ON z.zona_id = d.`zona_id`
+        INNER JOIN concepto c ON c.`concepto_id` = d.`concepto_id`
+        INNER JOIN grupo g ON g.`grupo_id` = d.grupo_id
+        INNER JOIN nota n ON n.`nota_id` = df.`nota_id`
+        INNER JOIN muestra m ON m.`muestra_id` = $id
+        GROUP BY z.zona_nombre
+        , z.`zona_id`
+        , c.`concepto_id`
+        , c.`concepto_nombre`
+        , g.`grupo_id`
+        , g.`grupo_nombre`
+        ";
+        #INICIALIZA LAS NOTAS GENERALES
+        $nota_max = 1;
+        $arrayCalidad = array();
+        array_push($arrayCalidad, 1);
+        $arrayCondicion = array();
+        array_push($arrayCondicion, 1);
 
+
+        $nota_calidad = max($arrayCalidad);
+        $nota_condicion = max($arrayCondicion);
+        $grupos_totales = DB::select(DB::raw($statement));
+
+        foreach($grupos_totales as $g){
+            //echo $g->concepto_id ." - ".$g->grupo_id." - ".$g->total_grupo;
+            //echo "<br>";
+
+            /*$query = "select *
+            from tolerancia_grupo
+            where grupo_id = $g->grupo_id
+            and categoria_id = $muestra->categoria_id
+            and tolerancia_grupo_desde <=  $g->total_grupo
+            and tolerancia_grupo_hasta >=  $g->total_grupo  ";
+
+            $result = DB::select(DB::raw($query));
+            dd($query);*/
+
+
+            $result = ToleranciaGrupo::where('grupo_id',$g->grupo_id)
+            ->where('categoria_id',$muestra->categoria_id)
+            ->where('tolerancia_grupo_desde','<=',$g->total_grupo)
+            ->where('tolerancia_grupo_hasta','>=',$g->total_grupo)
+            ->first();
+
+           if(isset($result->nota_id)){
+                    if($g->concepto_id == 1 ){
+                        #CONCEPTO 1 CALIDAD
+                        array_push($arrayCalidad, $result->nota_id);
+                    }else{
+                        #CONCEPTO 2 CONDICION
+                        array_push($arrayCondicion, $result->nota_id);
+                    }
+           }else{
+            if($g->concepto_id == 1 ){
+                #CONCEPTO 1 CALIDAD
+                array_push($arrayCalidad, 4);
+            }else{
+                #CONCEPTO 2 CONDICION
+
+                array_push($arrayCondicion, 4);
+            }
+           }
+
+        }
+        $nota_max_calidad = max($arrayCalidad);
+        $nota_calidad = Nota::find($nota_max_calidad);
+        $nota_calidad_nombre = $nota_calidad->nota_nombre;
+
+        $nota_max_condicion = max($arrayCondicion);
+        $nota_condicion = Nota::find($nota_max_condicion);
+        $nota_condicion_nombre = $nota_condicion->nota_nombre;
+
+        if($nota_max_calidad >= $nota_max_condicion){
+            $nota = Nota::find($nota_max_calidad);
+        }else{
+            $nota = Nota::find($nota_max_condicion);
+        }
+
+        if($nota->nota_id < $muestra->nota_id){
+            $nota = Nota::find($muestra->nota_id);
+        }
+
+
+        $muestra->nota_id = $nota->nota_id;
+        //$muestra->save();
+        return view('admin.muestras.show',compact('muestra_imagenes','grupos_totales','grupos','conceptos','muestra','nota','muestras_defecto','nota_calidad_nombre','nota_condicion_nombre','apariencias'));
     }
 
     /**

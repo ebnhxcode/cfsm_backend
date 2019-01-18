@@ -15,7 +15,7 @@ class Etiqueta extends Model
 
     #hasMany's
     public function muestras () {
-        return $this->hasMany(Muestra::class, 'etiqueta_id');
+        return $this->hasMany('App\Muestra', 'etiqueta_id');
     }
 
 
