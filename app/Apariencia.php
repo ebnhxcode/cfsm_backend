@@ -17,4 +17,9 @@ class Apariencia extends Model
     ];
 
     public $timestamps = false;
+
+    public function muestras () {
+        return $this->hasMany('App\Muestra', 'apariencia_id');
+    }
+
 }

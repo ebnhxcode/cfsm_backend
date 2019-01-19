@@ -88,6 +88,8 @@ class MuestraController extends Controller
             'embalaje_id' => 'required',
             'etiqueta_id' => 'required',
             'apariencia_id' => 'required',
+            'muestra_bolsas' => 'required|numeric',
+            'muestra_racimos' => 'required|numeric',
         ];
 
         $messages = [
@@ -105,6 +107,10 @@ class MuestraController extends Controller
             'embalaje_id.required' => 'Embalaje es obligatorio.',
             'etiqueta_id.required' => 'Etiqueta es obligatorio.',
             'apariencia_id.required' => 'Apariencia es obligatorio.',
+            'muestra_bolsas.required' => 'Bolsas es obligatorio.',
+            'muestra_bolsas.numeric' => 'Bolsas debe ser número..',
+            'muestra_racimos.required' => 'Racimos es obligatorio.',
+            'muestra_racimos.numeric' => 'Bolsas debe ser número..',
         ];
 
         $this->validate($request, $rules, $messages);
@@ -121,11 +127,14 @@ class MuestraController extends Controller
         $muestra->calibre_id = $request->calibre_id;
         $muestra->categoria_id = $request->categoria_id;
         $muestra->embalaje_id = $request->embalaje_id;
+        $muestra->apariencia_id = $request->apariencia_id;
         $muestra->etiqueta_id = $request->etiqueta_id;
         $muestra->muestra_peso = $request->muestra_peso;
         $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
         $muestra->nota_id = $apariencia->nota_id; //PROCESO
         $muestra->estado_muestra_id = 1;
+        $muestra->muestra_bolsas = $request->muestra_bolsas;
+        $muestra->muestra_racimos = $request->muestra_racimos;
 
         #dd($muestra->productor_id);
         $muestra->save();

@@ -24,16 +24,14 @@ class Muestra extends Model
         'estado_muestra_id',
         'lote_id',
         'muestra_peso',
+        'apariencia_id',
 
     ];
     public $timestamps = false;
 
     #hasMany's
     public function muestras_defectos () {
-        return $this->hasMany(MuestraDefecto::class, 'muestra_id');
-    }
-    public function variedades () {
-        return $this->hasMany(Variedad::class, 'muestra_id');
+        return $this->hasMany('App\MuestraDefecto', 'muestra_id');
     }
 
     #belongsTo's
@@ -79,6 +77,10 @@ class Muestra extends Model
 
     public function categoria() {
         return $this->belongsTo('App\Categoria', 'categoria_id');
+    }
+
+    public function apariencia () {
+        return $this->belongsTo('App\Apariencia', 'apariencia_id');
     }
 
 }

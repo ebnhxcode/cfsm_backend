@@ -35,15 +35,12 @@
                 {!! Form::label('variedad_id', 'Variedad', array('class' => '')) !!}
                 {!! Form::select('variedad_id', $variedades, isset($muestra->variedad_id) ? $muestra->variedad_id : '' , array('class' => 'form-control' , 'id'=>'variedad_id')) !!}
             </div>
-
-
+            <div class="form-group">
+                {!! Form::label('calibre_id', 'Calibre', array('class' => '')) !!}
+                {!! Form::select('calibre_id', $calibres, isset($muestra->calibre_id) ? $muestra->calibre_id : '' , array('class' => 'form-control' , 'id'=>'calibre_id')) !!}
+            </div>
     </div>
     <div class="col-lg-6" >
-            <div class="form-group">
-                    {!! Form::label('calibre_id', 'Calibre', array('class' => '')) !!}
-                    {!! Form::select('calibre_id', $calibres, isset($muestra->calibre_id) ? $muestra->calibre_id : '' , array('class' => 'form-control' , 'id'=>'calibre_id')) !!}
-            </div>
-
             <div class="form-group">
                     {!! Form::label('categoria_id', 'Categoria', array('class' => '')) !!}
                     {!! Form::select('categoria_id', $categorias, isset($muestra->categoria_id) ? $muestra->categoria_id : '' , array('class' => 'form-control' , 'id'=>'categoria_id')) !!}
@@ -56,14 +53,22 @@
                     {!! Form::label('etiqueta_id', 'Etiqueta', array('class' => '')) !!}
                     {!! Form::select('etiqueta_id', $etiquetas, isset($muestra->etiqueta_id) ? $muestra->etiqueta_id : '' , array('class' => 'form-control' , 'id'=>'etiqueta_id')) !!}
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-success">
                     {!! Form::label('muestra_peso', 'Peso', array('class' => '')) !!}
                     {!! Form::text('muestra_peso',isset($muestra->muestra_peso) ? $muestra->muestra_peso : '', ['class' => 'form-control','id'=>'muestra_peso']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('apariencia_id', 'Apariencia', array('class' => '')) !!}
                 {!! Form::select('apariencia_id', $apariencias, isset($muestra->apariencia_id) ? $muestra->apariencia_id : '' , array('class' => 'form-control' , 'id'=>'apariencia_id')) !!}
-        </div>
+            </div>
+            <div class="form-group">
+                {!! Form::label('muestra_bolsas', 'Número de Bolsas', array('class' => '')) !!}
+                {!! Form::text('muestra_bolsas',isset($muestra->muestra_bolsas) ? $muestra->muestra_bolsas : '', ['class' => 'form-control','id'=>'muestra_bolsas']) !!}
+            </div>
+            <div class="form-group">
+                {!! Form::label('muestra_racimos', 'Número de Racimos', array('class' => '')) !!}
+                {!! Form::text('muestra_racimos',isset($muestra->muestra_racimos) ? $muestra->muestra_racimos : '', ['class' => 'form-control','id'=>'muestra_racimos']) !!}
+            </div>
 
     </div>
 </div>

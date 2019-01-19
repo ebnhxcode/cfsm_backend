@@ -57,9 +57,21 @@
                         <td>{{ $muestra->etiqueta->etiqueta_nombre}} </td>
                 </tr> 
                 <tr class="table-success"> 
+                    <td>Apariencia:</td>
+                    <td>{{$muestra->apariencia->apariencia_nombre}} </td>
+                </tr> 
+                <tr class="table-success"> 
                         <td>Peso:</td>
                         <td>{{$muestra->muestra_peso}} </td>
                 </tr> 
+                <tr class="table-success"> 
+                    <td>Número de bolsas:</td>
+                    <td>{{$muestra->muestra_bolsas}} </td>
+                </tr> 
+                <tr class="table-success"> 
+                    <td>Número de racimos:</td>
+                    <td>{{$muestra->muestra_racimos}} </td>
+                 </tr> 
                 </tbody>
             </table>
         </div>
@@ -97,7 +109,7 @@
             <div class="col">
 
                     @if (count($grupos_totales) > 0)
-                    <table class="table table-striped  table-hover table-responsive">
+                    <table class="table table-striped  table-hover table-responsive ">
                         <thead class="thead-dark">
                             <tr>
                                 <th> Grupo</th>
