@@ -16,12 +16,53 @@ use App\Nota;
 use App\Defecto;
 use App\Tolerancia;
 use App\ZonaDefecto;
+use App\Apariencia;
+use App\Grupo;
 
 class ApiController extends Controller
 {
     public function __construct(){
         #$this->middleware('auth.basic');
         $this->middleware('admin');
+    }
+
+
+    public function getDataControlCalidad () {
+        $productores = Productor::all();
+        $regiones = Region::all();
+        $especies = Especie::all();
+        $variedades = Variedad::all();
+        $etiquetas = Etiqueta::all();
+        $calibres = Calibre::all();
+        $categorias = Categoria::all();
+        $embalajes = Embalaje::all();
+        $estados_muestras = EstadoMuestra::all();
+        $notas = Nota::all();
+        $defectos = Defecto::all();
+        $tolerancias = Tolerancia::all();
+        $apariencias = Apariencia::all();
+        $grupos = Grupo::all();
+        $zonas_defectos = ZonaDefecto::all();
+        return response()->json([
+            'status' => 200,
+            'msg' => 'ok',
+            'productores' => $productores,
+            'regiones' => $regiones,
+            'especies' => $especies,
+            'variedades' => $variedades,
+            'etiquetas' => $etiquetas,
+            'calibres' => $calibres,
+            'categorias' => $categorias,
+            'embalajes' => $embalajes,
+            'estados_muestras' => $estados_muestras,
+            'notas' => $notas,
+            'defectos' => $defectos,
+            'tolerancias' => $tolerancias,
+            'apariencias' => $apariencias,
+            'grupos' => $grupos,
+            'zonas_defectos' => $zonas_defectos
+        ]);
+
     }
 
     public function getProductores(){
@@ -152,7 +193,7 @@ class ApiController extends Controller
         if(!empty($result)){
             $array = ['status' => 200,
             'msg'=> 'Ok',
-            ' estados_muestra' => $result,
+            'estados_muestras' => $result,
             ];
         }else{
             $array = ['status' => 150,
@@ -167,7 +208,7 @@ class ApiController extends Controller
         if(!empty($result)){
             $array = ['status' => 200,
             'msg'=> 'Ok',
-            ' notas' => $result,
+            'notas' => $result,
             ];
         }else{
             $array = ['status' => 150,
@@ -190,7 +231,7 @@ class ApiController extends Controller
         if(!empty($result)){
             $array = ['status' => 200,
             'msg'=> 'Ok',
-            ' defecto' => $result,
+            'defectos' => $result,
             ];
         }else{
             $array = ['status' => 150,
@@ -200,13 +241,43 @@ class ApiController extends Controller
         return response()->json($array);
     }
 
-
+    
     public function getTolerancias(){
         $result = Tolerancia::all();
         if(!empty($result)){
             $array = ['status' => 200,
             'msg'=> 'Ok',
-            ' defecto' => $result,
+            'tolerancias' => $result,
+            ];
+        }else{
+            $array = ['status' => 150,
+            'msg'=> 'Error',
+            ];
+        }
+        return response()->json($array);
+    }
+
+    public function getApariencias(){
+        $result = Apariencia::all();
+        if(!empty($result)){
+            $array = ['status' => 200,
+            'msg'=> 'Ok',
+            'apariencias' => $result,
+            ];
+        }else{
+            $array = ['status' => 150,
+            'msg'=> 'Error',
+            ];
+        }
+        return response()->json($array);
+    }
+
+    public function getGrupos(){
+        $result = Grupo::all();
+        if(!empty($result)){
+            $array = ['status' => 200,
+            'msg'=> 'Ok',
+            'grupos' => $result,
             ];
         }else{
             $array = ['status' => 150,
@@ -221,7 +292,7 @@ class ApiController extends Controller
         if(!empty($result)){
             $array = ['status' => 200,
             'msg'=> 'Ok',
-            ' defecto' => $result,
+            'zonas_defectos' => $result,
             ];
         }else{
             $array = ['status' => 150,
@@ -230,7 +301,6 @@ class ApiController extends Controller
         }
         return response()->json($array);
     }
-
 
 
 

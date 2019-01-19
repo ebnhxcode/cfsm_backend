@@ -27,6 +27,10 @@ Route::group(['middleware' => ['web']], function () { #auth
         return redirect()->to('/login');
     });
 
+    Route::get('/test', function () {
+        dd(Auth::user()->perfil->perfil_nombre);
+    });
+
 
 
     #Route::get('/', 'HomeController@index');
@@ -109,7 +113,11 @@ Route::post('getProductoresByRegionId', 'MuestraController@getProductoresByRegio
 
 
 /*rutas de api que usan middleware*/
+Route::get('getDataControlCalidad', 'ApiController@getDataControlCalidad');
+
 Route::get('getProductores', 'ApiController@getProductores');
+Route::get('getApariencias', 'ApiController@getApariencias');
+Route::get('getGrupos', 'ApiController@getGrupos');
 Route::get('getRegiones', 'ApiController@getRegiones');
 Route::get('getEspecies', 'ApiController@getEspecies');
 Route::get('getVariedades', 'ApiController@getVariedades');

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\PerfilUsuario;
 
 class User extends Authenticatable {
     
@@ -33,7 +34,7 @@ class User extends Authenticatable {
 
     # BelongsTo
     public function perfil () {
-        $this->belongsTo(PerfilUsuario::class, 'perfil_id');
+        return $this->belongsTo(PerfilUsuario::class, 'perfil_id');
     }
 
 
