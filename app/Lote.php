@@ -11,8 +11,8 @@ class Lote extends Model
     protected $fillable = [
         'lote_codigo',
         'lote_cajas',
-
         'nota_id',
+        'categoria_id',
     ];
     public $timestamps = false;
 

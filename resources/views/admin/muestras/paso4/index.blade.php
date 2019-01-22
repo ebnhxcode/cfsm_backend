@@ -13,6 +13,14 @@
     </li>
     <li class="breadcrumb-item active">Imágenes y Codigo de pallet</li>
 </ol>
+
+
+@if (session('message'))
+    <div class="alert alert-success">
+        <strong>{{ session('message') }} </strong>
+    </div>
+@endif
+
 <div class="row ">
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class="card text-black bg-light mb-3" style="max-width: 18rem;">
