@@ -70,7 +70,8 @@ Route::group(['middleware' => ['auth']], function () { #auth
     Route::resource('variedades', 'VariedadController');
     Route::resource('zonas_defectos', 'ZonaDefectoController');
     Route::get('reportes','ReporteController@index');
-
+    Route::resource('graficos', 'GraficoController');
+    
 });
 
 
@@ -88,6 +89,7 @@ Route::post('getDefectoNota','MuestraController@getDefectoNota');
 Route::get('muestra-4/{id}','MuestraController@muestraStep4');
 Route::post('uploadimagen','MuestraController@uploadimagen')->name('uploadimagen');
 Route::post('setMuestraSerie','MuestraController@setMuestraSerie')->name('setMuestraSerie');
+Route::get('graficoconsolidado','GraficoController@graficoconsolidado')->name('graficoconsolidado');
 
 
 
@@ -106,6 +108,7 @@ Route::get('embalajesDelete/{id}','EmbalajeController@embalajesDelete');
 Route::get('toleranciasDatetables','ToleranciaController@toleranciasDatetables');
 Route::get('toleranciasDelete/{id}','ToleranciaController@toleranciasDelete');
 Route::post('getProductoresByRegionId', 'MuestraController@getProductoresByRegionId');
+Route::post('vergraficos', 'GraficoController@vergraficos')->name('vergraficos');
 
 
 
@@ -132,6 +135,8 @@ Route::get('getTolerancias', 'ApiController@getTolerancias');
 Route::get('getZonaDefecto', 'ApiController@getZonaDefecto');
 Route::get('loginUsuario', 'ApiController@loginUsuario');
 Route::get('muestrasDatetables', 'MuestraController@muestrasDatetables');
+Route::post('vergraficosconsolidado', 'GraficoController@vergraficosconsolidado')->name('vergraficosconsolidado');
+
 
 });
 

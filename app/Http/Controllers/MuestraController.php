@@ -11,7 +11,6 @@ use App\Calibre;
 use App\Categoria;
 use App\Embalaje;
 use App\Etiqueta;
-use App\Lote;
 use App\Productor;
 use App\Muestra;
 use Carbon\Carbon;
@@ -143,6 +142,8 @@ class MuestraController extends Controller
         return redirect::to('muestra-3/'.$muestra->muestra_id);
 
     }
+
+
 
     /**
      * Display the specified resource.
@@ -332,7 +333,7 @@ class MuestraController extends Controller
     public function getProductoresByRegionId(Request $request){
         $region_id = $request->region_id;
         $arrayProveedores = array();
-        $productores  = Productor::where('region_id', $region_id)->orderBy('productor_nombre')->get();
+        $productores  = Productor::where('region_id', $region_id)->get();
         //dd($productores);
         foreach($productores as $p){
                     array_push($arrayProveedores, array( 'id' =>$p->productor_id,
@@ -705,8 +706,14 @@ class MuestraController extends Controller
 
 
     public function setMuestraSerie(Request $request){
+        $id = $request->muestra_id;
+        $muestra = Muestra::find($id);
+        $muestra->lote_codigo = $request->lote_codigo;
+        $muestra->estado_muestra_id = $request->estado_muestra_id;
+        $muestra->save();
 
-       
+
+
         $rules = [
             'lote_codigo' => 'required|numeric',
         ];
@@ -717,70 +724,41 @@ class MuestraController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-
-
-        #RECUPERAR MUESTRA PARA OBTENER DATOS
-        $id = $request->muestra_id;
-        $muestra = Muestra::find($id);
-        $lote_codigo_anterior = $muestra->lote_codigo;
-        $this->analizaLote($lote_codigo_anterior);
-        #CONTAR LOTE CON EL CODIGO
-        $countLote = Lote::where('lote_codigo',$request->lote_codigo)->count();
-        if($countLote == 0){
-            #VALIDA LOTE ANTERIOR
-            $this->analizaLote($lote_codigo_anterior);
-            #LOTE ES NUEVO
-            $lote = new Lote();
-            $lote->lote_codigo =  $request->lote_codigo;
-            $lote->nota_id = $muestra->nota_id;
-            $lote->categoria_id = $muestra->categoria_id;
-            $lote->save();
-
-            $muestra->lote_codigo = $request->lote_codigo;
-            $muestra->estado_muestra_id = $request->estado_muestra_id;
-            $muestra->save();
-
-            #$this->getMensajeLoteCodigo($muestra);
-            $array = array(1,2);
-            if(in_array($muestra->nota_id,$array)){
-                Session::flash('message','Numero de pallet / serie! asociado con exito. Nota :'.$muestra->nota->nota_nombre);
-            }else{
-                Session::flash('message','Numero de pallet / serie! asociado con exito. Nota :'.$muestra->nota->nota_nombre.', debe realizar una segunda muestra');
-            }
-
-        }else{
-            #LOTE EXISTE
-            $countMuestra = Muestra::where('lote_codigo',$request->lote_codigo)->where('muestra_id','<>',$id)->count();
-            if($countMuestra == 0){
-                #SI SOLO ESTA ASOCIADA ESTA MUESTRA
-
-                #VALIDAR QUE LA CATEGORIA ID DEL LOTE ES LA MISMA DE LA QUE SE ESTA AGREGANDO
-
-                #SI LA CATEGORIA NO ES LA MISMA DEBE DAR UN ERROR Y NO ASOCIAR LA MUESTRA
-                    #O SI LA NOTA DE LA MUESTRA ERA 1 (A) o 2 (B) NO ASOCIAR LA MUESTRA
-
-                #SI LA CATEGORIA ES LA MISMA
-                    #
-
-            }else{
-                #SI TIENE MAS MUESTRAS ASOCIADAS
-
-            }
-
-        }
-        
+        Session::flash('message','Numero de pallet / serie! asociado con exito.');
         return redirect::to('muestra-4/'.$muestra->muestra_id);
     }
 
 
+    /**
+     * 
+     * FUNCIONES PARA LA APLICACION 
+     * 
+     */
 
-    public function analizaLote($lote_codigo_anterior){
-        $countLoteAnterior = Muestra::where('lote_codigo',$lote_codigo_anterior)->count();
-        if($countLoteAnterior == 0 ){
-            #si no quedan muestras asociadas al codigo#
-            $delete = DB::delete("DELETE FROM lote WHERE lote_codigo = $lote_codigo_anterior");
-        }
-    }
+
+     public function index_for_app (Request $request) {
+
+        #$muestras = Muestra::all();
+        $muestras = Muestra::with([
+            'region', 
+            'productor', 
+            'especie', 
+            'variedad', 
+            'calibre', 
+            'categoria', 
+            'embalaje', 
+            'etiqueta', 
+            'nota', 
+            'estado_muestra', 
+            'apariencia'
+        ])->get();
+        return response()->json([
+            'status' => 200,
+            'msj' => 'ok',
+            'muestras' => $muestras
+        ]);
+
+     }
 
 
 

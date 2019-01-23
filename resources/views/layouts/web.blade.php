@@ -156,10 +156,15 @@
 
         @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ url('graficos') }}">
               <i class="fas fa-fw fa-chart-area"></i>
-              <span>Graficos</span></a>
+              <span>Grafico por fecha (muestras)</span></a>
           </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url('graficoconsolidado') }}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Grafico Acumulado (Muestras)</span></a>
+            </li>
         @endif
         @if( in_array(Auth::user()->perfil->perfil_nombre, ['Admin','Cliente']) )
           <li class="nav-item">
