@@ -18,7 +18,7 @@
                     
             @foreach($productores as $p)
                 <p class="alert-warning border border-secondary">
-                    <input name="productor[]" type='checkbox' value="{{$p->productor_id}}" class="case" /> <label>{{$p->productor_id}} - {{$p->productor_nombre}}</label>
+                    <input name="productor[]" type='checkbox' checked value="{{$p->productor_id}}" class="case" /> <label>{{$p->productor_id}} - {{$p->productor_nombre}}</label>
                 </p>
             @endforeach
             </div>
