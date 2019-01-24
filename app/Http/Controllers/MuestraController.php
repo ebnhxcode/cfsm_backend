@@ -55,7 +55,9 @@ class MuestraController extends Controller
     public function create()
     {
         //
+        $muestra = "";
         $regiones = Region::orderBy('region_nombre')->get();
+        $productores = Productor::where('region_id', '1')->get();
         $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
         $variedades = Variedad::orderBy('variedad_nombre')->pluck('variedad_nombre','variedad_id');
         $calibres = Calibre::orderBy('calibre_nombre')->pluck('calibre_nombre','calibre_id');
@@ -64,7 +66,7 @@ class MuestraController extends Controller
         $etiquetas = Etiqueta::orderBy('etiqueta_nombre')->pluck('etiqueta_nombre','etiqueta_id');
         $apariencias = Apariencia::orderBy('apariencia_nombre')->pluck('apariencia_nombre','apariencia_id');
 
-        return view('admin.muestras.agregar', compact('apariencias','regiones','especies','variedades','calibres','categorias','embalajes','etiquetas'));
+        return view('admin.muestras.agregar', compact('muestra','productores','apariencias','regiones','especies','variedades','calibres','categorias','embalajes','etiquetas'));
     }
 
     /**
@@ -90,6 +92,7 @@ class MuestraController extends Controller
             'apariencia_id' => 'required',
             'muestra_bolsas' => 'required|numeric',
             'muestra_racimos' => 'required|numeric',
+            'muestra_brix' => 'required|numeric',
         ];
 
         $messages = [
@@ -110,7 +113,9 @@ class MuestraController extends Controller
             'muestra_bolsas.required' => 'Bolsas es obligatorio.',
             'muestra_bolsas.numeric' => 'Bolsas debe ser número..',
             'muestra_racimos.required' => 'Racimos es obligatorio.',
-            'muestra_racimos.numeric' => 'Bolsas debe ser número..',
+            'muestra_racimos.numeric' => 'Bolsas debe ser número.',
+            'muestra_brix.required' => 'Brix  es obligatorio.',
+            'muestra_brix.numeric' => 'Brix debe ser número.',
         ];
 
         $this->validate($request, $rules, $messages);
@@ -135,10 +140,54 @@ class MuestraController extends Controller
         $muestra->estado_muestra_id = 1;
         $muestra->muestra_bolsas = $request->muestra_bolsas;
         $muestra->muestra_racimos = $request->muestra_racimos;
+        $muestra->muestra_brix = $request->muestra_brix;
 
         #dd($muestra->productor_id);
         $muestra->save();
+        $id  = $muestra->muestra_id;
+        $defecto_id = 20;
+        $defecto = Defecto::find($defecto_id);
+        $muestra_desgrane = $request->muestra_desgrane;
+        $muestra_defecto_valor = $request->muestra_desgrane;
 
+        if($defecto->zona_id == 1 ){
+            #CALCULO POR %
+            $calculado = round((($muestra_defecto_valor*100)/$request->muestra_peso),2);
+            $tolerancia  = Tolerancia::where('defecto_id',$defecto_id)
+            ->where('tolerancia_desde','<=',$calculado)
+            ->where('tolerancia_hasta','>=',$calculado)
+            ->first();
+            //NOTA $tolerancia->nota->nota_nombre
+            //NOTA $tolerancia->nota->nota_id
+            if(isset($tolerancia->nota->nota_id)){
+                $nota_id = $tolerancia->nota->nota_id;
+            }else{
+                $nota_id = 5;
+            }
+            $nota = Nota::find($nota_id);
+        }else{
+            #CALCULO POR NUMERO
+            $calculado = $muestra_defecto_valor;
+            $nota_id = 5;
+            $nota = Nota::find($nota_id);
+            $muestra_defecto_valor=$muestra_defecto_valor;
+        }
+        //return response()->json(1);
+        #print_r($tolerancia->nota->nota_nombre);
+
+        try {
+            $muestra_defecto = New MuestraDefecto();
+            $muestra_defecto->muestra_id = $id;
+            $muestra_defecto->defecto_id = $defecto_id;
+            $muestra_defecto->muestra_defecto_valor = $muestra_desgrane;
+            $muestra_defecto->nota_id = $nota->nota_id;
+            $muestra_defecto->muestra_defecto_calculo = $calculado;
+            $muestra_defecto->save();
+            #echo 'registrado con exito';
+        }
+          catch (Exception $e) {
+              return $e->getMessage();
+        }
         return redirect::to('muestra-3/'.$muestra->muestra_id);
 
     }
@@ -230,7 +279,6 @@ class MuestraController extends Controller
                 array_push($arrayCalidad, 4);
             }else{
                 #CONCEPTO 2 CONDICION
-
                 array_push($arrayCondicion, 4);
             }
            }
@@ -268,8 +316,22 @@ class MuestraController extends Controller
      */
     public function edit($id)
     {
-        //
-        return redirect::to('muestra-3/'.$id);
+        $variedades = Variedad::orderBy('variedad_nombre')->pluck('variedad_nombre','variedad_id');
+        $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
+        $muestra = Muestra::find($id);
+        $defecto = MuestraDefecto::where('defecto_id',20)->where('muestra_id',$id)->first();
+        $muestra_desgrane = round($defecto->muestra_defecto_valor,0);
+        $productores = Productor::where('region_id', $muestra->region_id)->get();
+        $calibres = Calibre::orderBy('calibre_nombre')->pluck('calibre_nombre','calibre_id');
+        $categorias = Categoria::orderBy('categoria_nombre')->pluck('categoria_nombre','categoria_id');
+        $regiones = Region::orderBy('region_nombre')->get();
+        $embalajes = Embalaje::orderBy('embalaje_nombre')->pluck('embalaje_nombre','embalaje_id');
+        $etiquetas = Etiqueta::orderBy('etiqueta_nombre')->pluck('etiqueta_nombre','etiqueta_id');
+        $apariencias = Apariencia::orderBy('apariencia_nombre')->pluck('apariencia_nombre','apariencia_id');
+        $muestra->muestra_fecha = Carbon::parse($muestra->muestra_fecha)->format('d-m-Y');
+        #dd($muestra->muestra_fecha);
+        return view('admin.muestras.editar',compact('muestra_desgrane','productores','categorias','calibres','variedades','especies','regiones','etiquetas','embalajes','muestra','conceptos','apariencias'));
+    
     }
 
     /**
@@ -281,7 +343,73 @@ class MuestraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $muestra = Muestra::find($request->muestra_id);
+        $rules = [
+            'muestra_peso' => 'required|numeric',
+            'muestra_qr' => 'required|max:255',
+            'region_id' => 'required',
+            'productor_id' => 'required',
+            'especie_id' => 'required',
+            'variedad_id' => 'required',
+            'calibre_id' => 'required',
+            'categoria_id' => 'required',
+            'embalaje_id' => 'required',
+            'etiqueta_id' => 'required',
+            'apariencia_id' => 'required',
+            'muestra_bolsas' => 'required|numeric',
+            'muestra_racimos' => 'required|numeric',
+            'muestra_brix' => 'required|numeric',
+        ];
+
+        $messages = [
+            'muestra_peso.required' => 'El Peso obligatorio.',
+            'muestra_peso.numeric' => 'Peso debe ser número.',
+            'muestra_qr.required' => 'El Código QR es obligatorio.',
+            'muestra_qr.max' => 'El nombre del productor ingresado es demaciado largo.',
+            'region_id.required' => 'Región es obligatorio.',
+            'productor_id.required' => 'Productor es obligatorio.',
+            'especie_id.required' => 'Especie es obligatorio.',
+            'variedad_id.required' => 'Variedad es obligatorio.',
+            'calibre_id.required' => 'Calibre es obligatorio.',
+            'categoria_id.required' => 'Categoría es obligatorio.',
+            'embalaje_id.required' => 'Embalaje es obligatorio.',
+            'etiqueta_id.required' => 'Etiqueta es obligatorio.',
+            'apariencia_id.required' => 'Apariencia es obligatorio.',
+            'muestra_bolsas.required' => 'Bolsas es obligatorio.',
+            'muestra_bolsas.numeric' => 'Bolsas debe ser número..',
+            'muestra_racimos.required' => 'Racimos es obligatorio.',
+            'muestra_racimos.numeric' => 'Bolsas debe ser número.',
+            'muestra_brix.required' => 'Brix  es obligatorio.',
+            'muestra_brix.numeric' => 'Brix debe ser número.',
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+        $apariencia = Apariencia::find($request->apariencia_id);
+        #dd($apariencia);
+        $muestra->muestra_qr = $request->muestra_qr;
+        $muestra->region_id = $request->region_id;
+        $muestra->productor_id = $request->productor_id;
+        $muestra->especie_id = $request->especie_id;
+        $muestra->variedad_id = $request->variedad_id;
+        $muestra->calibre_id = $request->calibre_id;
+        $muestra->categoria_id = $request->categoria_id;
+        $muestra->embalaje_id = $request->embalaje_id;
+        $muestra->apariencia_id = $request->apariencia_id;
+        $muestra->etiqueta_id = $request->etiqueta_id;
+        $muestra->muestra_peso = $request->muestra_peso;
+        $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
+        $muestra->nota_id = $apariencia->nota_id; //PROCESO
+        $muestra->estado_muestra_id = 1;
+        $muestra->muestra_bolsas = $request->muestra_bolsas;
+        $muestra->muestra_racimos = $request->muestra_racimos;
+        $muestra->muestra_brix = $request->muestra_brix;
+
+        #dd($muestra->productor_id);
+        $muestra->save();
+
+        return redirect::to('muestra-3/'.$muestra->muestra_id);
+
     }
 
     /**

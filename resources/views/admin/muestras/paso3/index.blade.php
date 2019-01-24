@@ -65,6 +65,9 @@
     
     <div class="row">
         <div class="col">
+                {{link_to_route('muestras.edit', 'Editar muestra ', $parameters = $muestra->muestra_id , $attributes = ['class'=>'btn btn-warning btn-success btn-block '])}} 
+        </div>
+        <div class="col">
                 <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
                         Agregar defecto <i class="far fa-plus-square"></i>
                 </button>
@@ -72,6 +75,7 @@
         <div class="col">
             <a href="{!!URL::to('/muestra-4/'.$muestra->muestra_id.'')!!}" class="btn btn-primary  btn-success btn-block">Siguiente y Guardar <i class="far fa-caret-square-right"></i></a>
         </div>
+        
         <br>
         <br>
     </div>

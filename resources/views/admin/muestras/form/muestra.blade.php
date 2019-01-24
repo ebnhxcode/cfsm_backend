@@ -9,7 +9,7 @@
             <div class="form-group">
                     <label class="control-label">Fecha (Desde)</label>
                     <div class="input-group date" id="dt1">
-                        <input id="muestra_fecha" name="muestra_fecha" class="form-control datepicker" type="text" readonly>
+                        <input id="muestra_fecha" value=@if(isset($muestra->muestra_fecha))  {{$muestra->muestra_fecha}} @else ""  @endif name="muestra_fecha" class="form-control datepicker" type="text" readonly>
                     </div>
             </div>
             <div class="form-group">
@@ -17,13 +17,16 @@
                 <select class='form-control' id='region_id' name='region_id'>
                     <option value=""> Seleccione una región </option>
                     @foreach ($regiones as $r)
-                        <option value="{{$r->region_id}}"   > {{$r->region_nombre}}</option>
+                        <option value="{{$r->region_id}}" @isset($muestra->region_id) {{ $muestra->region_id == $r->region_id ? 'selected' : '' }} @endisset > {{$r->region_nombre}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
                 {!! Form::label('productor_id', 'Productor', array('class' => '')) !!}
                 <select class='form-control' id='productor_id' name='productor_id'>
+                        @foreach ($productores as $p)
+                            <option value="{{$p->productor_id}}" @isset($muestra->region_id)  {{ $muestra->productor_id == $p->productor_id ? 'selected' : '' }} @endisset > {{$p->productor_nombre}}  </option> 
+                        @endforeach
                 </select>
             </div>
             <div class="form-group">
@@ -38,6 +41,10 @@
             <div class="form-group">
                 {!! Form::label('calibre_id', 'Calibre', array('class' => '')) !!}
                 {!! Form::select('calibre_id', $calibres, isset($muestra->calibre_id) ? $muestra->calibre_id : '' , array('class' => 'form-control' , 'id'=>'calibre_id')) !!}
+            </div>
+            <div class="form-group">
+                    {!! Form::label('muestra_brix', 'Brix Promedio', array('class' => '')) !!}
+                    {!! Form::text('muestra_brix',isset($muestra->muestra_brix) ? $muestra->muestra_brix : '', ['class' => 'form-control','id'=>'muestra_brix']) !!}
             </div>
     </div>
     <div class="col-lg-6" >
@@ -69,6 +76,12 @@
                 {!! Form::label('muestra_racimos', 'Número de Racimos', array('class' => '')) !!}
                 {!! Form::text('muestra_racimos',isset($muestra->muestra_racimos) ? $muestra->muestra_racimos : '', ['class' => 'form-control','id'=>'muestra_racimos']) !!}
             </div>
+            @if(!isset($muestra_desgrane))
+            <div class="form-group">
+                    {!! Form::label('muestra_desgrane', 'Desgrane', array('class' => '')) !!}
+                    {!! Form::text('muestra_desgrane',isset($muestra_desgrane) ? $muestra_desgrane : '', ['class' => 'form-control','id'=>'muestra_desgrane']) !!}
+            </div>
+            @endif
 
     </div>
 </div>
