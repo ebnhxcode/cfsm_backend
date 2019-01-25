@@ -1,11 +1,19 @@
 @extends('layouts.web')
 @section('title', 'Muestra')
 @section('content')
-
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Home</a>
+    </li>
+    <li class="breadcrumb-item">
+            <a href="#">Muestra</a>
+    </li>
+    <li class="breadcrumb-item active">Muestra Datos Generales (Editar)</li>
+</ol>
 @include('layouts.error')
 
 {!! Form::model($muestra, array('route' => array('muestras.update', $muestra->etiqueta_id), 'method'=>'PUT', 'class' => '', 'role'=>'form')) !!}
-    <h2 class="" id="">Etiqueta</h2>
+    
     @include('admin.muestras.form.muestra')
     <button type="submit" class="btn btn-primary btn_ok btn-block">Guardar y Continuar <i class="far fa-caret-square-right"></i> </button>
 {!! Form::close() !!}
