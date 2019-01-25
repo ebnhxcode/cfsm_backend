@@ -890,6 +890,145 @@ class MuestraController extends Controller
 
 
 
+     public function GetReporteConsolidado(){
+        set_time_limit(0);
+        $statement = 'SELECT m.muestra_id
+        , m.`muestra_qr`
+        , m.`nota_id`
+        , n.`nota_nombre`
+        , a.`apariencia_nombre`
+        , p.productor_nombre
+        , m.`lote_codigo`
+               ,SUM(
+                       IF(f.defecto_id=1
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "1"
+               ,SUM(
+                       IF(f.defecto_id=2
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "2"
+                  
+               ,SUM(
+                       IF(f.defecto_id=3
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "3"  
+                   ,SUM(
+                       IF(f.defecto_id=4
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "4"
+                   ,SUM(
+                       IF(f.defecto_id=5
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "5"  
+                   ,SUM(
+                       IF(f.defecto_id=6
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "6"  
+                   ,SUM(
+                       IF(f.defecto_id=7
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "7"  
+                   ,SUM(
+                       IF(f.defecto_id=8
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "8"  
+                   ,SUM(
+                       IF(f.defecto_id=9
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "9"  
+                   ,SUM(
+                       IF(f.defecto_id=10
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "10"  
+                   ,SUM(
+                       IF(f.defecto_id=11
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "11"  
+                   ,SUM(
+                       IF(f.defecto_id=12
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "12"  
+                   ,SUM(
+                       IF(f.defecto_id=13
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "13"  
+                   ,SUM(
+                       IF(f.defecto_id=14
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "14"  
+                   ,SUM(
+                       IF(f.defecto_id=15
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "15"    
+             ,SUM(
+                       IF(f.defecto_id=20
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "20" 
+                ,SUM(
+                       IF(f.defecto_id=21
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "21"
+                   ,SUM(
+                       IF(f.defecto_id=22
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "22"
+        FROM muestra  m
+        inner join apariencia a on a.`apariencia_id` = m.`apariencia_id`
+        inner join productor p on p.`productor_id` =  m.`productor_id`
+        INNER JOIN muestra_defecto d ON d.`muestra_id` = m.`muestra_id`
+        INNER JOIN defecto f ON f.`defecto_id` = d.`defecto_id`
+        INNER JOIN nota n ON n.`nota_id` = m.`nota_id`
+        GROUP BY  m.muestra_id
+        , m.`muestra_qr`
+        , m.`nota_id`
+        , n.`nota_nombre`
+        , a.`apariencia_nombre`
+        , p.productor_nombre
+        , m.`lote_codigo`';
+        $consolidado = DB::select(DB::raw($statement));
+        foreach($consolidado as $c){
+                dd($c);
+        }
+
+
+     }
+
 
 
 }
