@@ -83,6 +83,10 @@
                 } );
             } );
 
+            /*var n = document.createElement('script');
+            n.setAttribute('language', 'JavaScript');
+            n.setAttribute('src', 'https://debug.datatables.net/debug.js');
+            document.body.appendChild(n);*/
 
         });
     </script>
