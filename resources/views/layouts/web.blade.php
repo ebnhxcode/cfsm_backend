@@ -21,10 +21,31 @@
     {!! Html::style('sb/vendor/datatables/dataTables.bootstrap4.css') !!}
     <!-- Custom styles for this template-->
     {!! Html::style('sb/css/sb-admin.css') !!}
-
+    <style>
+        .loader {
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid #3498db;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite; /* Safari */
+          animation: spin 2s linear infinite;
+        }
+        
+        /* Safari */
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        </style>
   </head>
 
-  <body id="page-top">
+  <body id="page-top" class="sidebar-toggled">
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
@@ -119,7 +140,7 @@
     <div id="wrapper">
 
       <!-- Sidebar -->
-      <ul class="sidebar navbar-nav">
+      <ul class="sidebar navbar-nav toggled">
 
         @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
           <li class="nav-item active">
@@ -173,6 +194,13 @@
               <span>Reportes</span></a>
           </li>
         @endif
+        @if( in_array(Auth::user()->perfil->perfil_nombre, ['Admin','Cliente']) )
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url('consolidado') }}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Reporte: Consolidado Muestras</span></a>
+        </li>
+      @endif
       </ul>
 
 
@@ -245,7 +273,7 @@
 
     <!-- Demo scripts for this page-->
     {!! Html::script('sb/js/demo/datatables-demo.js') !!}
-    {!! Html::script('sb/js/demo/chart-area-demo.js') !!}
+  
 
     @stack('custom_js')
   </body>

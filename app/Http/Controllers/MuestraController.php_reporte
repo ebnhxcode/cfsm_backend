@@ -322,8 +322,7 @@ class MuestraController extends Controller
         $especies = Especie::orderBy('especie_nombre')->pluck('especie_nombre','especie_id');
         $muestra = Muestra::find($id);
         $defecto = MuestraDefecto::where('defecto_id',20)->where('muestra_id',$id)->first();
-        $muestra_desgrane = 0;
-        #$muestra_desgrane = round($defecto->muestra_defecto_valor,0);
+        //$muestra_desgrane = round($defecto->muestra_defecto_valor,0);
         $productores = Productor::where('region_id', $muestra->region_id)->get();
         $calibres = Calibre::orderBy('calibre_nombre')->pluck('calibre_nombre','calibre_id');
         $categorias = Categoria::orderBy('categoria_nombre')->pluck('categoria_nombre','categoria_id');
@@ -333,7 +332,7 @@ class MuestraController extends Controller
         $apariencias = Apariencia::orderBy('apariencia_nombre')->pluck('apariencia_nombre','apariencia_id');
         $muestra->muestra_fecha = Carbon::parse($muestra->muestra_fecha)->format('d-m-Y');
         #dd($muestra->muestra_fecha);
-        return view('admin.muestras.editar',compact('muestra_desgrane','productores','categorias','calibres','variedades','especies','regiones','etiquetas','embalajes','muestra','conceptos','apariencias'));
+        return view('admin.muestras.editar',compact('productores','categorias','calibres','variedades','especies','regiones','etiquetas','embalajes','muestra','conceptos','apariencias'));
     
     }
 
@@ -1107,14 +1106,8 @@ class MuestraController extends Controller
 
         $writer = new Xlsx($spreadsheet);
         $writer->save('reporte.xlsx');
+        return redirect::to('reporte.xlsx');
 
-        echo "ok";
-        #return redirect::to('reporte.xlsx');
-
-     }
-
-     public function consolidado(){
-         return view('admin.reportes.consolidado.consolidado');
      }
 
 

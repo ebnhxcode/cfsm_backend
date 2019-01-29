@@ -109,7 +109,10 @@ Route::get('toleranciasDatetables','ToleranciaController@toleranciasDatetables')
 Route::get('toleranciasDelete/{id}','ToleranciaController@toleranciasDelete');
 Route::post('getProductoresByRegionId', 'MuestraController@getProductoresByRegionId');
 Route::post('vergraficos', 'GraficoController@vergraficos')->name('vergraficos');
-Route::get('reporteConsolidado', 'MuestraController@GetReporteConsolidado')->name('reporteConsolidado');
+Route::post('reporteConsolidado', 'MuestraController@GetReporteConsolidado')->name('reporteConsolidado');
+
+Route::get('consolidado', 'MuestraController@consolidado')->name('consolidado');
+
 
 
 
