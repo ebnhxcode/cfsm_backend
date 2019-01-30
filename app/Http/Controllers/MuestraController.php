@@ -1015,6 +1015,12 @@ class MuestraController extends Controller
                        ,   0
                        )
                    ) "Botritys"
+                   ,SUM(
+                       IF(f.defecto_id=23
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_bajo_peso"
         FROM muestra  m
         inner join apariencia a on a.`apariencia_id` = m.`apariencia_id`
         inner join especie e on e.`especie_id` = m.`especie_id`
@@ -1068,7 +1074,8 @@ class MuestraController extends Controller
         $sheet->setCellValue('X1','Desgrane');
         $sheet->setCellValue('Y1','Penicillium');
         $sheet->setCellValue('Z1','Botritys (Piel suelta)');
-        $sheet->setCellValue('AA1','PALLET');
+        $sheet->setCellValue('AA1','Racimo bajo peso');
+        $sheet->setCellValue('AB1','PALLET');
         
                 
         $i=2;
@@ -1101,7 +1108,8 @@ class MuestraController extends Controller
             $sheet->setCellValue('X'.$i,$c->Desgrane);
             $sheet->setCellValue('Y'.$i,$c->Penicillium);
             $sheet->setCellValue('Z'.$i,$c->Botritys);
-            $sheet->setCellValue('AA'.$i,$c->lote_codigo);
+            $sheet->setCellValue('AA'.$i,$c->Racimo_bajo_peso);
+            $sheet->setCellValue('AB'.$i,$c->lote_codigo);
             $i++;
         }
 

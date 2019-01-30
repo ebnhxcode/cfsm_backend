@@ -49,7 +49,7 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="index.html">A&A</a>
+      <a class="navbar-brand mr-1" href="{{ url('reportes') }}">A&A</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -176,18 +176,19 @@
         </li>
 
         @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url('graficos') }}">
-              <i class="fas fa-fw fa-chart-area"></i>
-              <span>Grafico por fecha (muestras)</span></a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{{ url('graficoconsolidado') }}">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Grafico Acumulado (Muestras)</span></a>
-            </li>
+          
         @endif
         @if( in_array(Auth::user()->perfil->perfil_nombre, ['Admin','Cliente']) )
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url('graficos') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Grafico por fecha (muestras)</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('graficoconsolidado') }}">
+              <i class="fas fa-fw fa-chart-area"></i>
+              <span>Grafico Acumulado (Muestras)</span></a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url('reportes') }}">
               <i class="fas fa-fw fa-table"></i>

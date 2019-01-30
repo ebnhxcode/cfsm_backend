@@ -42,7 +42,7 @@
                  '_token' : token
                 },
                  success:function(data){
-                   #alert("exito");
+                   //alert("exito");
                    $('.consolidado').show();
                 },
                 complete: function(){
