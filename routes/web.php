@@ -71,7 +71,9 @@ Route::group(['middleware' => ['auth']], function () { #auth
     Route::resource('zonas_defectos', 'ZonaDefectoController');
     Route::get('reportes','ReporteController@index');
     Route::resource('graficos', 'GraficoController');
-    
+    Route::resource('palet', 'PaletController');
+    Route::get('paletsDatatables','PaletController@paletsDatatables');
+    Route::get('verMuestras/{lote_codigo}','PaletController@verMuestras')->name('verMuestras');
 });
 
 
