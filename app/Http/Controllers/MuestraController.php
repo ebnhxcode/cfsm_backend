@@ -31,6 +31,7 @@ use Storage;
 use App\MuestraImagen;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Auth;
 
 class MuestraController extends Controller
 {
@@ -122,6 +123,10 @@ class MuestraController extends Controller
 
         $this->validate($request, $rules, $messages);
 
+        $user = null;
+        if (Auth::check()) {
+            $user = Auth::user();
+        }
 
         $apariencia = Apariencia::find($request->apariencia_id);
         #dd($apariencia);
@@ -139,6 +144,9 @@ class MuestraController extends Controller
         $muestra->muestra_peso = $request->muestra_peso;
         $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
         $muestra->nota_id = $apariencia->nota_id; //PROCESO
+        if ($user) {
+            $muestra->user_id = $user->id;
+        }
         $muestra->estado_muestra_id = 1;
         $muestra->muestra_bolsas = $request->muestra_bolsas;
         $muestra->muestra_racimos = $request->muestra_racimos;
@@ -183,6 +191,9 @@ class MuestraController extends Controller
             $muestra_defecto->defecto_id = $defecto_id;
             $muestra_defecto->muestra_defecto_valor = $muestra_desgrane;
             $muestra_defecto->nota_id = $nota->nota_id;
+            if ($user) {
+                $muestra_defecto->user_id = $user->id;
+            }
             $muestra_defecto->muestra_defecto_calculo = $calculado;
             $muestra_defecto->save();
             #echo 'registrado con exito';
@@ -334,7 +345,7 @@ class MuestraController extends Controller
         $muestra->muestra_fecha = Carbon::parse($muestra->muestra_fecha)->format('d-m-Y');
         #dd($muestra->muestra_fecha);
         return view('admin.muestras.editar',compact('muestra_desgrane','productores','categorias','calibres','variedades','especies','regiones','etiquetas','embalajes','muestra','conceptos','apariencias'));
-
+    
     }
 
     /**
@@ -388,6 +399,12 @@ class MuestraController extends Controller
 
         $this->validate($request, $rules, $messages);
 
+
+        $user = null;
+        if (Auth::check()) {
+            $user = Auth::user();
+        }
+
         $apariencia = Apariencia::find($request->apariencia_id);
         #dd($apariencia);
         $muestra->muestra_qr = $request->muestra_qr;
@@ -403,6 +420,9 @@ class MuestraController extends Controller
         $muestra->muestra_peso = $request->muestra_peso;
         $muestra->muestra_fecha = Carbon::parse($request->muestra_fecha)->toDateTimeString();
         $muestra->nota_id = $apariencia->nota_id; //PROCESO
+        if ($user) {
+            $muestra->user_id = $user->id;
+        }
         $muestra->estado_muestra_id = 1;
         $muestra->muestra_bolsas = $request->muestra_bolsas;
         $muestra->muestra_racimos = $request->muestra_racimos;
@@ -635,11 +655,18 @@ class MuestraController extends Controller
         #print_r($tolerancia->nota->nota_nombre);
 
         try {
+            $user = null;
+            if (Auth::check()) {
+                $user = Auth::user();
+            }
             $muestra_defecto = New MuestraDefecto();
             $muestra_defecto->muestra_id = $request->muestra_id;
             $muestra_defecto->defecto_id = $request->defecto_id;
             $muestra_defecto->muestra_defecto_valor = $request->muestra_defecto_valor;
             $muestra_defecto->nota_id = $nota->nota_id;
+            if ($user) {
+                $muestra_defecto->user_id = $user->id;
+            }
             $muestra_defecto->muestra_defecto_calculo = $calculado;
             $muestra_defecto->save();
             echo 'registrado con exito';
@@ -815,8 +842,14 @@ class MuestraController extends Controller
             'file.required' => 'Imagen es obligatorio.',
             'muestra_imagen_texto.required' => 'Comentario es obligatorio.',
             'muestra_id.required' => 'Muestra es obligatorio.',
-            'file.max'=> 'Imagen es demasiado grande | mayor a 10 MB.',
+            'file.max' => 'Imagen demasiado grande (10 MB)',
         ];
+
+
+        $user = null;
+        if (Auth::check()) {
+            $user = Auth::user();
+        }
 
         $this->validate($request, $rules, $messages);
         $muestra = Muestra::find($request->muestra_id);
@@ -826,6 +859,9 @@ class MuestraController extends Controller
             $muestra_imagen->muestra_imagen_ruta  = asset($path);
             #$muestra_imagen->muestra_imagen_fecha
             $muestra_imagen->muestra_id = $request->muestra_id;
+            if ($user) {
+                $muestra_imagen->user_id = $user->id;
+            }
             $muestra_imagen->muestra_imagen_texto = $request->muestra_imagen_texto;
             $muestra_imagen->muestra_imagen_ruta_corta = $path;
             $muestra_imagen->save();
@@ -862,9 +898,9 @@ class MuestraController extends Controller
 
 
     /**
-     *
-     * FUNCIONES PARA LA APLICACION
-     *
+     * 
+     * FUNCIONES PARA LA APLICACION 
+     * 
      */
 
 
@@ -872,16 +908,16 @@ class MuestraController extends Controller
 
         #$muestras = Muestra::all();
         $muestras = Muestra::with([
-            'region',
-            'productor',
-            'especie',
-            'variedad',
-            'calibre',
-            'categoria',
-            'embalaje',
-            'etiqueta',
-            'nota',
-            'estado_muestra',
+            'region', 
+            'productor', 
+            'especie', 
+            'variedad', 
+            'calibre', 
+            'categoria', 
+            'embalaje', 
+            'etiqueta', 
+            'nota', 
+            'estado_muestra', 
             'apariencia'
         ])->get();
         return response()->json([
@@ -919,13 +955,13 @@ class MuestraController extends Controller
                        ,   0
                        )
                    ) "Racimo_Bajo_Color"
-
+                  
                ,SUM(
                        IF(f.defecto_id=3
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Fuera_de_Color"
+                   ) "Racimo_Fuera_de_Color"  
                    ,SUM(
                        IF(f.defecto_id=4
                        ,   d.`muestra_defecto_calculo`
@@ -937,73 +973,73 @@ class MuestraController extends Controller
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Bajo_Brix"
+                   ) "Racimo_Bajo_Brix"  
                    ,SUM(
                        IF(f.defecto_id=6
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Deforme"
+                   ) "Racimo_Deforme"  
                    ,SUM(
                        IF(f.defecto_id=7
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Manchas"
+                   ) "Manchas"  
                    ,SUM(
                        IF(f.defecto_id=8
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Debil"
+                   ) "Racimo_Debil"  
                    ,SUM(
                        IF(f.defecto_id=9
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Raquis_Deshidratado"
+                   ) "Raquis_Deshidratado"  
                    ,SUM(
                        IF(f.defecto_id=10
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Humedo"
+                   ) "Racimo_Humedo"  
                    ,SUM(
                        IF(f.defecto_id=11
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Partiduras"
+                   ) "Partiduras"  
                    ,SUM(
                        IF(f.defecto_id=12
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Acuosas"
+                   ) "Acuosas"  
                    ,SUM(
                        IF(f.defecto_id=13
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Bayas_Reventas"
+                   ) "Bayas_Reventas"  
                    ,SUM(
                        IF(f.defecto_id=14
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Oidio"
+                   ) "Oidio"  
                    ,SUM(
                        IF(f.defecto_id=15
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "acida"
+                   ) "acida"    
              ,SUM(
                        IF(f.defecto_id=20
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Desgrane"
+                   ) "Desgrane" 
                 ,SUM(
                        IF(f.defecto_id=21
                        ,   d.`muestra_defecto_calculo`
@@ -1045,7 +1081,7 @@ class MuestraController extends Controller
         , p.productor_nombre
         , m.`lote_codigo`';
         $consolidado = DB::select(DB::raw($statement));
-
+        
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'ID');
@@ -1077,8 +1113,8 @@ class MuestraController extends Controller
         $sheet->setCellValue('Z1','Botritys (Piel suelta)');
         $sheet->setCellValue('AA1','Racimo bajo peso');
         $sheet->setCellValue('AB1','PALLET');
-
-
+        
+                
         $i=2;
         foreach($consolidado as $c){
             $sheet->setCellValue("A".$i, $c->muestra_id);
