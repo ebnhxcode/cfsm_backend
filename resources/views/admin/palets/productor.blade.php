@@ -12,8 +12,9 @@
     <li class="breadcrumb-item active">Productor</li>
 </ol>
 
+@include('layouts.error')
 <div class="col">
-    {!! Form::open(['route' => 'setMuestraSerie', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
+    {!! Form::open(['route' => 'generaExelPallet', 'method' => 'POST', 'class' => '','role'=>'form']) !!}
 
     <div class="form-group">
         {!! Form::label('region_id', 'Region', array('class' => '')) !!}
@@ -30,6 +31,7 @@
 
         </select>
     </div>
+    <button type="submit" class="btn btn-primary btn_ok btn-block">Ver reporte<i class="far fa-caret-square-right"></i> </button>
     {!! Form::close() !!}
 </div>
 

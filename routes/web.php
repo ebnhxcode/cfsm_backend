@@ -75,6 +75,8 @@ Route::group(['middleware' => ['auth']], function () { #auth
     Route::get('paletsDatatables','PaletController@paletsDatatables');
     Route::get('verMuestras/{lote_codigo}','PaletController@verMuestras')->name('verMuestras');
     Route::get('palletproductor','PaletController@palletproductor')->name('palletproductor');
+    Route::post('generaExelPallet','PaletController@generaExelPallet')->name('generaExelPallet');
+
 });
 
 
