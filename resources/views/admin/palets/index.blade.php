@@ -11,7 +11,7 @@
     <table class="table" id="palet">
         <thead>
             <tr >
-                <th>N° de Palet</th>
+                <th>N° de Pallet</th>
                 <th>Categoría </th>
                 <th>Muestras </th>
                 <th>Fecha </th>
@@ -19,7 +19,7 @@
                 <th>-</th>
             </tr>
         </thead>
-        
+
     </table>
 
 

@@ -93,15 +93,15 @@ class PaletController extends Controller
         , SUM(m.nota_id) AS suma
         , COUNT(*) AS COUNT
         , m.lote_codigo AS numero_pallet
-        , m.categoria_id 
+        , m.categoria_id
         , c.categoria_nombre
         , CAST(MAX(m.`muestra_fecha`) as DATE) AS muestra_fecha
-        , `nota_final`(CEILING(SUM(m.nota_id)/COUNT(*)),m.categoria_id) AS nota_nombre 
+        , `nota_final`(CEILING(SUM(m.nota_id)/COUNT(*)),m.categoria_id) AS nota_nombre
         FROM muestra m
         INNER JOIN categoria c ON c.categoria_id = m.categoria_id
         WHERE  m.lote_codigo IS NOT NULL
-        GROUP BY m.lote_codigo , m.categoria_id 
-        , c.categoria_nombre 
+        GROUP BY m.lote_codigo , m.categoria_id
+        , c.categoria_nombre
         ";
         $result = DB::select(DB::raw($sql));
         return Datatables::of($result) ->addColumn('action', function ($palet) {
@@ -111,11 +111,13 @@ class PaletController extends Controller
         })->make(true);
     }
 
+    public function selectorProductor()
+    {
+        return view('admin.palets.productor');
+    }
 
     public function verMuestras($lote_codigo){
         $muestras = Muestra::where('lote_codigo',$lote_codigo)->get();
         return view('admin.palets.muestras',compact('muestras'));
-
-
     }
 }
