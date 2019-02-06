@@ -8,6 +8,7 @@ use yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Muestra;
+use App\Region;
 
 class PaletController extends Controller
 {
@@ -111,9 +112,11 @@ class PaletController extends Controller
         })->make(true);
     }
 
-    public function selectorProductor()
+    public function palletproductor()
     {
-        return view('admin.palets.productor');
+        $regiones = Region::orderBy('region_nombre')->get();
+
+        return view('admin.palets.productor',compact('regiones'));
     }
 
     public function verMuestras($lote_codigo){

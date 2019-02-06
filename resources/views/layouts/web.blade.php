@@ -31,13 +31,13 @@
           -webkit-animation: spin 2s linear infinite; /* Safari */
           animation: spin 2s linear infinite;
         }
-        
+
         /* Safari */
         @-webkit-keyframes spin {
           0% { -webkit-transform: rotate(0deg); }
           100% { -webkit-transform: rotate(360deg); }
         }
-        
+
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
@@ -103,7 +103,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <!-- Right Side Of Navbar -->
-            
+
 
             <a class="dropdown-item" href="#">{{ Auth::user()->name }}</a>
             @guest
@@ -111,7 +111,7 @@
             @else
               <a class="dropdown-item" href="#">Perfil: {{Auth::user()->perfil->perfil_nombre}}</a>
             @endguest
-            
+
             <!--
             <a class="dropdown-item" href="#">Settings</a>
             <a class="dropdown-item" href="#">Activity Log</a>
@@ -176,7 +176,7 @@
         </li>
 
         @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
-          
+
         @endif
         @if( in_array(Auth::user()->perfil->perfil_nombre, ['Admin','Cliente']) )
         <li class="nav-item">
@@ -201,6 +201,17 @@
             <i class="fas fa-fw fa-table"></i>
             <span>Reporte: Consolidado Muestras</span></a>
         </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-fw fa-folder"></i>
+              <span>Pallet</span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+              <h6 class="dropdown-header">Opciones:</h6>
+              <a class="dropdown-item" href="{{ url('palet') }}">Ver pallets</a>
+              <a class="dropdown-item" href="{{ url('palletproductor') }}">Reporte productor</a>
+            </div>
+          </li>
       @endif
       </ul>
 
@@ -274,7 +285,7 @@
 
     <!-- Demo scripts for this page-->
     {!! Html::script('sb/js/demo/datatables-demo.js') !!}
-  
+
 
     @stack('custom_js')
   </body>

@@ -21,7 +21,7 @@ Auth::routes(['register' => false]);
 #Route::post('/login', 'Auth\LoginController@login');
 
 Route::group(['middleware' => ['web']], function () { #auth
-    
+
     Route::get('/', function () {
 
         return redirect()->to('/login');
@@ -36,14 +36,14 @@ Route::group(['middleware' => ['web']], function () { #auth
     #Route::get('/', 'HomeController@index');
     Route::get('/home', function () {
 
-        return view('layouts.web'); 
+        return view('layouts.web');
         return redirect()->to('/muestras');
 
         #
-        
+
     })->name('home');
 
-    
+
 
     #Route::get('/', 'HomeController@index');
 
@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function () { #auth
     Route::resource('palet', 'PaletController');
     Route::get('paletsDatatables','PaletController@paletsDatatables');
     Route::get('verMuestras/{lote_codigo}','PaletController@verMuestras')->name('verMuestras');
+    Route::get('palletproductor','PaletController@palletproductor')->name('palletproductor');
 });
 
 
