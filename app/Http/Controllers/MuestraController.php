@@ -831,9 +831,9 @@ class MuestraController extends Controller
 
 
     public function uploadimagen(Request $request) {
-
+        set_time_limit(0);
         $rules = [
-            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
             'muestra_imagen_texto' => 'required',
             'muestra_id'  => 'required',
         ];
