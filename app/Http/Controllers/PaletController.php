@@ -8,6 +8,7 @@ use yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Muestra;
+use App\Productor;
 use App\Region;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -288,42 +289,74 @@ class PaletController extends Controller
         , m.`lote_codigo`
         , m.`categoria_id`';
         $consolidado = DB::select(DB::raw($statement));
+
+
         $productor = Productor::find($productor_id);
-
-
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'ID');
-        $sheet->setCellValue('B1', 'QR');
-        $sheet->setCellValue('C1', 'PRODUCTOR');
-        $sheet->setCellValue('D1', 'ESPECIE');
-        $sheet->setCellValue('E1', 'VARIEDAD');
-        $sheet->setCellValue('F1', 'CALIBRE');
-        $sheet->setCellValue('G1', 'CATEGORIA');
-        $sheet->setCellValue('H1', 'NOTAFINAL');
-
-        $sheet->setCellValue('I1','Racimo Bajo Calibre');
-        $sheet->setCellValue('J1','Racimo Bajo Color');
-        $sheet->setCellValue('K1','Racimo Fuera de Color');
-        $sheet->setCellValue('L1','Racimo Apretado');
-        $sheet->setCellValue('M1','Racimo Bajo Brix');
-        $sheet->setCellValue('N1','Racimo Deforme');
-        $sheet->setCellValue('O1','Manchas(Russet, golpe de sol, trips, etc.)');
-        $sheet->setCellValue('P1','Racimo Debil/Cristalino');
-        $sheet->setCellValue('Q1','Raquis Deshidratado');
-        $sheet->setCellValue('R1','Racimo Humedo/Pegajoso');
-        $sheet->setCellValue('S1','Partiduras - Heridas Abiertas');
-        $sheet->setCellValue('T1','Acuosas');
-        $sheet->setCellValue('U1','Bayas Reventas');
-        $sheet->setCellValue('V1','Oidio');
-        $sheet->setCellValue('W1','Pudrición Ácida');
-        $sheet->setCellValue('X1','Desgrane');
-        $sheet->setCellValue('Y1','Penicillium');
-        $sheet->setCellValue('Z1','Botritys (Piel suelta)');
-        $sheet->setCellValue('AA1','Racimo bajo peso');
-        $sheet->setCellValue('AB1','PALLET');
-        $sheet->setCellValue('AC1','NOTA_PALLET');
         $i=2;
+        $sheet->setCellValue('A'.$i, 'Nombre');
+        $sheet->setCellValue('B'.$i, $productor->productor_nombre);
+
+
+        $muestrasTotal = Muestra::where('productor_id',$productor_id)->count();
+        
+
+
+        $sql_muestras = '
+        SELECT   m.`nota_id`
+        , n.`nota_nombre`
+        , COUNT(*) AS total
+        FROM muestra  m
+        INNER JOIN nota n ON n.`nota_id` = m.`nota_id`
+        WHERE m.`productor_id` = '.$productor_id.'
+        and m.`lote_codigo` is not null
+        GROUP BY m.`nota_id`
+        , n.`nota_nombre`';
+        $result = DB::select(DB::raw($sql_muestras));
+        foreach($result as $m){
+            $i++;
+            $sheet->setCellValue('A'.$i, 'Nota Muestra: '.$m->nota_nombre);
+            $sheet->setCellValue('B'.$i, $m->total);
+            $porcentaje =  ($m->total / $muestrasTotal)*100;
+            $sheet->setCellValue('C'.$i,$porcentaje.'%');
+        }
+       
+
+        $i++;
+        $i++;
+
+        $sheet->setCellValue('A'.$i, 'ID');
+        $sheet->setCellValue('B'.$i, 'QR');
+        $sheet->setCellValue('C'.$i, 'PRODUCTOR');
+        $sheet->setCellValue('D'.$i, 'ESPECIE');
+        $sheet->setCellValue('E'.$i, 'VARIEDAD');
+        $sheet->setCellValue('F'.$i, 'CALIBRE');
+        $sheet->setCellValue('G'.$i, 'CATEGORIA');
+        $sheet->setCellValue('H'.$i, 'NOTAFINAL');
+
+        $sheet->setCellValue('I'.$i,'Racimo Bajo Calibre');
+        $sheet->setCellValue('J'.$i,'Racimo Bajo Color');
+        $sheet->setCellValue('K'.$i,'Racimo Fuera de Color');
+        $sheet->setCellValue('L'.$i,'Racimo Apretado');
+        $sheet->setCellValue('M'.$i,'Racimo Bajo Brix');
+        $sheet->setCellValue('N'.$i,'Racimo Deforme');
+        $sheet->setCellValue('O'.$i,'Manchas(Russet, golpe de sol, trips, etc.)');
+        $sheet->setCellValue('P'.$i,'Racimo Debil/Cristalino');
+        $sheet->setCellValue('Q'.$i,'Raquis Deshidratado');
+        $sheet->setCellValue('R'.$i,'Racimo Humedo/Pegajoso');
+        $sheet->setCellValue('S'.$i,'Partiduras - Heridas Abiertas');
+        $sheet->setCellValue('T'.$i,'Acuosas');
+        $sheet->setCellValue('U'.$i,'Bayas Reventas');
+        $sheet->setCellValue('V'.$i,'Oidio');
+        $sheet->setCellValue('W'.$i,'Pudrición Ácida');
+        $sheet->setCellValue('X'.$i,'Desgrane');
+        $sheet->setCellValue('Y'.$i,'Penicillium');
+        $sheet->setCellValue('Z'.$i,'Botritys (Piel suelta)');
+        $sheet->setCellValue('AA'.$i,'Racimo bajo peso');
+        $sheet->setCellValue('AB'.$i,'PALLET');
+        $sheet->setCellValue('AC'.$i,'NOTA_PALLET');
+        $i++;
         foreach($consolidado as $c){
             $sheet->setCellValue("A".$i, $c->muestra_id);
             $sheet->setCellValue("B".$i, $c->muestra_qr);
@@ -360,12 +393,12 @@ class PaletController extends Controller
         }
 
         $writer = new Xlsx($spreadsheet);
-        $writer->save('productor_'.$productor_id.'.xlsx');
+        $name = 'productor_'.$productor_id.'.xlsx';
+        $writer->save($name);
 
+        return redirect::to($name);
 
-        #return redirect::to('reporte.xlsx');
-
-        dd($consolidado);
+       
     }
 
     public function verMuestras($lote_codigo){
