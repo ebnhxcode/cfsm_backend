@@ -12,7 +12,8 @@ use App\Productor;
 use App\Region;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
+use Carbon\Carbon;
+use Dompdf\Dompdf;
 
 class PaletController extends Controller
 {
@@ -134,59 +135,86 @@ class PaletController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        $productor_id = $request->productor_id;
-        set_time_limit(0);
 
-        
+        /* DATOS VISTA */
+        $productor_id = $request->productor_id;
+        //DATOS DEL PRODUCTOS
+        $productor = Productor::find($productor_id);
+        set_time_limit(0);
+        $fecha = Carbon::parse($request->fecha)->toDateTimeString();
+        //PALLETS CON CALIFICACION
         $pallets_agrupados = Muestra::groupBy('lote_codigo','categoria_id')->where('productor_id',$productor_id)
+        ->where('muestra_fecha','=',$fecha)
+        ->where('lote_codigo','>',0)
         ->select('lote_codigo'
         ,'categoria_id'
-        , DB::raw('count(*) as total'), DB::raw('sum(nota_id) as nota_total'))->get();
-        
+        , DB::raw('count(*) as total'), DB::raw('sum(nota_id) as nota_total'),DB::raw('0 as nota_final_pallet'))->get();
+
+        $html= '';
+        $html .= "<p><h2>$productor->productor_nombre</h2></p>";
+        $html .= "<p><h2>".$productor->region->region_nombre."</h2></p>";
+        $html .= "<p><h2>".$request->fecha."</h2></p>";
 
         foreach($pallets_agrupados as $p){
-            echo $p->lote_codigo;
-            echo "nota_total : ".$p->nota_total;
-            echo 'total muestras : '.$p->total;
-            echo 'categoria  : '.$p->categoria_id;
-            echo "<br>";
-
+            $html .="<table>";
+            $html .="<tr>";
+            $html .='<td>PALLET </td> <td>'.$p->lote_codigo.'</td>';
+            $html .="</tr>";
+            $html .="<tr>";
+            $html .='<td>CANTIDAD MUESTRAS </td> <td>'.$p->total.'</td>';
+            $html .="</tr>";
+            $html .="<tr>";
             $calculo_nota = ceil($p->nota_total/$p->total);
             if($p->categoria_id == 2){
                 switch ($calculo_nota) {
                     case 1:
-                        echo "NOTA A";
+                        $p->nota_final_pallet = 'A';
                         break;
                     case 2:
-                        echo "NOTA B";
+                        $p->nota_final_pallet = 'B';
                         break;
                     case 3:
-                        echo "NOTA C";
+                        $p->nota_final_pallet = 'C';
                         break;
                     case 4:
-                        echo "NOTA O";
+                        $p->nota_final_pallet = 'O';
                         break;
                     default:
-                        echo "FUERA DE RANGO";
+                        $p->nota_final_pallet = 'FUERA DE RANGO';
                 }
-                echo "<br>";
+
             }else{
                 switch ($calculo_nota) {
                     case 1:
-                        echo "NOTA A";
+                        $p->nota_final_pallet = 'A';
                         break;
                     case 2:
-                        echo "NOTA B";
+                        $p->nota_final_pallet = 'B';
                         break;
                     default:
-                        echo "FUERA DE RANGO";
+                        $p->nota_final_pallet = 'FUERA DE RANGO';
                 }
-                echo "<br>";
             }
-
+            $html .='<td> NOTA PALLET </td> <td>'.$p->nota_final_pallet.'</td>';
+            $html .="</tr>";
+            $html .="</table>";
         }
-        dd($pallets_agrupados);
+        $array_pallets = $pallets_agrupados;
 
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
+
+        dd('FIN');
 
         $statement = 'SELECT m.muestra_id
         , m.`muestra_qr`
@@ -343,7 +371,7 @@ class PaletController extends Controller
         $consolidado = DB::select(DB::raw($statement));
 
 
-        $productor = Productor::find($productor_id);
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $i=2;
@@ -352,7 +380,7 @@ class PaletController extends Controller
 
 
         $muestrasTotal = Muestra::where('productor_id',$productor_id)->where('lote_codigo','>',0)->count();
-        
+
 
 
         $sql_muestras = '
@@ -373,7 +401,7 @@ class PaletController extends Controller
             $porcentaje =  ($m->total / $muestrasTotal)*100;
             $sheet->setCellValue('C'.$i,$porcentaje.'%');
         }
-       
+
 
         $i++;
         $i++;
@@ -450,7 +478,7 @@ class PaletController extends Controller
 
         return redirect::to($name);
 
-       
+
     }
 
     public function verMuestras($lote_codigo){

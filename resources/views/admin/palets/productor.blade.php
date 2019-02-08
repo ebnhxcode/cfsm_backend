@@ -31,6 +31,12 @@
 
         </select>
     </div>
+    <div class="form-group">
+        <label class="control-label">Fecha (Desde)</label>
+        <div class="input-group date" id="dt1">
+            <input id="fecha" value=""  name="fecha" class="form-control datepicker" type="text" readonly>
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary btn_ok btn-block">Ver reporte<i class="far fa-caret-square-right"></i> </button>
     {!! Form::close() !!}
 </div>
@@ -40,8 +46,25 @@
 
 @endsection
 @section('js')
+<link rel="stylesheet" href="{{ url('vendor/datatables/buttons.bootstrap4.min.css') }}">
+<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+<script src="{{ url('js/messages/messages.es-es.min.js') }}"></script>
+<script src="{{ url('vendor/datatables/dataTables.buttons.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        var muestra_fecha = $('#fecha').datepicker({
+                uiLibrary: 'bootstrap4',
+                locale: 'es-es',
+                format: 'dd-mm-yyyy',
+                change: function (e) {
+                    $(this).focus();
+                }
+        });
+
+
+
         $("#region_id").change(function() {
         var route = "{!!URL::to('/getProductoresByRegionId')!!}";
         //alert(route);
