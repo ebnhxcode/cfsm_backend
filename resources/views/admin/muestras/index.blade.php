@@ -20,7 +20,7 @@
                 <th>Especie</td>
                 <th>Variedad</td>
                 <th>Categoría</td>
-                <th>Nota</td>                    
+                <th>Nota</td>
                 <th>-</th>
             </tr>
         </thead>

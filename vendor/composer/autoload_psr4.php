@@ -69,6 +69,7 @@ return array(
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
     'Collective\\Html\\' => array($vendorDir . '/laravelcollective/html/src'),
     'BeyondCode\\DumpServer\\' => array($vendorDir . '/beyondcode/laravel-dump-server/src'),
+    'Barryvdh\\DomPDF\\' => array($vendorDir . '/barryvdh/laravel-dompdf/src'),
     'App\\' => array($baseDir . '/app'),
     '' => array($vendorDir . '/nesbot/carbon/src'),
 );
