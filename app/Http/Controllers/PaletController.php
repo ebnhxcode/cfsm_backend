@@ -136,6 +136,58 @@ class PaletController extends Controller
         $this->validate($request, $rules, $messages);
         $productor_id = $request->productor_id;
         set_time_limit(0);
+
+        
+        $pallets_agrupados = Muestra::groupBy('lote_codigo','categoria_id')->where('productor_id',$productor_id)
+        ->select('lote_codigo'
+        ,'categoria_id'
+        , DB::raw('count(*) as total'), DB::raw('sum(nota_id) as nota_total'))->get();
+        
+
+        foreach($pallets_agrupados as $p){
+            echo $p->lote_codigo;
+            echo "nota_total : ".$p->nota_total;
+            echo 'total muestras : '.$p->total;
+            echo 'categoria  : '.$p->categoria_id;
+            echo "<br>";
+
+            $calculo_nota = ceil($p->nota_total/$p->total);
+            if($p->categoria_id == 2){
+                switch ($calculo_nota) {
+                    case 1:
+                        echo "NOTA A";
+                        break;
+                    case 2:
+                        echo "NOTA B";
+                        break;
+                    case 3:
+                        echo "NOTA C";
+                        break;
+                    case 4:
+                        echo "NOTA O";
+                        break;
+                    default:
+                        echo "FUERA DE RANGO";
+                }
+                echo "<br>";
+            }else{
+                switch ($calculo_nota) {
+                    case 1:
+                        echo "NOTA A";
+                        break;
+                    case 2:
+                        echo "NOTA B";
+                        break;
+                    default:
+                        echo "FUERA DE RANGO";
+                }
+                echo "<br>";
+            }
+
+        }
+        dd($pallets_agrupados);
+
+
         $statement = 'SELECT m.muestra_id
         , m.`muestra_qr`
         , e.`especie_nombre`
@@ -299,7 +351,7 @@ class PaletController extends Controller
         $sheet->setCellValue('B'.$i, $productor->productor_nombre);
 
 
-        $muestrasTotal = Muestra::where('productor_id',$productor_id)->count();
+        $muestrasTotal = Muestra::where('productor_id',$productor_id)->where('lote_codigo','>',0)->count();
         
 
 
