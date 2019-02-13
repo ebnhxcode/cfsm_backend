@@ -343,10 +343,9 @@ class MuestraController extends Controller
         $etiquetas = Etiqueta::orderBy('etiqueta_nombre')->pluck('etiqueta_nombre','etiqueta_id');
         $apariencias = Apariencia::orderBy('apariencia_nombre')->pluck('apariencia_nombre','apariencia_id');
         $muestra->muestra_fecha = Carbon::parse($muestra->muestra_fecha)->format('d-m-Y');
-        $conceptos = "";
         #dd($muestra->muestra_fecha);
         return view('admin.muestras.editar',compact('muestra_desgrane','productores','categorias','calibres','variedades','especies','regiones','etiquetas','embalajes','muestra','conceptos','apariencias'));
-
+    
     }
 
     /**
@@ -899,9 +898,9 @@ class MuestraController extends Controller
 
 
     /**
-     *
-     * FUNCIONES PARA LA APLICACION
-     *
+     * 
+     * FUNCIONES PARA LA APLICACION 
+     * 
      */
 
 
@@ -909,16 +908,16 @@ class MuestraController extends Controller
 
         #$muestras = Muestra::all();
         $muestras = Muestra::with([
-            'region',
-            'productor',
-            'especie',
-            'variedad',
-            'calibre',
-            'categoria',
-            'embalaje',
-            'etiqueta',
-            'nota',
-            'estado_muestra',
+            'region', 
+            'productor', 
+            'especie', 
+            'variedad', 
+            'calibre', 
+            'categoria', 
+            'embalaje', 
+            'etiqueta', 
+            'nota', 
+            'estado_muestra', 
             'apariencia'
         ])->get();
         return response()->json([
@@ -956,13 +955,13 @@ class MuestraController extends Controller
                        ,   0
                        )
                    ) "Racimo_Bajo_Color"
-
+                  
                ,SUM(
                        IF(f.defecto_id=3
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Fuera_de_Color"
+                   ) "Racimo_Fuera_de_Color"  
                    ,SUM(
                        IF(f.defecto_id=4
                        ,   d.`muestra_defecto_calculo`
@@ -974,73 +973,73 @@ class MuestraController extends Controller
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Bajo_Brix"
+                   ) "Racimo_Bajo_Brix"  
                    ,SUM(
                        IF(f.defecto_id=6
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Deforme"
+                   ) "Racimo_Deforme"  
                    ,SUM(
                        IF(f.defecto_id=7
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Manchas"
+                   ) "Manchas"  
                    ,SUM(
                        IF(f.defecto_id=8
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Debil"
+                   ) "Racimo_Debil"  
                    ,SUM(
                        IF(f.defecto_id=9
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Raquis_Deshidratado"
+                   ) "Raquis_Deshidratado"  
                    ,SUM(
                        IF(f.defecto_id=10
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Racimo_Humedo"
+                   ) "Racimo_Humedo"  
                    ,SUM(
                        IF(f.defecto_id=11
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Partiduras"
+                   ) "Partiduras"  
                    ,SUM(
                        IF(f.defecto_id=12
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Acuosas"
+                   ) "Acuosas"  
                    ,SUM(
                        IF(f.defecto_id=13
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Bayas_Reventas"
+                   ) "Bayas_Reventas"  
                    ,SUM(
                        IF(f.defecto_id=14
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Oidio"
+                   ) "Oidio"  
                    ,SUM(
                        IF(f.defecto_id=15
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "acida"
+                   ) "acida"    
              ,SUM(
                        IF(f.defecto_id=20
                        ,   d.`muestra_defecto_calculo`
                        ,   0
                        )
-                   ) "Desgrane"
+                   ) "Desgrane" 
                 ,SUM(
                        IF(f.defecto_id=21
                        ,   d.`muestra_defecto_calculo`
@@ -1082,7 +1081,7 @@ class MuestraController extends Controller
         , p.productor_nombre
         , m.`lote_codigo`';
         $consolidado = DB::select(DB::raw($statement));
-
+        
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'ID');
@@ -1114,8 +1113,8 @@ class MuestraController extends Controller
         $sheet->setCellValue('Z1','Botritys (Piel suelta)');
         $sheet->setCellValue('AA1','Racimo bajo peso');
         $sheet->setCellValue('AB1','PALLET');
-
-
+        
+                
         $i=2;
         foreach($consolidado as $c){
             $sheet->setCellValue("A".$i, $c->muestra_id);

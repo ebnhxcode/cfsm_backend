@@ -30,7 +30,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
         @foreach($pallets as $p)
             <tr>
                     <td> {{ $p->lote_codigo}}</td>
-                    <td> {{ $p->nota_nombre}}</td>
+                    <td> {{ $p->nota_final_pallet}}</td>
             </tr>
         @endforeach
 </table>
@@ -46,51 +46,16 @@ tr:nth-child(even) {background-color: #f2f2f2;}
             <th>Categoria</th>
             <th>Embalaje</th>
             <th>Nota Muestra</th>
-            <th>Apariencia</th>
-            <th>Valor Maximo</th>
-            <th>Defecto</th>
-        </tr>
-    </thead>
-    @foreach($pallets as $m)
-        <tr>
-            <td>{{$m->muestra_qr ?? 'Sin ingresar'}}</td>
-            <td>{{$m->lote_codigo ?? 'Sin ingresar'}}</td>
-            <td>{{$m->variedad_nombre}}</td>
-            <td>{{$m->categoria_nombre}}</td>
-            <td>{{$m->embalaje_nombre}}</td>
-            <td>{{$m->nota_nombre}}</td>
-            <td>{{$m->apariencia_nombre}}</td>
-            <td>{{$m->valor_maximo}}</td>
-            <td>{{$m->defecto}}</td>
-        </tr>
-    @endforeach
-</table>
-
-<br>
-
-<br>
-
-<table>
-    <thead>
-        <tr>
-            <th>QR</th>
-            <th>Pallet</th>
-            <th>Variedad</th>
-            <th>Categoria</th>
-            <th>Embalaje</th>
-            <th>Nota Muestra</th>
-            <th>Apariencia</th>
         </tr>
     </thead>
     @foreach($muestras as $m)
         <tr>
-            <td>{{$m->muestra_qr ?? 'Sin ingresar'}}</td>
-            <td>{{$m->lote_codigo ?? 'Sin ingresar'}}</td>
+            <td>{{$m->muestra_qr}}</td>
+            <td>{{$m->lote_codigo}}</td>
             <td>{{$m->variedad->variedad_nombre}}</td>
             <td>{{$m->categoria->categoria_nombre}}</td>
             <td>{{$m->embalaje->embalaje_nombre}}</td>
             <td>{{$m->nota->nota_nombre}}</td>
-            <td>{{$m->apariencia->apariencia_nombre}}</td>
         </tr>
     @endforeach
 </table>

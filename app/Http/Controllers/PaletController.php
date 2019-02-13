@@ -141,17 +141,188 @@ class PaletController extends Controller
         $productor = Productor::find($productor_id);
         set_time_limit(0);
         $fecha = Carbon::parse($request->fecha)->toDateTimeString();
+
+        $muestra = new Muestra();
+
+        $pallets_agrupados = $muestra->select(
+                        "muestra.lote_codigo",
+                        "muestra.muestra_id",
+                        "muestra.muestra_qr",
+                        "nota.nota_nombre",
+                        "variedad.variedad_nombre",
+                        "embalaje.embalaje_nombre",
+                        "categoria.categoria_nombre",
+                        "apariencia.apariencia_nombre",
+                        DB::raw("
+                        IFNULL((
+                            SELECT MAX(md.muestra_defecto_valor) maximo
+                            FROM muestra_defecto md
+                            INNER JOIN defecto def on md.defecto_id = def.defecto_id
+                            WHERE muestra.muestra_id = md.muestra_id
+                            AND def.defecto_nombre not regexp 'desgrane'
+                            ORDER BY maximo desc limit 1
+                            ),(
+                            SELECT MAX(md.muestra_defecto_valor) maximo
+                            FROM muestra_defecto md
+                            INNER JOIN defecto def on md.defecto_id = def.defecto_id
+                            WHERE muestra.muestra_id = md.muestra_id
+                            AND def.defecto_nombre regexp 'desgrane'
+                            ORDER BY maximo desc limit 1
+                            ))
+                            valor_maximo"),
+                        DB::raw("
+                            IFNULL(
+                                (
+                                SELECT d.defecto_nombre
+                                FROM muestra_defecto md
+                                INNER JOIN defecto d on md.defecto_id = d.defecto_id
+                                WHERE muestra.muestra_id = md.muestra_id
+                                AND md.muestra_defecto_valor = valor_maximo
+                                order by valor_maximo desc limit 1
+                                ),(
+                                SELECT 'Sin Defecto'
+                                )
+                            ) defecto
+                        ")
+                    )
+                    ->from('AA.muestra')
+                    ->join('AA.embalaje' , function ($embalaje) {
+                        $embalaje->on('muestra.embalaje_id', '=', 'embalaje.embalaje_id');
+                    })
+                    ->join('AA.apariencia' , function ($apariencia) {
+                        $apariencia->on('muestra.apariencia_id', '=', 'apariencia.apariencia_id');
+                    })
+                    ->join('AA.categoria' , function ($categoria) {
+                        $categoria->on('muestra.categoria_id', '=', 'categoria.categoria_id');
+                    })
+                    ->join('AA.variedad' , function ($variedad) {
+                        $variedad->on('muestra.variedad_id', '=', 'variedad.variedad_id');
+                    })
+                    ->join('AA.nota' , function ($nota) {
+                        $nota->on('muestra.nota_id', '=', 'nota.nota_id');
+                    })
+                    ->where('muestra.productor_id', $productor_id)
+                    ->where('muestra.muestra_fecha', $fecha)
+                    #->where('muestra.productor_id', 19)
+                    #->where('muestra.muestra_fecha', '2019-02-07')
+                    
+                    ->whereNotNull('muestra.lote_codigo')
+                    #->whereNotNull('muestra.nota_id')
+
+                    ->get();
+
+
+/*
+        $pallets_agrupados = $muestra->select(
+                        "muestra.lote_codigo",
+                        "muestra.muestra_id",
+                        "muestra.muestra_qr",
+                        "nota.nota_nombre",
+                        "variedad.variedad_nombre",
+                        "embalaje.embalaje_nombre",
+                        "categoria.categoria_nombre",
+                        "apariencia.apariencia_nombre",
+                        DB::raw("
+                            IFNULL(
+                                (
+                                SELECT MAX(md.muestra_defecto_valor) maximo
+                                FROM muestra_defecto md
+                                INNER JOIN defecto def on md.defecto_id = def.defecto_id
+                                WHERE muestra.muestra_id = md.muestra_id
+                                AND def.defecto_nombre not regexp 'desgrane'
+                                ORDER BY maximo desc limit 1
+                                ),(
+                                SELECT MAX(md.muestra_defecto_valor) maximo
+                                FROM muestra_defecto md
+                                INNER JOIN defecto def on md.defecto_id = def.defecto_id
+                                WHERE muestra.muestra_id = md.muestra_id
+                                AND def.defecto_nombre regexp 'desgrane'
+                                ORDER BY maximo desc limit 1
+                                )
+                            ) valor_maximo,
+                            IFNULL(
+                                (
+                                SELECT d.defecto_nombre
+                                FROM muestra_defecto md
+                                INNER JOIN defecto d on md.defecto_id = d.defecto_id
+                                WHERE muestra.muestra_id = md.muestra_id
+                                AND md.muestra_defecto_valor = 
+                                IFNULL(
+                                    (
+                                    SELECT MAX(md.muestra_defecto_valor) maximo
+                                    FROM muestra_defecto md
+                                    INNER JOIN defecto def on md.defecto_id = def.defecto_id
+                                    WHERE muestra.muestra_id = md.muestra_id
+                                    AND def.defecto_nombre not regexp 'desgrane'
+                                    ORDER BY maximo desc limit 1
+                                    ),(
+                                    SELECT MAX(md.muestra_defecto_valor) maximo
+                                    FROM muestra_defecto md
+                                    INNER JOIN defecto def on md.defecto_id = def.defecto_id
+                                    WHERE muestra.muestra_id = md.muestra_id
+                                    AND def.defecto_nombre regexp 'desgrane'
+                                    ORDER BY maximo desc limit 1
+                                    )
+                                )
+                                -- valor_maximo
+
+                                order by valor_maximo desc limit 1
+                                ),(
+                                SELECT 'Sin Defecto'
+                                )
+                            ) defecto
+                        ")
+                    )
+                    ->from('AA.muestra')
+                    ->join('AA.embalaje' , function ($embalaje) {
+                        $embalaje->on('muestra.embalaje_id', '=', 'embalaje.embalaje_id');
+                    })
+                    ->join('AA.apariencia' , function ($apariencia) {
+                        $apariencia->on('muestra.apariencia_id', '=', 'apariencia.apariencia_id');
+                    })
+                    ->join('AA.categoria' , function ($categoria) {
+                        $categoria->on('muestra.categoria_id', '=', 'categoria.categoria_id');
+                    })
+                    ->join('AA.variedad' , function ($variedad) {
+                        $variedad->on('muestra.variedad_id', '=', 'variedad.variedad_id');
+                    })
+                    ->join('AA.nota' , function ($nota) {
+                        $nota->on('muestra.nota_id', '=', 'nota.nota_id');
+                    })
+                    ->where('muestra.productor_id', $productor_id)
+                    ->where('muestra.muestra_fecha', $fecha)
+                    #->where('muestra.productor_id', 19)
+                    #->where('muestra.muestra_fecha', '2019-02-07')
+                    
+                    ->whereNotNull('muestra.lote_codigo')
+                    #->whereNotNull('muestra.nota_id')
+
+                    ->get();
+*/
+
+
+        
         //PALLETS CON CALIFICACION
+        /*
         $pallets_agrupados = Muestra::groupBy('lote_codigo','categoria_id','variedad_id')
         ->where('productor_id',$productor_id)
         ->where('muestra_fecha','=',$fecha)
         ->where('lote_codigo','>',0)
-        ->select('lote_codigo'
-        ,'categoria_id'
-        , DB::raw('count(*) as total'), DB::raw('sum(nota_id) as nota_total'),DB::raw('0 as nota_final_pallet'),DB::raw('0 as nota_final_pallet'))
+        ->select('lote_codigo',
+            'categoria_id',
+            'muestra_id',
+            DB::raw('count(*) as total'), 
+            DB::raw('sum(nota_id) as nota_total'),
+            DB::raw('0 as nota_final_pallet'),
+            DB::raw('0 as nota_final_pallet')
+        )
         ->orderBy('lote_codigo')->get();
+        */
+
+        #dd($pallets_agrupados);
 
 
+        /*
         $muestras_por_pallets = array();
         foreach($pallets_agrupados as $p){
             $calculo_nota = ceil($p->nota_total/$p->total);
@@ -186,17 +357,22 @@ class PaletController extends Controller
                 }
             }
 
-    }
+        }
+        */
 
-        $muestras = Muestra::where('productor_id',$productor_id)->where('muestra_fecha',$fecha)->orderBy('lote_codigo')->get();
-        $data['pallets'] = $pallets_agrupados;
-        $data['productor'] = $productor;
-        $data['fecha'] =  $request->fecha;
-        $data['muestras'] = $muestras;
+        $muestras = Muestra::where('productor_id', $productor_id)
+            ->where('muestra_fecha', $fecha)
+            ->orderBy('lote_codigo')
+            ->get();
+
+        $data['pallets'] = json_decode(json_encode($pallets_agrupados)); #OK
+        $data['productor'] = $productor; #OK
+        $data['fecha'] =  $request->fecha; #OK
+        $data['muestras'] = $muestras; #OK
 
 
-        $pdf = \PDF::loadView('pdf.invoice', $data);
-        return $pdf->download('invoice.pdf');
+        $pdf = \PDF::loadView('pdf.invoice', $data)->setPaper('a4', 'landscape');
+        return $pdf->download('reporte_pallet.pdf');
 
 
     }
