@@ -44,7 +44,7 @@
         data: {
           labels: [
          @foreach($p->notas  as $n)
-          "{{$n->nota_nombre}}",
+          "{{$n->nota_nombre}} {{ $n->porcentaje }}%",
          @endforeach
          ],
           datasets: [{

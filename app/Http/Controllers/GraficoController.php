@@ -114,6 +114,8 @@ class GraficoController extends Controller
             , n.`nota_nombre`
             , n.`color`
             , n.`color_bg`
+            , round((COUNT(*) / (SELECT COUNT(*) FROM muestra
+WHERE productor_id = $p and CAST(muestra_fecha as  DATE) = CAST('$fecha' as  DATE) ) )*100,1) AS porcentaje
             FROM muestra m
             LEFT JOIN nota n ON n.`nota_id` = m.`nota_id`
             WHERE m.productor_id = $p
@@ -135,6 +137,8 @@ class GraficoController extends Controller
             , n.`nota_nombre`
             , n.`color`
             , n.`color_bg`
+             , round((COUNT(*) / (SELECT COUNT(*) FROM muestra
+WHERE productor_id = $p->productor_id and CAST(muestra_fecha as  DATE) = CAST('$fecha' as  DATE) ) )*100,1) AS porcentaje
             FROM muestra m
             LEFT JOIN nota n ON n.`nota_id` = m.`nota_id`
             WHERE m.productor_id = $p->productor_id
@@ -184,6 +188,8 @@ class GraficoController extends Controller
             , n.`nota_nombre`
             , n.`color`
             , n.`color_bg`
+            , round((COUNT(*) / (SELECT COUNT(*) FROM muestra
+WHERE productor_id = $p) )*100,1) AS porcentaje
             FROM muestra m
             LEFT JOIN nota n ON n.`nota_id` = m.`nota_id`
             WHERE m.productor_id = $p
@@ -204,6 +210,8 @@ class GraficoController extends Controller
             , n.`nota_nombre`
             , n.`color`
             , n.`color_bg`
+            , round((COUNT(*) / (SELECT COUNT(*) FROM muestra
+WHERE productor_id = $p->productor_id) )*100,1) AS porcentaje
             FROM muestra m
             LEFT JOIN nota n ON n.`nota_id` = m.`nota_id`
             WHERE m.productor_id = $p->productor_id
