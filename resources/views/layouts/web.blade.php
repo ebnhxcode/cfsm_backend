@@ -105,10 +105,12 @@
                 <!-- Right Side Of Navbar -->
 
 
-            <a class="dropdown-item" href="#">{{ Auth::user()->name }}</a>
-            @guest
 
+                
+            
+            @guest
             @else
+              <a class="dropdown-item" href="#">{{ Auth::user()->name }}</a>
               <a class="dropdown-item" href="#">Perfil: {{Auth::user()->perfil->perfil_nombre}}</a>
             @endguest
 
@@ -139,17 +141,11 @@
 
     <div id="wrapper">
 
+      @guest
+        No estás autorizado para ver este contenido
+      @else
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav toggled">
-
-        @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
-          <li class="nav-item active">
-            <a class="nav-link" href="{!!URL::to('/')!!}">
-              <i class="fas fa-fw fa-tachometer-alt"></i>
-              <span>Tiempo real</span>
-            </a>
-          </li>
-        @endif
 
         @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
         <li class="nav-item dropdown">
@@ -175,9 +171,6 @@
             <span>Muestras</span></a>
         </li>
 
-        @if( Auth::user()->perfil->perfil_nombre == 'Admin' )
-
-        @endif
         @if( in_array(Auth::user()->perfil->perfil_nombre, ['Admin','Cliente']) )
         <li class="nav-item">
           <a class="nav-link" href="{{ url('graficos') }}">
@@ -196,24 +189,32 @@
           </li>
         @endif
         @if( in_array(Auth::user()->perfil->perfil_nombre, ['Admin','Cliente']) )
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url('consolidado') }}">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Reporte: Consolidado Muestras</span></a>
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Consolidados</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <h6 class="dropdown-header">Opciones:</h6>
+            <a class="dropdown-item" href="{{ url('consolidado') }}"> Consolidado </a>
+            <a class="dropdown-item" href="{{ url('consolidadoProductor') }}">Consolidado productor</a>
+          </div>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-fw fa-folder"></i>
-              <span>Pallet</span>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-              <h6 class="dropdown-header">Opciones:</h6>
-              <a class="dropdown-item" href="{{ url('palet') }}">Ver pallets</a>
-              <a class="dropdown-item" href="{{ url('palletproductor') }}">Reporte productor</a>
-            </div>
-          </li>
-      @endif
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Pallet</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <h6 class="dropdown-header">Opciones:</h6>
+            <a class="dropdown-item" href="{{ url('palet') }}">Ver pallets</a>
+            <a class="dropdown-item" href="{{ url('palletproductor') }}">Reporte productor</a>
+          </div>
+        </li>
+        @endif
       </ul>
+      @endguest
 
 
 

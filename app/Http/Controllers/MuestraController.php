@@ -1162,6 +1162,251 @@ class MuestraController extends Controller
          return view('admin.reportes.consolidado.consolidado');
      }
 
+     public function consolidadoProductor(){
+        $regiones = Region::orderBy('region_nombre')->get();
+        $productores = Productor::where('region_id', '1')->get();
+        //dd($productores);
 
+        return view('admin.reportes.consolidado.consolidadoproductor',compact('regiones','productores'));
+    }
+
+
+    public function GetReporteConsolidadoProductor(Request $request){
+        //dd($request->all());
+
+        $productor_id = $request->productor_id;
+        set_time_limit(0);
+        $statement = 'SELECT m.muestra_id
+        , m.`muestra_qr`
+        , m.`muestra_brix`
+        , m.`lote_codigo`
+        , m.`muestra_bolsas`
+        , e.`especie_nombre`
+        , v.`variedad_nombre`
+        , cl.`calibre_nombre`
+        , ct.`categoria_nombre`
+        , m.`nota_id`
+        , n.`nota_nombre`
+        , a.`apariencia_nombre`
+        , p.productor_nombre
+               ,SUM(
+                       IF(f.defecto_id=1
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Bajo_Calibre"
+               ,SUM(
+                       IF(f.defecto_id=2
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Bajo_Color"
+                  
+               ,SUM(
+                       IF(f.defecto_id=3
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Fuera_de_Color"  
+                   ,SUM(
+                       IF(f.defecto_id=4
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Apretado"
+                   ,SUM(
+                       IF(f.defecto_id=5
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Bajo_Brix"  
+                   ,SUM(
+                       IF(f.defecto_id=6
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Deforme"  
+                   ,SUM(
+                       IF(f.defecto_id=7
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Manchas"  
+                   ,SUM(
+                       IF(f.defecto_id=8
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Debil"  
+                   ,SUM(
+                       IF(f.defecto_id=9
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Raquis_Deshidratado"  
+                   ,SUM(
+                       IF(f.defecto_id=10
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_Humedo"  
+                   ,SUM(
+                       IF(f.defecto_id=11
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Partiduras"  
+                   ,SUM(
+                       IF(f.defecto_id=12
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Acuosas"  
+                   ,SUM(
+                       IF(f.defecto_id=13
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Bayas_Reventas"  
+                   ,SUM(
+                       IF(f.defecto_id=14
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Oidio"  
+                   ,SUM(
+                       IF(f.defecto_id=15
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "acida"    
+             ,SUM(
+                       IF(f.defecto_id=20
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Desgrane" 
+                ,SUM(
+                       IF(f.defecto_id=21
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Penicillium"
+                   ,SUM(
+                       IF(f.defecto_id=22
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Botritys"
+                   ,SUM(
+                       IF(f.defecto_id=23
+                       ,   d.`muestra_defecto_calculo`
+                       ,   0
+                       )
+                   ) "Racimo_bajo_peso"
+        FROM muestra  m
+        inner join apariencia a on a.`apariencia_id` = m.`apariencia_id`
+        inner join especie e on e.`especie_id` = m.`especie_id`
+        inner join variedad v on v.`variedad_id` = m.`variedad_id`
+        inner join productor p on p.`productor_id` =  m.`productor_id`
+        INNER JOIN `calibre` cl on cl.`calibre_id`= m.`calibre_id`
+        inner join categoria ct on ct.`categoria_id` = m.`categoria_id`
+        INNER JOIN muestra_defecto d ON d.`muestra_id` = m.`muestra_id`
+        INNER JOIN defecto f ON f.`defecto_id` = d.`defecto_id`
+        INNER JOIN nota n ON n.`nota_id` = m.`nota_id`
+        WHERE  p.productor_id = '.$productor_id.'
+        GROUP BY  m.muestra_id
+        , m.muestra_id
+        , m.`muestra_qr`
+        , m.`muestra_brix`
+        , m.`lote_codigo`
+        , m.`muestra_bolsas`
+        , e.`especie_nombre`
+        , v.`variedad_nombre`
+        , cl.`calibre_nombre`
+        , ct.`categoria_nombre`
+        , m.`nota_id`
+        , n.`nota_nombre`
+        , a.`apariencia_nombre`
+        , p.productor_nombre
+        ';
+        $consolidado = DB::select(DB::raw($statement));
+        
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'QR');
+        $sheet->setCellValue('B1', 'BRIX');
+        $sheet->setCellValue('C1', 'BOLSAS');
+        $sheet->setCellValue('D1', 'PRODUCTOR');
+        $sheet->setCellValue('E1', 'ESPECIE');
+        $sheet->setCellValue('F1', 'VARIEDAD');
+        $sheet->setCellValue('G1', 'CALIBRE');
+        $sheet->setCellValue('H1', 'CATEGORIA');
+        $sheet->setCellValue('I1', 'NOTAFINAL');
+
+        $sheet->setCellValue('J1','Racimo Bajo Calibre');
+        $sheet->setCellValue('K1','Racimo Bajo Color');
+        $sheet->setCellValue('L1','Racimo Fuera de Color');
+        $sheet->setCellValue('M1','Racimo Apretado');
+        $sheet->setCellValue('N1','Racimo Bajo Brix');
+        $sheet->setCellValue('O1','Racimo Deforme');
+        $sheet->setCellValue('P1','Manchas(Russet, golpe de sol, trips, etc.)');
+        $sheet->setCellValue('Q1','Racimo Debil/Cristalino');
+        $sheet->setCellValue('R1','Raquis Deshidratado');
+        $sheet->setCellValue('S1','Racimo Humedo/Pegajoso');
+        $sheet->setCellValue('T1','Partiduras - Heridas Abiertas');
+        $sheet->setCellValue('U1','Acuosas');
+        $sheet->setCellValue('V1','Bayas Reventas');
+        $sheet->setCellValue('W1','Oidio');
+        $sheet->setCellValue('X1','Pudrición Ácida');
+        $sheet->setCellValue('Y1','Desgrane');
+        $sheet->setCellValue('Z1','Penicillium');
+        $sheet->setCellValue('AA1','Botritys (Piel suelta)');
+        $sheet->setCellValue('AB1','Racimo bajo peso');
+        $sheet->setCellValue('AC1','PALLET');
+        
+                
+        $i=2;
+        foreach($consolidado as $c){
+            $sheet->setCellValue("A".$i, $c->muestra_qr);
+            $sheet->setCellValue("B".$i, $c->muestra_brix);
+            $sheet->setCellValue("C".$i, $c->muestra_bolsas);
+            $sheet->setCellValue("D".$i, $c->productor_nombre);
+            $sheet->setCellValue("E".$i, $c->especie_nombre);
+            $sheet->setCellValue("F".$i, $c->variedad_nombre);
+            $sheet->setCellValue("G".$i, $c->calibre_nombre);
+            $sheet->setCellValue("H".$i, $c->categoria_nombre);
+            $sheet->setCellValue("I".$i, $c->nota_nombre);
+
+
+            $sheet->setCellValue('J'.$i,$c->Racimo_Bajo_Calibre);
+            $sheet->setCellValue('K'.$i,$c->Racimo_Bajo_Color);
+            $sheet->setCellValue('L'.$i,$c->Racimo_Fuera_de_Color);
+            $sheet->setCellValue('M'.$i,$c->Racimo_Apretado);
+            $sheet->setCellValue('N'.$i,$c->Racimo_Bajo_Brix);
+            $sheet->setCellValue('O'.$i,$c->Racimo_Deforme);
+            $sheet->setCellValue('P'.$i,$c->Manchas);
+            $sheet->setCellValue('Q'.$i,$c->Racimo_Debil);
+            $sheet->setCellValue('R'.$i,$c->Raquis_Deshidratado);
+            $sheet->setCellValue('S'.$i,$c->Racimo_Humedo);
+            $sheet->setCellValue('T'.$i,$c->Partiduras);
+            $sheet->setCellValue('U'.$i,$c->Acuosas);
+            $sheet->setCellValue('V'.$i,$c->Bayas_Reventas);
+            $sheet->setCellValue('W'.$i,$c->Oidio);
+            $sheet->setCellValue('X'.$i,$c->acida);
+            $sheet->setCellValue('Y'.$i,$c->Desgrane);
+            $sheet->setCellValue('Z'.$i,$c->Penicillium);
+            $sheet->setCellValue('AA'.$i,$c->Botritys);
+            $sheet->setCellValue('AB'.$i,$c->Racimo_bajo_peso);
+            $sheet->setCellValue('AC'.$i,$c->lote_codigo);
+            $i++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $name = 'consolidado_productor_'.$productor_id.'.xlsx';
+        $writer->save($name);
+        return redirect::to($name);
+
+     }
 
 }

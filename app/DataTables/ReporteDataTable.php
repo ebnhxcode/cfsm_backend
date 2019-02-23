@@ -136,6 +136,7 @@ class ReporteDataTable extends DataTable
             'muestra_id'        => ['name'  => 'muestra_id', 'title' => 'ID'],
             'muestra_fecha'     => ['name'  => 'muestra_fecha', 'title' => 'Fecha'],
             'muestra_qr'        => ['name'  => 'muestra_qr', 'title' => 'QR'],
+            'muestra_brix'        => ['name'  => 'muestra_brix', 'title' => 'BRIX'],
             'region'            => ['name'  => 'region.region_nombre', 'title' => 'Región'],
             'productor'         => ['name'  => 'productor.productor_nombre', 'title' => 'Productor'],
             'especie'           => ['name'  => 'especie.especie_nombre', 'title' => 'Especie'],

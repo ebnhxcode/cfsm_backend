@@ -32,7 +32,7 @@
         </select>
     </div>
     <div class="form-group">
-        <label class="control-label">Fecha (Desde)</label>
+        <label class="control-label">Fecha (Solo se mostraran datos del día seleccionado)</label>
         <div class="input-group date" id="dt1">
             <input id="fecha" value=""  name="fecha" class="form-control datepicker" type="text" readonly>
         </div>

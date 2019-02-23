@@ -118,6 +118,9 @@ Route::post('reporteConsolidado', 'MuestraController@GetReporteConsolidado')->na
 
 Route::get('consolidado', 'MuestraController@consolidado')->name('consolidado');
 
+Route::get('consolidadoProductor', 'MuestraController@consolidadoProductor')->name('consolidadoProductor');
+Route::post('reporteConsolidadoProductor', 'MuestraController@GetReporteConsolidadoProductor')->name('reporteConsolidadoProductor');
+
 
 
 
